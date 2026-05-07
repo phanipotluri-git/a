@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    height: 100%;
+  }
+}
+
+@layer components {
+  .prose h1, .prose h2, .prose h3 {
+    @apply font-semibold text-gray-800;
+  }
+  .prose ul {
+    @apply list-disc pl-5 space-y-1;
+  }
+  .prose ol {
+    @apply list-decimal pl-5 space-y-1;
+  }
+  .prose strong {
+    @apply font-semibold text-gray-900;
+  }
+  .prose p {
+    @apply leading-relaxed;
+  }
+  .prose code {
+    @apply rounded bg-gray-100 px-1 font-mono text-xs;
+  }
+}
