@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arata Journal — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Josefin+Sans:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #FFFFFF; --off-white: #F9F8F6; --light-grey: #F2F1EF;
+    --mid-grey: #E0DED9; --text-grey: #888880; --black: #0D0D0B;
+    --dark: #1A1A18; --gold: #B8922A; --gold-light: #D4AA4A;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Josefin Sans', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; }
+
+  /* Password gate */
+  #gate {
+    position: fixed; inset: 0; background: var(--black);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999; flex-direction: column; gap: 32px;
+  }
+  .gate-logo { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; letter-spacing: 0.2em; color: var(--white); text-align: center; }
+  .gate-logo span { color: var(--gold); }
+  .gate-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .gate-input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); padding: 14px 20px; font-family: 'Josefin Sans', sans-serif; font-size: 14px; font-weight: 300; color: var(--white); outline: none; width: 280px; text-align: center; letter-spacing: 0.15em; transition: border-color 0.2s; }
+  .gate-input:focus { border-color: var(--gold); }
+  .gate-btn { background: var(--gold); color: var(--black); padding: 14px 40px; font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.2s; width: 280px; }
+  .gate-btn:hover { background: var(--gold-light); }
+  .gate-error { font-size: 10px; letter-spacing: 0.2em; color: #cc4444; text-transform: uppercase; height: 16px; }
+  .gate-sub { font-size: 10px; letter-spacing: 0.2em; color: rgba(255,255,255,0.3); text-transform: uppercase; }
+
+  /* Admin layout */
+  #admin { display: none; min-height: 100vh; background: #0A0A09; }
+  .admin-header {
+    background: var(--black); border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 0 48px; height: 64px; display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .admin-header-logo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; letter-spacing: 0.2em; color: var(--white); }
+  .admin-header-logo span { color: var(--gold); }
+  .admin-header-right { display: flex; align-items: center; gap: 16px; }
+  .admin-badge { font-size: 9px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(184,146,42,0.4); padding: 6px 12px; }
+  .admin-logout { font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.3); background: none; border: 1px solid rgba(255,255,255,0.1); padding: 6px 14px; cursor: pointer; transition: all 0.2s; }
+  .admin-logout:hover { color: var(--white); border-color: rgba(255,255,255,0.3); }
+
+  .admin-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; min-height: calc(100vh - 64px); }
+  .admin-panel { padding: 40px; border-right: 1px solid rgba(255,255,255,0.06); }
+  .admin-panel:last-child { border-right: none; }
+  .panel-title { font-size: 10px; font-weight: 600; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 28px; display: flex; align-items: center; gap: 10px; }
+  .panel-title::before { content: ''; display: block; width: 20px; height: 1px; background: var(--gold); }
+
+  /* Form styles */
+  .admin-form { display: flex; flex-direction: column; gap: 18px; }
+  .admin-form-group { display: flex; flex-direction: column; gap: 8px; }
+  .admin-form-label { font-size: 9px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .admin-form-input, .admin-form-select, .admin-form-textarea {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px 16px; font-family: 'Josefin Sans', sans-serif; font-size: 13px;
+    font-weight: 300; color: var(--white); outline: none; transition: border-color 0.2s; width: 100%;
+  }
+  .admin-form-input:focus, .admin-form-select:focus, .admin-form-textarea:focus { border-color: var(--gold); }
+  .admin-form-select option { background: var(--dark); }
+  .admin-form-textarea { resize: vertical; min-height: 140px; font-family: 'EB Garamond', serif; font-size: 15px; line-height: 1.6; }
+  .admin-form-hint { font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 0.1em; margin-top: 2px; }
+  .admin-submit { background: var(--gold); color: var(--black); padding: 14px 32px; font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.2s; align-self: flex-start; margin-top: 8px; }
+  .admin-submit:hover { background: var(--gold-light); }
+  .admin-success { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #4CAF50; padding: 12px 0; display: none; }
+
+  /* Posts list */
+  .posts-list { display: flex; flex-direction: column; gap: 0; }
+  .post-item { padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: flex-start; gap: 16px; }
+  .post-item-img { width: 64px; height: 48px; overflow: hidden; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.08); }
+  .post-item-img img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.5); }
+  .post-item-info { flex: 1; min-width: 0; }
+  .post-item-cat { font-size: 8px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .post-item-title { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 400; color: var(--white); line-height: 1.3; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .post-item-date { font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 0.15em; text-transform: uppercase; }
+  .post-item-actions { display: flex; gap: 8px; flex-shrink: 0; margin-top: 4px; }
+  .btn-view { font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); background: none; border: 1px solid rgba(184,146,42,0.3); padding: 6px 12px; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+  .btn-view:hover { border-color: var(--gold); background: rgba(184,146,42,0.08); }
+  .btn-delete { font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.3); background: none; border: 1px solid rgba(255,255,255,0.08); padding: 6px 12px; cursor: pointer; transition: all 0.2s; }
+  .btn-delete:hover { color: #cc4444; border-color: #cc4444; background: rgba(204,68,68,0.06); }
+  .posts-empty { font-family: 'EB Garamond', serif; font-size: 16px; color: rgba(255,255,255,0.25); padding: 40px 0; text-align: center; }
+  .posts-count { font-size: 9px; letter-spacing: 0.2em; color: rgba(255,255,255,0.3); text-transform: uppercase; margin-bottom: 20px; }
+  .default-notice { font-size: 10px; letter-spacing: 0.15em; color: rgba(255,255,255,0.25); padding: 12px 16px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 20px; line-height: 1.6; }
+
+  @media (max-width: 900px) {
+    .admin-body { grid-template-columns: 1fr; }
+    .admin-panel { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .admin-header { padding: 0 24px; }
+    .admin-panel { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Password Gate -->
+<div id="gate">
+  <div>
+    <div class="gate-logo">ARATA <span>Journal</span></div>
+    <div style="font-size:9px;letter-spacing:0.4em;text-transform:uppercase;color:var(--text-grey);text-align:center;margin-top:4px;">Admin Console</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;align-items:center;">
+    <div class="gate-label">Access Code</div>
+    <input type="password" class="gate-input" id="gateInput" placeholder="••••••••••" autocomplete="current-password">
+    <div class="gate-error" id="gateError"></div>
+    <button class="gate-btn" onclick="checkPassword()">Enter Admin Console</button>
+    <div class="gate-sub">Authorised Personnel Only</div>
+  </div>
+</div>
+
+<!-- Admin Dashboard -->
+<div id="admin">
+  <div class="admin-header">
+    <div class="admin-header-logo">ARATA <span>Journal</span> Admin</div>
+    <div class="admin-header-right">
+      <div class="admin-badge">Admin Console</div>
+      <button class="admin-logout" onclick="logout()">Log Out</button>
+    </div>
+  </div>
+  <div class="admin-body">
+    <!-- New Post Panel -->
+    <div class="admin-panel">
+      <div class="panel-title">New Post</div>
+      <form class="admin-form" onsubmit="savePost(event)">
+        <div class="admin-form-group">
+          <label class="admin-form-label">Title</label>
+          <input type="text" class="admin-form-input" id="postTitle" placeholder="Post title" required>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Category</label>
+          <select class="admin-form-select" id="postCategory" required>
+            <option value="">Select category</option>
+            <option value="Research Insights">Research Insights</option>
+            <option value="Longevity Science">Longevity Science</option>
+            <option value="Clinical Evidence">Clinical Evidence</option>
+            <option value="Product Science">Product Science</option>
+          </select>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Date</label>
+          <input type="date" class="admin-form-input" id="postDate">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Excerpt</label>
+          <textarea class="admin-form-textarea" id="postExcerpt" placeholder="Short summary shown on the blog listing (2-3 sentences)..." style="min-height:80px;" required></textarea>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Cover Image URL</label>
+          <input type="url" class="admin-form-input" id="postImage" placeholder="https://images.unsplash.com/...">
+          <div class="admin-form-hint">Paste any image URL. Unsplash recommended: images.unsplash.com/photo-XXXX?w=800&q=80</div>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Content</label>
+          <textarea class="admin-form-textarea" id="postContent" placeholder="Write the full post content here. Separate paragraphs with a blank line." style="min-height:200px;" required></textarea>
+          <div class="admin-form-hint">Separate paragraphs with a blank line (press Enter twice).</div>
+        </div>
+        <button type="submit" class="admin-submit">Publish Post</button>
+        <div class="admin-success" id="saveSuccess">Post published successfully.</div>
+      </form>
+    </div>
+
+    <!-- Published Posts Panel -->
+    <div class="admin-panel">
+      <div class="panel-title">Published Posts</div>
+      <div class="default-notice" id="defaultNotice" style="display:none;">
+        Showing 3 default posts. Any new posts you publish will appear here and replace the defaults on the blog.
+      </div>
+      <div class="posts-count" id="postsCount"></div>
+      <div class="posts-list" id="postsList"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const PASS = 'ArataN2025';
+  const STORAGE_KEY = 'arata_blog_posts';
+
+  const DEFAULT_POSTS = [
+    {
+      slug: 'science-behind-astaxanthin',
+      title: 'The Science Behind Astaxanthin: Why It Outperforms Every Known Antioxidant',
+      category: 'Research Insights',
+      date: '2025-12-10',
+      excerpt: 'A deep dive into the carotenoid compound found in marine algae that crosses the blood-brain barrier — and what the clinical data actually shows.',
+      imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=800&q=80',
+      content: 'Astaxanthin is a xanthophyll carotenoid produced primarily by the microalgae Haematococcus pluvialis...'
+    },
+    {
+      slug: 'understanding-inflammaging',
+      title: 'Understanding Inflammaging: The Slow Fire That Ages You From the Inside',
+      category: 'Longevity Science',
+      date: '2025-11-28',
+      excerpt: 'Chronic low-grade inflammation — "inflammaging" — is now recognised as the primary driver of age-related disease.',
+      imageUrl: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80',
+      content: 'In 2000, immunologist Claudio Franceschi introduced a concept that would reshape gerontology...'
+    },
+    {
+      slug: 'coq10-q-symbio-trial',
+      title: 'CoQ10 and the Q-SYMBIO Trial: How One Molecule Rewrote Cardiology',
+      category: 'Clinical Evidence',
+      date: '2025-11-14',
+      excerpt: 'The landmark randomised controlled trial that showed a 43% reduction in major cardiovascular events.',
+      imageUrl: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80',
+      content: 'Published in the Journal of the American College of Cardiology in 2014, the Q-SYMBIO trial...'
+    }
+  ];
+
+  function checkPassword() {
+    const val = document.getElementById('gateInput').value;
+    if (val === PASS) {
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('admin').style.display = 'block';
+      loadPosts();
+      setDefaultDate();
+    } else {
+      document.getElementById('gateError').textContent = 'Incorrect access code.';
+      document.getElementById('gateInput').value = '';
+      setTimeout(() => document.getElementById('gateError').textContent = '', 2000);
+    }
+  }
+
+  document.getElementById('gateInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
+
+  function logout() {
+    document.getElementById('admin').style.display = 'none';
+    document.getElementById('gate').style.display = 'flex';
+    document.getElementById('gateInput').value = '';
+  }
+
+  function setDefaultDate() {
+    const d = new Date();
+    const iso = d.toISOString().split('T')[0];
+    document.getElementById('postDate').value = iso;
+  }
+
+  function getPosts() {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) return { posts: parsed, isDefault: false };
+      }
+    } catch(e) {}
+    return { posts: DEFAULT_POSTS, isDefault: true };
+  }
+
+  function loadPosts() {
+    const { posts, isDefault } = getPosts();
+    const list = document.getElementById('postsList');
+    const count = document.getElementById('postsCount');
+    const notice = document.getElementById('defaultNotice');
+
+    notice.style.display = isDefault ? 'block' : 'none';
+    count.textContent = posts.length + ' post' + (posts.length !== 1 ? 's' : '') + ' published';
+
+    if (posts.length === 0) {
+      list.innerHTML = '<div class="posts-empty">No posts yet. Publish your first post.</div>';
+      return;
+    }
+
+    list.innerHTML = posts.map((post, i) => `
+      <div class="post-item" id="pi-${i}">
+        <div class="post-item-img">
+          <img src="${post.imageUrl || ''}" alt="" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="post-item-info">
+          <div class="post-item-cat">${post.category}</div>
+          <div class="post-item-title" title="${post.title}">${post.title}</div>
+          <div class="post-item-date">${formatDate(post.date)}</div>
+        </div>
+        <div class="post-item-actions">
+          <a href="blog.html?post=${post.slug}" target="_blank" class="btn-view">View</a>
+          ${!isDefault ? `<button class="btn-delete" onclick="deletePost(${i})">Delete</button>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function formatDate(dateStr) {
+    try { return new Date(dateStr).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); }
+    catch(e) { return dateStr; }
+  }
+
+  function slugify(str) {
+    return str.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').substring(0, 80);
+  }
+
+  function savePost(e) {
+    e.preventDefault();
+    const title = document.getElementById('postTitle').value.trim();
+    const category = document.getElementById('postCategory').value;
+    const date = document.getElementById('postDate').value;
+    const excerpt = document.getElementById('postExcerpt').value.trim();
+    const imageUrl = document.getElementById('postImage').value.trim();
+    const content = document.getElementById('postContent').value.trim();
+    if (!title || !category || !excerpt || !content) return;
+
+    const { posts, isDefault } = getPosts();
+    const base = isDefault ? [] : posts;
+
+    const newPost = {
+      slug: slugify(title) + '-' + Date.now(),
+      title, category,
+      date: date || new Date().toISOString().split('T')[0],
+      excerpt, imageUrl, content
+    };
+
+    base.unshift(newPost);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(base));
+
+    // Reset form
+    e.target.reset();
+    setDefaultDate();
+
+    const success = document.getElementById('saveSuccess');
+    success.style.display = 'block';
+    setTimeout(() => success.style.display = 'none', 3000);
+
+    loadPosts();
+  }
+
+  function deletePost(index) {
+    if (!confirm('Delete this post? This cannot be undone.')) return;
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) return;
+    try {
+      const posts = JSON.parse(stored);
+      posts.splice(index, 1);
+      if (posts.length === 0) {
+        localStorage.removeItem(STORAGE_KEY);
+      } else {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+      }
+      loadPosts();
+    } catch(e) {}
+  }
+</script>
+</body>
+</html>

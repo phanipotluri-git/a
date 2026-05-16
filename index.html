@@ -21,7 +21,6 @@
     --gold-pale: #F5EDD8;
     --clinical-blue: #2A4A6B;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body { font-family: 'Josefin Sans', sans-serif; background: var(--white); color: var(--black); overflow-x: hidden; }
@@ -32,7 +31,8 @@
     border-bottom: 1px solid var(--mid-grey); padding: 0 48px; height: 70px;
     display: flex; align-items: center; justify-content: space-between; transition: all 0.3s ease;
   }
-  .nav-logo { display: flex; flex-direction: column; gap: 1px; }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo-text { display: flex; flex-direction: column; gap: 1px; }
   .nav-logo-main { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500; letter-spacing: 0.15em; color: var(--black); line-height: 1; }
   .nav-logo-sub { font-size: 8px; font-weight: 300; letter-spacing: 0.35em; color: var(--gold); text-transform: uppercase; }
   .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
@@ -64,7 +64,8 @@
   .capsule-ring-1 { width: 280px; height: 280px; border-style: dashed; animation-duration: 25s; }
   .capsule-ring-2 { width: 220px; height: 220px; border-color: var(--gold-light); opacity: 0.4; animation-direction: reverse; animation-duration: 18s; }
   @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  .capsule-svg { position: relative; z-index: 2; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.08)); }
+  .capsule-hero-img { position: relative; z-index: 2; width: 180px; height: 180px; overflow: hidden; border-radius: 2px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.18)); }
+  .capsule-hero-img img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(10%) contrast(1.05); }
   .capsule-badge { position: absolute; bottom: 20px; right: 0; background: var(--black); color: var(--white); padding: 10px 16px; font-size: 9px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; z-index: 3; }
   .hero-stats { display: flex; gap: 40px; margin-top: 48px; padding-top: 40px; border-top: 1px solid var(--mid-grey); }
   .stat-number { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--black); line-height: 1; margin-bottom: 4px; }
@@ -105,7 +106,7 @@
   .product-hero-card { background: var(--off-white); border: 1px solid var(--mid-grey); padding: 60px 40px; text-align: center; position: relative; overflow: hidden; }
   .product-name { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 300; letter-spacing: 0.1em; color: var(--black); margin-bottom: 4px; }
   .product-name span { color: var(--gold); }
-  .product-tagline-small { font-size: 9px; font-weight: 400; letter-spacing: 0.35em; text-transform: uppercase; color: var(--text-grey); margin-bottom: 40px; }
+  .product-tagline-small { font-size: 9px; font-weight: 400; letter-spacing: 0.28em; text-transform: uppercase; color: var(--text-grey); margin-bottom: 40px; }
   .product-price-card { background: var(--black); padding: 24px 32px; margin-top: 32px; }
   .price-main { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 300; color: var(--white); line-height: 1; margin-bottom: 4px; }
   .price-sub { font-size: 10px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
@@ -156,9 +157,9 @@
   #shop { background: var(--white); }
   .shop-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 60px; align-items: start; }
   .shop-card { border: 1px solid var(--mid-grey); overflow: hidden; }
-  .shop-card-header { background: var(--black); padding: 40px; text-align: center; }
-  .shop-card-name { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--white); letter-spacing: 0.08em; margin-bottom: 4px; }
-  .shop-card-sub { font-size: 9px; font-weight: 400; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold-light); }
+  .shop-card-header { background: var(--black); padding: 40px; text-align: center; position: relative; overflow: hidden; }
+  .shop-card-name { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--white); letter-spacing: 0.08em; margin-bottom: 4px; position: relative; z-index: 1; }
+  .shop-card-sub { font-size: 9px; font-weight: 400; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-light); position: relative; z-index: 1; }
   .shop-card-body { padding: 40px; background: var(--off-white); }
   .shop-sizes { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
   .shop-size-option { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: var(--white); border: 1px solid var(--mid-grey); cursor: pointer; transition: all 0.2s; user-select: none; }
@@ -195,7 +196,31 @@
   .doctor-box-link { font-size: 10px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); text-decoration: none; display: flex; align-items: center; gap: 8px; }
   .doctor-box-link:hover { color: var(--black); }
 
-  #contact { background: var(--off-white); }
+  /* Blog section */
+  #blog { background: var(--off-white); }
+  .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 48px; }
+  .blog-card { border: 1px solid var(--mid-grey); background: var(--white); transition: border-color 0.2s; overflow: hidden; }
+  .blog-card:hover { border-color: var(--gold); }
+  .blog-card-img { height: 180px; overflow: hidden; }
+  .blog-card-img img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.7); transition: transform 0.5s; }
+  .blog-card:hover .blog-card-img img { transform: scale(1.05); }
+  .blog-card-body { padding: 24px; }
+  .blog-card-cat { font-size: 9px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .blog-card-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; line-height: 1.3; color: var(--black); margin-bottom: 10px; }
+  .blog-card-excerpt { font-family: 'EB Garamond', serif; font-size: 14px; line-height: 1.6; color: var(--text-grey); margin-bottom: 16px; }
+  .blog-card-meta { display: flex; justify-content: space-between; align-items: center; }
+  .blog-card-date { font-size: 9px; letter-spacing: 0.15em; color: var(--text-grey); text-transform: uppercase; }
+  .blog-card-link { font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); text-decoration: none; }
+  .blog-card-link:hover { color: var(--black); }
+  .blog-cta-wrap { text-align: center; margin-top: 40px; }
+
+  /* Disclaimer */
+  .disclaimer { background: #111110; border-top: 2px solid var(--gold); padding: 48px 0; }
+  .disclaimer-inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+  .disclaimer-title { font-size: 9px; font-weight: 600; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  .disclaimer-text { font-family: 'EB Garamond', serif; font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.4); max-width: 900px; }
+
+  #contact { background: var(--white); }
   .contact-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; margin-top: 60px; }
   .contact-block { margin-bottom: 36px; }
   .contact-block-label { font-size: 9px; font-weight: 600; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
@@ -204,11 +229,12 @@
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .form-group { display: flex; flex-direction: column; gap: 8px; }
   .form-label { font-size: 9px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--dark); }
-  .form-input, .form-select, .form-textarea { background: var(--white); border: 1px solid var(--mid-grey); padding: 14px 16px; font-family: 'Josefin Sans', sans-serif; font-size: 13px; font-weight: 300; color: var(--black); outline: none; transition: border-color 0.2s; width: 100%; appearance: none; }
+  .form-input, .form-select, .form-textarea { background: var(--off-white); border: 1px solid var(--mid-grey); padding: 14px 16px; font-family: 'Josefin Sans', sans-serif; font-size: 13px; font-weight: 300; color: var(--black); outline: none; transition: border-color 0.2s; width: 100%; appearance: none; }
   .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--black); }
   .form-textarea { resize: vertical; min-height: 120px; }
   .form-submit { background: var(--black); color: var(--white); padding: 16px 40px; font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; border: 1px solid var(--black); cursor: pointer; transition: all 0.25s; align-self: flex-start; }
   .form-submit:hover { background: var(--gold); border-color: var(--gold); }
+  .form-success { display: none; padding: 16px 24px; background: rgba(42,107,42,0.08); border: 1px solid #2A6B2A; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: #2A6B2A; }
 
   footer { background: var(--black); padding: 60px 0 32px; }
   .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -233,7 +259,7 @@
     .about-grid { grid-template-columns: 1fr; gap: 48px; } .product-layout { grid-template-columns: 1fr; }
     .product-visual-wrap { position: static; } .science-header { grid-template-columns: 1fr; gap: 24px; }
     .shop-layout { grid-template-columns: 1fr; } .contact-layout { grid-template-columns: 1fr; gap: 48px; }
-    .footer-top { grid-template-columns: 1fr 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; } .blog-grid { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 768px) {
     nav { padding: 0 24px; } .nav-links { display: none; } .hamburger { display: flex; }
@@ -241,6 +267,7 @@
     .about-pillars { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; }
     .footer-top { grid-template-columns: 1fr; } .hero-stats { gap: 24px; }
     .ingredients-grid { grid-template-columns: 1fr 1fr; } .lifestyle-banner { height: 400px; }
+    .blog-grid { grid-template-columns: 1fr; } .disclaimer-inner { padding: 0 24px; }
   }
   @media (max-width: 480px) {
     .ingredients-grid { grid-template-columns: 1fr; } .hero-actions { flex-direction: column; align-items: flex-start; }
@@ -251,34 +278,542 @@
 </style>
 </head>
 <body>
+
 <nav id="navbar">
-  <div class="nav-logo"><div class="nav-logo-main">ARATA</div><div class="nav-logo-sub">Nutraceuticals</div></div>
+  <a class="nav-logo" href="#home">
+    <svg viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg" width="28" height="34" aria-hidden="true">
+      <defs>
+        <linearGradient id="aLG" x1="0" y1="0" x2="60" y2="72" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#CC77FF"/>
+          <stop offset="55%" stop-color="#8833EE"/>
+          <stop offset="100%" stop-color="#5500AA"/>
+        </linearGradient>
+      </defs>
+      <path d="M30 5 L52 55 Q55 63 49 66 Q43 69 40 60 L34 43 L26 43 L20 60 Q17 69 11 66 Q5 63 8 55 Z" fill="url(#aLG)"/>
+      <path d="M30 20 L34 43 L26 43 Z" fill="white"/>
+      <path d="M49 63 Q57 74 49 78 Q41 82 37 70" stroke="url(#aLG)" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <circle cx="9" cy="66" r="8" fill="url(#aLG)"/>
+    </svg>
+    <div class="nav-logo-text">
+      <div class="nav-logo-main">ARATA</div>
+      <div class="nav-logo-sub">Nutraceuticals</div>
+    </div>
+  </a>
   <ul class="nav-links">
-    <li><a href="#home">Home</a></li><li><a href="#about">About</a></li><li><a href="#product">Aeternyx&#8482;</a></li>
-    <li><a href="#science">Science</a></li><li><a href="#shop">Shop</a></li><li><a href="#contact" class="nav-cta">Contact</a></li>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#product">Aeternyx&#8482;</a></li>
+    <li><a href="#science">Science</a></li>
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="blog.html">Journal</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
+
 <div class="mobile-nav" id="mobileNav">
-  <a href="#home" onclick="closeMobileNav()">Home</a><a href="#about" onclick="closeMobileNav()">About</a>
-  <a href="#product" onclick="closeMobileNav()">Aeternyx&#8482;</a><a href="#science" onclick="closeMobileNav()">Science</a>
-  <a href="#shop" onclick="closeMobileNav()">Shop</a><a href="#contact" onclick="closeMobileNav()">Contact</a>
+  <a href="#home" onclick="closeMobileNav()">Home</a>
+  <a href="#about" onclick="closeMobileNav()">About</a>
+  <a href="#product" onclick="closeMobileNav()">Aeternyx&#8482;</a>
+  <a href="#science" onclick="closeMobileNav()">Science</a>
+  <a href="#shop" onclick="closeMobileNav()">Shop</a>
+  <a href="blog.html">Journal</a>
+  <a href="#contact" onclick="closeMobileNav()">Contact</a>
 </div>
-<section id="home"><div class="hero-bg-lines"></div><div class="hero-inner"><div class="hero-content"><div class="hero-label fade-up">Precision Longevity Science</div><h1 class="hero-title fade-up">Science that<br><em>protects</em> what<br>time takes away.</h1><p class="hero-subtitle fade-up">Arata Nutraceuticals pioneers evidence-based longevity formulations for India's most demanding health seekers — built on landmark clinical trials, not marketing claims.</p><div class="hero-actions fade-up"><a href="#product" class="btn-primary">Discover Aeternyx&#8482;</a><a href="#science" class="btn-secondary">View the Science</a></div><div class="hero-stats fade-up"><div class="stat-item"><div class="stat-number">10</div><div class="stat-label">Active Compounds</div></div><div class="stat-item"><div class="stat-number">6</div><div class="stat-label">Landmark RCTs</div></div><div class="stat-item"><div class="stat-number">1</div><div class="stat-label">Daily Capsule</div></div><div class="stat-item"><div class="stat-number">17</div><div class="stat-label">Specialties</div></div></div></div><div class="hero-visual fade-up"><div class="hero-visual-backdrop"><img src="https://images.unsplash.com/photo-1576671081837-49000212a370?w=900&q=60" alt="" aria-hidden="true" loading="lazy"></div><div class="capsule-container"><div class="capsule-ring capsule-ring-1"></div><div class="capsule-ring capsule-ring-2"></div><svg class="capsule-svg" width="120" height="240" viewBox="0 0 120 240" fill="none"><rect x="20" y="60" width="80" height="120" rx="40" fill="url(#cg)"/><path d="M20 100 Q20 60 60 60 Q100 60 100 100 L20 100Z" fill="url(#ct)"/><line x1="20" y1="120" x2="100" y2="120" stroke="rgba(255,255,255,0.15)" stroke-width="1"/><ellipse cx="40" cy="85" rx="12" ry="8" fill="rgba(255,255,255,0.15)" transform="rotate(-20 40 85)"/><defs><linearGradient id="cg" x1="20" y1="60" x2="100" y2="180" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2A2A28"/><stop offset="100%" stop-color="#0D0D0B"/></linearGradient><linearGradient id="ct" x1="20" y1="60" x2="100" y2="100" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#B8922A"/><stop offset="100%" stop-color="#8A6C1C"/></linearGradient></defs></svg><div class="capsule-badge">Once Daily &middot; Size 00</div></div></div></div></section>
-<div class="ticker"><div class="ticker-track"><span class="gold">Aeternyx&#8482;</span><span>CoQ10 &middot; Astaxanthin &middot; Resveratrol &middot; Lycopene &middot; Tocotrienol &middot; ALA &middot; Vitamin C &middot; D3 &middot; K2 MK-7 &middot; Selenium</span><span class="gold">Precision Longevity &middot; 10 Actives &middot; Once Daily &middot; Clinically Anchored</span><span class="gold">Aeternyx&#8482;</span><span>CoQ10 &middot; Astaxanthin &middot; Resveratrol &middot; Lycopene &middot; Tocotrienol &middot; ALA &middot; Vitamin C &middot; D3 &middot; K2 MK-7 &middot; Selenium</span><span class="gold">Precision Longevity &middot; 10 Actives &middot; Once Daily &middot; Clinically Anchored</span></div></div>
-<section id="about"><div class="container"><div class="about-grid"><div class="about-left fade-up"><div class="section-label">Our Philosophy</div><h2 class="section-title">Where precision science meets human longevity</h2><p class="section-subtitle" style="margin-bottom:40px;">Arata Nutraceuticals was founded on a single conviction: that India's most discerning health seekers deserve supplements built on the same standards as clinical medicine — not wellness trends.</p><div class="about-pillars"><div class="pillar"><svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><path d="M10 16l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><div class="pillar-title">Evidence-First</div><div class="pillar-text">Every compound anchored to landmark randomised controlled trials.</div></div><div class="pillar"><svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><path d="M16 4L28 10V22L16 28L4 22V10L16 4Z" stroke="currentColor" stroke-width="1.5"/><circle cx="16" cy="16" r="4" stroke="currentColor" stroke-width="1.5"/></svg><div class="pillar-title">Precision Formulation</div><div class="pillar-text">Synergistic stacking — each ingredient potentiates the next.</div></div><div class="pillar"><svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><path d="M8 24L16 8L24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 20h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><div class="pillar-title">Clinical Credibility</div><div class="pillar-text">Trusted by physicians across 17 medical specialties.</div></div><div class="pillar"><svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><path d="M16 10v6l4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><div class="pillar-title">Longevity Focused</div><div class="pillar-text">Targeting the root causes of cellular ageing and chronic inflammation.</div></div></div></div><div class="about-visual fade-up"><div class="about-card"><div class="about-quote">&ldquo;Oxidative stress and chronic inflammation are the silent architects of premature ageing. Aeternyx&#8482; was designed to interrupt that process at the cellular level.&rdquo;</div><div class="about-quote-attr">&mdash; Arata Nutraceuticals &middot; Scientific Foundation</div></div><div style="margin-top:24px;padding:24px;border:1px solid var(--mid-grey);background:var(--white);"><div style="font-size:10px;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-grey);margin-bottom:16px;">Clinical Reference Network</div><div style="display:flex;flex-wrap:wrap;gap:8px;"><span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">Q-SYMBIO RCT</span><span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">Rotterdam Study</span><span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">NPC Trial &middot; JAMA</span><span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">BMJ D3 Meta-Analysis</span><span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">Finnish Cohort</span><span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">Georgetown Phase II</span></div></div><div class="about-img-wrap"><img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80" alt="Research laboratory" loading="lazy"></div></div></div></div></section>
-<section id="product"><div class="container"><div class="section-label fade-up">The Flagship Formula</div><div class="product-layout"><div class="product-visual-wrap fade-up"><div class="product-hero-card"><div class="product-name">Aeternyx<span>&#8482;</span></div><div class="product-tagline-small">Advanced Longevity Complex</div><svg width="100" height="200" viewBox="0 0 120 240" fill="none" style="margin:0 auto;display:block;filter:drop-shadow(0 16px 40px rgba(0,0,0,0.15))"><rect x="20" y="60" width="80" height="120" rx="40" fill="url(#cg2)"/><path d="M20 100 Q20 60 60 60 Q100 60 100 100 L20 100Z" fill="url(#ct2)"/><line x1="20" y1="120" x2="100" y2="120" stroke="rgba(255,255,255,0.15)" stroke-width="1"/><ellipse cx="40" cy="85" rx="12" ry="8" fill="rgba(255,255,255,0.15)" transform="rotate(-20 40 85)"/><defs><linearGradient id="cg2" x1="20" y1="60" x2="100" y2="180" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2A2A28"/><stop offset="100%" stop-color="#0D0D0B"/></linearGradient><linearGradient id="ct2" x1="20" y1="60" x2="100" y2="100" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4973F"/><stop offset="100%" stop-color="#8A6C1C"/></linearGradient></defs></svg><div class="product-price-card"><div class="price-main">&#8377;120</div><div class="price-sub">per capsule &middot; once daily</div></div></div><div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;"><div class="badge gold-badge">10 Actives</div><div class="badge">Size 00 Capsule</div><div class="badge">Once Daily</div><div class="badge gold-badge">RCT-Backed</div></div></div><div class="product-details fade-up"><h2 class="product-headline">One capsule.<br>Ten precise actives.<br>A lifetime of protection.</h2><p class="product-desc">Aeternyx&#8482; is Arata's flagship longevity formulation — a precisely engineered once-daily capsule combining ten synergistic compounds targeting oxidative stress, chronic inflammation, cardiovascular resilience, mitochondrial function, and cellular protection.</p><ul class="benefit-list"><li class="benefit-item"><span class="benefit-num">01</span><div><div class="benefit-title">Cardiovascular Protection</div><div class="benefit-desc">CoQ10 and Vitamin K2 MK-7 support cardiac bioenergetics and arterial calcification prevention, anchored by the Q-SYMBIO and Rotterdam Study findings.</div></div></li><li class="benefit-item"><span class="benefit-num">02</span><div><div class="benefit-title">Cellular Antioxidant Defence</div><div class="benefit-desc">Astaxanthin, Alpha Lipoic Acid, and Vitamin C form a layered antioxidant cascade, neutralising free radicals across aqueous and lipid phases.</div></div></li><li class="benefit-item"><span class="benefit-num">03</span><div><div class="benefit-title">Anti-Inflammatory Longevity</div><div class="benefit-desc">Trans-Resveratrol activates SIRT1 pathways; Tocotrienols modulate NF-&#954;B — together addressing systemic inflammaging at the molecular level.</div></div></li><li class="benefit-item"><span class="benefit-num">04</span><div><div class="benefit-title">Cancer Risk Reduction</div><div class="benefit-desc">Lycopene and Selenium, as validated in the NPC Trial (JAMA), demonstrate significant reduction in prostate, colorectal, and lung cancer risk.</div></div></li><li class="benefit-item"><span class="benefit-num">05</span><div><div class="benefit-title">Bone &amp; Immune Integrity</div><div class="benefit-desc">Vitamin D3 — validated across the BMJ meta-analysis — orchestrates immune modulation, calcium homeostasis, and musculoskeletal health.</div></div></li></ul><div class="product-badges"><div class="badge">Physician-Recommended</div><div class="badge">Non-GMO</div><div class="badge">Free from Artificial Additives</div><div class="badge gold-badge">Prescription-Friendly</div></div><a href="#shop" class="btn-primary">Order Aeternyx&#8482;</a></div></div></div></section>
-<section id="science"><div class="container"><div class="science-header fade-up"><div><div class="section-label">The Formula</div><h2 class="section-title">10 compounds.<br>One synergistic system.</h2></div><p class="science-intro">Each active in Aeternyx&#8482; is selected not for trend, but for evidence. Every compound is dosed at clinically relevant concentrations, peer-reviewed, and positioned to work synergistically with the rest of the formula.</p></div><div class="ingredients-grid fade-up"><div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&h=200&fit=crop&q=80" alt="Salmon" loading="lazy"></div><div class="ing-num">01</div><div class="ing-icon"></div><div class="ing-name">Astaxanthin</div><div class="ing-role">Master Antioxidant</div><div class="ing-desc">6,000&times; more potent than Vitamin C in singlet oxygen quenching. Crosses blood-brain and blood-retinal barriers.</div></div><div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1546554137-f86b9593a222?w=400&h=200&fit=crop&q=80" alt="Tomatoes" loading="lazy"></div><div class="ing-num">02</div><div class="ing-icon"></div><div class="ing-name">Lycopene</div><div class="ing-role">Carotenoid &middot; Cancer Shield</div><div class="ing-desc">Finnish Cohort data demonstrates 55% reduction in prostate cancer risk.</div></div><div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&h=200&fit=crop&q=80" alt="Grapes" loading="lazy"></div><div class="ing-num">03</div><div class="ing-icon"></div><div class="ing-name">Trans-Resveratrol</div><div class="ing-role">Sirtuin Activator &middot; Longevity</div><div class="ing-desc">Activates SIRT1 longevity pathway, modulates NF-&#954;B, and mimics caloric restriction effects.</div></div><div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=200&fit=crop&q=80" alt="Rice bran" loading="lazy"></div><div class="ing-num">04</div><div class="ing-icon"></div><div class="ing-name">Tocotrienol</div><div class="ing-role">Superior Vitamin E &middot; Neuro</div><div class="ing-desc">40-60&times; more potent than tocopherols. Neuroprotective and anti-inflammatory via NF-&#954;B suppression.</div></div><div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&h=200&fit=crop&q=80" alt="Vegetables" loading="lazy"></div><div class="ing-num">05</div><div class="ing-icon"></div><div class="ing-name">Alpha Lipoic Acid</div><div class="ing-role">Universal Antioxidant</div><div class="ing-desc">Water and fat soluble — regenerates Vitamins C and E. Critical for mitochondrial bioenergetics.</div></div><div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=200&fit=crop&q=80" alt="Cellular energy" loading="lazy"></div><div class="ing-num">06</div><div class="ing-icon"></div><div class="ing-name">CoQ10</div><div class="ing-role">Mitochondrial Energetics</div><div class="ing-desc">Q-SYMBIO RCT: 43% reduction in major cardiovascular events. Essential for ATP synthesis.</div></div><div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1582979512210-99b6a53386f9?w=400&h=200&fit=crop&q=80" alt="Citrus" loading="lazy"></div><div class="ing-num">07</div><div class="ing-icon"></div><div class="ing-name">Vitamin C</div><div class="ing-role">Immune Backbone &middot; Collagen</div><div class="ing-desc">Therapeutic dose. Regenerates Vitamin E and glutathione; essential for collagen synthesis.</div></div><div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=200&fit=crop&q=80" alt="Sunlight" loading="lazy"></div><div class="ing-num">08</div><div class="ing-icon"></div><div class="ing-name">Vitamin D3</div><div class="ing-role">Immune Modulator &middot; Bone</div><div class="ing-desc">BMJ meta-analysis: 42% reduction in acute respiratory infections. Regulates 200+ genes.</div></div><div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400&h=200&fit=crop&q=80" alt="Fermented foods" loading="lazy"></div><div class="ing-num">09</div><div class="ing-icon"></div><div class="ing-name">Vitamin K2 MK-7</div><div class="ing-role">Cardiovascular &middot; Bone Matrix</div><div class="ing-desc">Rotterdam Study: 57% reduction in cardiovascular mortality. Directs calcium away from arteries.</div></div><div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1567306301408-9b74779a11af?w=400&h=200&fit=crop&q=80" alt="Brazil nuts" loading="lazy"></div><div class="ing-num">10</div><div class="ing-icon"></div><div class="ing-name">Selenium</div><div class="ing-role">Thyroid &middot; Oncology Shield</div><div class="ing-desc">NPC Trial (JAMA): 63% reduction in prostate, 58% colorectal, 46% lung cancer incidence.</div></div></div><div class="science-footer fade-up"><div class="science-footer-text">&ldquo;All 10 actives are backed by peer-reviewed landmark randomised controlled trials.&rdquo;</div><div class="science-footer-badge">Clinical Reference Dossier Available for Physicians</div></div></div></section>
-<div class="lifestyle-banner"><img class="lifestyle-banner-img" src="https://images.unsplash.com/photo-1571019613914-85f342c6a11e?w=1400&q=80" alt="Active longevity" loading="lazy"><div class="lifestyle-overlay"></div><div class="lifestyle-content"><p class="lifestyle-sub">The Arata Promise</p><h2 class="lifestyle-quote">Ageing is inevitable.<br><em>Declining</em> is not.</h2><div class="lifestyle-stats"><div><div class="lifestyle-stat-num">10</div><div class="lifestyle-stat-label">Synergistic Actives</div></div><div><div class="lifestyle-stat-num">6</div><div class="lifestyle-stat-label">Landmark RCTs</div></div><div><div class="lifestyle-stat-num">17</div><div class="lifestyle-stat-label">Medical Specialties</div></div><div><div class="lifestyle-stat-num">1</div><div class="lifestyle-stat-label">Daily Capsule</div></div></div></div></div>
-<section id="shop"><div class="container"><div class="section-label fade-up">Order Aeternyx&#8482;</div><h2 class="section-title fade-up">Invest in your longevity</h2><div class="shop-layout"><div class="shop-card fade-up"><div class="shop-card-header"><div class="shop-card-name">Aeternyx&#8482;</div><div class="shop-card-sub">Advanced Longevity Complex</div></div><div class="shop-card-body"><div class="shop-sizes"><div class="shop-size-option" onclick="selectSize(this)"><div class="shop-size-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shop-size-info"><div class="shop-size-label">30 Capsules</div><div class="shop-size-per">1 Month Supply</div></div><div class="shop-size-price">&#8377;3,600</div></div><div class="shop-size-option" onclick="selectSize(this)"><div class="shop-size-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shop-size-info"><div class="shop-size-label">60 Capsules</div><div class="shop-size-per">2 Month Supply &middot; Save &#8377;480</div></div><div class="shop-size-price">&#8377;6,720</div></div><div class="shop-size-option" onclick="selectSize(this)"><div class="shop-size-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="shop-size-info"><div class="shop-size-label">90 Capsules</div><div class="shop-size-per">3 Month Supply &middot; Save &#8377;1,200</div></div><div class="shop-size-price">&#8377;9,600</div></div></div><a href="#contact" class="btn-buy idle" id="orderBtn">Select a Size</a><div class="shop-note">Free shipping &middot; PAN India &middot; COD Available</div></div></div><div class="shop-right fade-up"><div class="shop-lifestyle"><img src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=700&q=80" alt="Morning wellness ritual" loading="lazy"><div class="shop-lifestyle-caption"><span>Your Morning Ritual, Elevated</span></div></div><div class="shop-features"><div class="shop-feature"><svg class="shop-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><div><div class="shop-feature-title">Premium Grade Ingredients</div><div class="shop-feature-text">All actives sourced to pharmaceutical-grade specifications, with full traceability and third-party quality verification.</div></div></div><div class="shop-feature"><svg class="shop-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><div><div class="shop-feature-title">Clinically Relevant Dosing</div><div class="shop-feature-text">Every compound dosed at concentrations used in landmark RCTs — not token amounts.</div></div></div><div class="shop-feature"><svg class="shop-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9L12 2L21 9V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9Z" stroke="currentColor" stroke-width="1.5"/></svg><div><div class="shop-feature-title">Physician-Trusted Formula</div><div class="shop-feature-text">Recommended across 17 medical specialties including cardiology, oncology, and neurology.</div></div></div></div><div class="doctor-box"><div class="doctor-box-title">Are you a physician or clinician?</div><div class="doctor-box-text">Download the complete Aeternyx&#8482; clinical reference dossier — RCT evidence, synergy combinations, drug interactions, and patient selection guidelines.</div><a href="#contact" class="doctor-box-link">Request Clinical Dossier <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a></div></div></div></div></section>
-<section id="contact"><div class="container"><div class="section-label fade-up">Get in Touch</div><h2 class="section-title fade-up">We&rsquo;d love to hear from you</h2><div class="contact-layout"><div class="contact-info fade-up"><div class="contact-block"><div class="contact-block-label">Email</div><div class="contact-block-value">hello@aratanutra.com</div></div><div class="contact-block"><div class="contact-block-label">For Physicians &amp; Clinicians</div><div class="contact-block-value">clinical@aratanutra.com</div></div><div class="contact-block"><div class="contact-block-label">Orders &amp; Distribution</div><div class="contact-block-value">orders@aratanutra.com</div></div><div class="contact-block"><div class="contact-block-label">India</div><div class="contact-block-value">aratanutra.com<br>PAN India Delivery</div></div></div><div class="contact-form fade-up"><div class="form-row"><div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" placeholder="First name"></div><div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" placeholder="Last name"></div></div><div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" placeholder="your@email.com"></div><div class="form-group"><label class="form-label">Phone Number</label><input type="tel" class="form-input" placeholder="+91 00000 00000"></div><div class="form-group"><label class="form-label">I am a</label><select class="form-select"><option value="">Select your profile</option><option>Consumer / Patient</option><option>Physician / Specialist</option><option>Pharmacist</option><option>Distributor / Retailer</option><option>Media / Press</option></select></div><div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="How can we help you?"></textarea></div><button class="form-submit">Send Message</button></div></div></div></section>
-<footer><div class="container"><div class="footer-top"><div><div class="footer-logo-main">ARATA</div><div class="footer-logo-sub">Nutraceuticals</div><div class="footer-desc">Precision longevity science for India's most demanding health seekers. Built on landmark clinical trials, delivered in one daily capsule.</div></div><div><div class="footer-col-title">Products</div><ul class="footer-links"><li><a href="#product">Aeternyx&#8482;</a></li><li><a href="#science">Ingredients</a></li><li><a href="#shop">Shop</a></li></ul></div><div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="#about">About Arata</a></li><li><a href="#contact">Contact</a></li><li><a href="#contact">Careers</a></li></ul></div><div><div class="footer-col-title">Healthcare Professionals</div><ul class="footer-links"><li><a href="#contact">Clinical Dossier</a></li><li><a href="#science">RCT References</a></li><li><a href="#contact">Partner Programme</a></li></ul></div></div><div class="footer-bottom"><div class="footer-copy">&copy; 2025 Arata Nutraceuticals. All rights reserved.</div><div class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Disclaimer</a></div></div></div></footer>
+
+<!-- HOME -->
+<section id="home">
+  <div class="hero-bg-lines"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-label fade-up">Precision Longevity Science</div>
+      <h1 class="hero-title fade-up">Science that<br><em>protects</em> what<br>time takes away.</h1>
+      <p class="hero-subtitle fade-up">Arata Nutraceuticals pioneers evidence-based longevity formulations for India's most demanding health seekers — built on landmark clinical trials, not marketing claims.</p>
+      <div class="hero-actions fade-up">
+        <a href="#product" class="btn-primary">Discover Aeternyx&#8482;</a>
+        <a href="#science" class="btn-secondary">View the Science</a>
+      </div>
+      <div class="hero-stats fade-up">
+        <div class="stat-item"><div class="stat-number">10</div><div class="stat-label">Active Compounds</div></div>
+        <div class="stat-item"><div class="stat-number">6</div><div class="stat-label">Landmark RCTs</div></div>
+        <div class="stat-item"><div class="stat-number">1</div><div class="stat-label">Daily Capsule</div></div>
+        <div class="stat-item"><div class="stat-number">17</div><div class="stat-label">Specialties</div></div>
+      </div>
+    </div>
+    <div class="hero-visual fade-up">
+      <div class="hero-visual-backdrop">
+        <img src="https://images.unsplash.com/photo-1576671081837-49000212a370?w=900&q=60" alt="" aria-hidden="true" loading="lazy">
+      </div>
+      <div class="capsule-container">
+        <div class="capsule-ring capsule-ring-1"></div>
+        <div class="capsule-ring capsule-ring-2"></div>
+        <div class="capsule-hero-img">
+          <img src="https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=500&q=80" alt="Aeternyx capsules" loading="lazy">
+        </div>
+        <div class="capsule-badge">Once Daily &middot; Aeternyx&#8482;</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="gold">Aeternyx&#8482;</span>
+    <span>CoQ10 &middot; Astaxanthin &middot; Resveratrol &middot; Lycopene &middot; Tocotrienol &middot; ALA &middot; Vitamin C &middot; D3 &middot; K2 MK-7 &middot; Selenium</span>
+    <span class="gold">Precision Longevity &middot; 10 Actives &middot; Once Daily &middot; Clinically Anchored</span>
+    <span class="gold">Aeternyx&#8482;</span>
+    <span>CoQ10 &middot; Astaxanthin &middot; Resveratrol &middot; Lycopene &middot; Tocotrienol &middot; ALA &middot; Vitamin C &middot; D3 &middot; K2 MK-7 &middot; Selenium</span>
+    <span class="gold">Precision Longevity &middot; 10 Actives &middot; Once Daily &middot; Clinically Anchored</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-left fade-up">
+        <div class="section-label">Our Philosophy</div>
+        <h2 class="section-title">Where precision science meets human longevity</h2>
+        <p class="section-subtitle" style="margin-bottom:40px;">Arata Nutraceuticals was founded on a single conviction: that India's most discerning health seekers deserve supplements built on the same standards as clinical medicine — not wellness trends.</p>
+        <div class="about-pillars">
+          <div class="pillar">
+            <svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><path d="M10 16l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <div class="pillar-title">Evidence-First</div>
+            <div class="pillar-text">Every compound anchored to landmark randomised controlled trials.</div>
+          </div>
+          <div class="pillar">
+            <svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><path d="M16 4L28 10V22L16 28L4 22V10L16 4Z" stroke="currentColor" stroke-width="1.5"/><circle cx="16" cy="16" r="4" stroke="currentColor" stroke-width="1.5"/></svg>
+            <div class="pillar-title">Precision Formulation</div>
+            <div class="pillar-text">Synergistic stacking — each ingredient potentiates the next.</div>
+          </div>
+          <div class="pillar">
+            <svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><path d="M8 24L16 8L24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 20h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <div class="pillar-title">Clinical Credibility</div>
+            <div class="pillar-text">Trusted by physicians across 17 medical specialties.</div>
+          </div>
+          <div class="pillar">
+            <svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><path d="M16 10v6l4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <div class="pillar-title">Longevity Focused</div>
+            <div class="pillar-text">Targeting the root causes of cellular ageing and chronic inflammation.</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual fade-up">
+        <div class="about-card">
+          <div class="about-quote">&ldquo;Oxidative stress and chronic inflammation are the silent architects of premature ageing. Aeternyx&#8482; was designed to interrupt that process at the cellular level.&rdquo;</div>
+          <div class="about-quote-attr">&mdash; Arata Nutraceuticals &middot; Scientific Foundation</div>
+        </div>
+        <div style="margin-top:24px;padding:24px;border:1px solid var(--mid-grey);background:var(--white);">
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-grey);margin-bottom:16px;">Clinical Reference Network</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">Q-SYMBIO RCT</span>
+            <span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">Rotterdam Study</span>
+            <span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">NPC Trial &middot; JAMA</span>
+            <span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">BMJ D3 Meta-Analysis</span>
+            <span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">Finnish Cohort</span>
+            <span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">Georgetown Phase II</span>
+          </div>
+        </div>
+        <div class="about-img-wrap">
+          <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80" alt="Research laboratory" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT -->
+<section id="product">
+  <div class="container">
+    <div class="section-label fade-up">The Flagship Formula</div>
+    <div class="product-layout">
+      <div class="product-visual-wrap fade-up">
+        <div class="product-hero-card">
+          <div class="product-name">Aeternyx<span>&#8482;</span></div>
+          <div class="product-tagline-small">Not a Supplement, Cellular Intelligence.</div>
+          <div style="margin:24px auto 0;height:180px;overflow:hidden;border-radius:1px;">
+            <img src="https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=500&q=80"
+                 alt="Aeternyx capsules" loading="lazy"
+                 style="width:100%;height:100%;object-fit:cover;filter:grayscale(15%) contrast(1.05);">
+          </div>
+          <div class="product-price-card">
+            <div class="price-main">&#8377;120</div>
+            <div class="price-sub">per capsule &middot; once daily</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+          <div class="badge gold-badge">10 Actives</div>
+          <div class="badge">Once Daily</div>
+          <div class="badge gold-badge">RCT-Backed</div>
+        </div>
+      </div>
+      <div class="product-details fade-up">
+        <h2 class="product-headline">One capsule.<br>Ten precise actives.<br>A lifetime of protection.</h2>
+        <p class="product-desc">Aeternyx&#8482; is Arata's flagship longevity formulation — a precisely engineered once-daily capsule combining ten synergistic compounds targeting oxidative stress, chronic inflammation, cardiovascular resilience, mitochondrial function, and cellular protection.</p>
+        <ul class="benefit-list">
+          <li class="benefit-item"><span class="benefit-num">01</span><div><div class="benefit-title">Cardiovascular Protection</div><div class="benefit-desc">CoQ10 and Vitamin K2 MK-7 support cardiac bioenergetics and arterial calcification prevention, anchored by the Q-SYMBIO and Rotterdam Study findings.</div></div></li>
+          <li class="benefit-item"><span class="benefit-num">02</span><div><div class="benefit-title">Cellular Antioxidant Defence</div><div class="benefit-desc">Astaxanthin, Alpha Lipoic Acid, and Vitamin C form a layered antioxidant cascade, neutralising free radicals across aqueous and lipid phases.</div></div></li>
+          <li class="benefit-item"><span class="benefit-num">03</span><div><div class="benefit-title">Anti-Inflammatory Longevity</div><div class="benefit-desc">Trans-Resveratrol activates SIRT1 pathways; Tocotrienols modulate NF-&#954;B — together addressing systemic inflammaging at the molecular level.</div></div></li>
+          <li class="benefit-item"><span class="benefit-num">04</span><div><div class="benefit-title">Cancer Risk Reduction</div><div class="benefit-desc">Lycopene and Selenium, as validated in the NPC Trial (JAMA), demonstrate significant reduction in prostate, colorectal, and lung cancer risk.</div></div></li>
+          <li class="benefit-item"><span class="benefit-num">05</span><div><div class="benefit-title">Bone &amp; Immune Integrity</div><div class="benefit-desc">Vitamin D3 — validated across the BMJ meta-analysis — orchestrates immune modulation, calcium homeostasis, and musculoskeletal health.</div></div></li>
+        </ul>
+        <div class="product-badges">
+          <div class="badge">Physician-Recommended</div>
+          <div class="badge">Non-GMO</div>
+          <div class="badge">Free from Artificial Additives</div>
+          <div class="badge gold-badge">Prescription-Friendly</div>
+        </div>
+        <a href="#shop" class="btn-primary">Order Aeternyx&#8482;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCIENCE -->
+<section id="science">
+  <div class="container">
+    <div class="science-header fade-up">
+      <div>
+        <div class="section-label">The Formula</div>
+        <h2 class="section-title">10 compounds.<br>One synergistic system.</h2>
+      </div>
+      <p class="science-intro">Each active in Aeternyx&#8482; is selected not for trend, but for evidence. Every compound is dosed at clinically relevant concentrations, peer-reviewed, and positioned to work synergistically with the rest of the formula.</p>
+    </div>
+    <div class="ingredients-grid fade-up">
+      <!-- 01 Astaxanthin — salmon (appropriate source) -->
+      <div class="ingredient-card">
+        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&h=200&fit=crop&q=80" alt="Salmon — natural astaxanthin source" loading="lazy"></div>
+        <div class="ing-num">01</div><div class="ing-icon"></div>
+        <div class="ing-name">Astaxanthin</div>
+        <div class="ing-role">Master Antioxidant</div>
+        <div class="ing-desc">6,000&times; more potent than Vitamin C in singlet oxygen quenching. Crosses blood-brain and blood-retinal barriers.</div>
+      </div>
+      <!-- 02 Lycopene — tomatoes -->
+      <div class="ingredient-card">
+        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1546554137-f86b9593a222?w=400&h=200&fit=crop&q=80" alt="Tomatoes — lycopene source" loading="lazy"></div>
+        <div class="ing-num">02</div><div class="ing-icon"></div>
+        <div class="ing-name">Lycopene</div>
+        <div class="ing-role">Carotenoid &middot; Cancer Shield</div>
+        <div class="ing-desc">Finnish Cohort data demonstrates 55% reduction in prostate cancer risk.</div>
+      </div>
+      <!-- 03 Resveratrol — grapes -->
+      <div class="ingredient-card">
+        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&h=200&fit=crop&q=80" alt="Grapes — resveratrol source" loading="lazy"></div>
+        <div class="ing-num">03</div><div class="ing-icon"></div>
+        <div class="ing-name">Trans-Resveratrol</div>
+        <div class="ing-role">Sirtuin Activator &middot; Longevity</div>
+        <div class="ing-desc">Activates SIRT1 longevity pathway, modulates NF-&#954;B, and mimics caloric restriction effects.</div>
+      </div>
+      <!-- 04 Tocotrienol — rice bran -->
+      <div class="ingredient-card">
+        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=200&fit=crop&q=80" alt="Rice bran — tocotrienol source" loading="lazy"></div>
+        <div class="ing-num">04</div><div class="ing-icon"></div>
+        <div class="ing-name">Tocotrienol</div>
+        <div class="ing-role">Superior Vitamin E &middot; Neuro</div>
+        <div class="ing-desc">40-60&times; more potent than tocopherols. Neuroprotective and anti-inflammatory via NF-&#954;B suppression.</div>
+      </div>
+      <!-- 05 ALA — broccoli/greens (updated) -->
+      <div class="ingredient-card">
+        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=200&fit=crop&q=80" alt="Green vegetables — ALA source" loading="lazy"></div>
+        <div class="ing-num">05</div><div class="ing-icon"></div>
+        <div class="ing-name">Alpha Lipoic Acid</div>
+        <div class="ing-role">Universal Antioxidant</div>
+        <div class="ing-desc">Water and fat soluble — regenerates Vitamins C and E. Critical for mitochondrial bioenergetics.</div>
+      </div>
+      <!-- 06 CoQ10 — lab setting (updated) -->
+      <div class="ingredient-card">
+        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=200&fit=crop&q=80" alt="Laboratory science" loading="lazy"></div>
+        <div class="ing-num">06</div><div class="ing-icon"></div>
+        <div class="ing-name">CoQ10</div>
+        <div class="ing-role">Mitochondrial Energetics</div>
+        <div class="ing-desc">Q-SYMBIO RCT: 43% reduction in major cardiovascular events. Essential for ATP synthesis.</div>
+      </div>
+      <!-- 07 Vitamin C — citrus -->
+      <div class="ingredient-card">
+        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1582979512210-99b6a53386f9?w=400&h=200&fit=crop&q=80" alt="Citrus — Vitamin C source" loading="lazy"></div>
+        <div class="ing-num">07</div><div class="ing-icon"></div>
+        <div class="ing-name">Vitamin C</div>
+        <div class="ing-role">Immune Backbone &middot; Collagen</div>
+        <div class="ing-desc">Therapeutic dose. Regenerates Vitamin E and glutathione; essential for collagen synthesis.</div>
+      </div>
+      <!-- 08 Vitamin D3 — sunlight (updated) -->
+      <div class="ingredient-card">
+        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1503252947848-7338d3f92f31?w=400&h=200&fit=crop&q=80" alt="Sunlight — Vitamin D3" loading="lazy"></div>
+        <div class="ing-num">08</div><div class="ing-icon"></div>
+        <div class="ing-name">Vitamin D3</div>
+        <div class="ing-role">Immune Modulator &middot; Bone</div>
+        <div class="ing-desc">BMJ meta-analysis: 42% reduction in acute respiratory infections. Regulates 200+ genes.</div>
+      </div>
+      <!-- 09 Vitamin K2 — fermented foods -->
+      <div class="ingredient-card">
+        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400&h=200&fit=crop&q=80" alt="Fermented foods — K2 source" loading="lazy"></div>
+        <div class="ing-num">09</div><div class="ing-icon"></div>
+        <div class="ing-name">Vitamin K2 MK-7</div>
+        <div class="ing-role">Cardiovascular &middot; Bone Matrix</div>
+        <div class="ing-desc">Rotterdam Study: 57% reduction in cardiovascular mortality. Directs calcium away from arteries.</div>
+      </div>
+      <!-- 10 Selenium — Brazil nuts -->
+      <div class="ingredient-card">
+        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1567306301408-9b74779a11af?w=400&h=200&fit=crop&q=80" alt="Brazil nuts — selenium source" loading="lazy"></div>
+        <div class="ing-num">10</div><div class="ing-icon"></div>
+        <div class="ing-name">Selenium</div>
+        <div class="ing-role">Thyroid &middot; Oncology Shield</div>
+        <div class="ing-desc">NPC Trial (JAMA): 63% reduction in prostate, 58% colorectal, 46% lung cancer incidence.</div>
+      </div>
+    </div>
+    <div class="science-footer fade-up">
+      <div class="science-footer-text">&ldquo;All 10 actives are backed by peer-reviewed landmark randomised controlled trials.&rdquo;</div>
+      <div class="science-footer-badge">Clinical Reference Dossier Available for Physicians</div>
+    </div>
+  </div>
+</section>
+
+<!-- LIFESTYLE BANNER -->
+<div class="lifestyle-banner">
+  <img class="lifestyle-banner-img" src="https://images.unsplash.com/photo-1571019613914-85f342c6a11e?w=1400&q=80" alt="Active longevity" loading="lazy">
+  <div class="lifestyle-overlay"></div>
+  <div class="lifestyle-content">
+    <p class="lifestyle-sub">The Arata Promise</p>
+    <h2 class="lifestyle-quote">Ageing is inevitable.<br><em>Declining</em> is not.</h2>
+    <div class="lifestyle-stats">
+      <div><div class="lifestyle-stat-num">10</div><div class="lifestyle-stat-label">Synergistic Actives</div></div>
+      <div><div class="lifestyle-stat-num">6</div><div class="lifestyle-stat-label">Landmark RCTs</div></div>
+      <div><div class="lifestyle-stat-num">17</div><div class="lifestyle-stat-label">Medical Specialties</div></div>
+      <div><div class="lifestyle-stat-num">1</div><div class="lifestyle-stat-label">Daily Capsule</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SHOP -->
+<section id="shop">
+  <div class="container">
+    <div class="section-label fade-up">Order Aeternyx&#8482;</div>
+    <h2 class="section-title fade-up">Invest in your longevity</h2>
+    <div class="shop-layout">
+      <div class="shop-card fade-up">
+        <div class="shop-card-header">
+          <img src="https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=600&q=80"
+               aria-hidden="true" loading="lazy"
+               style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.22;filter:grayscale(30%);">
+          <div class="shop-card-name">Aeternyx&#8482;</div>
+          <div class="shop-card-sub">Not a Supplement, Cellular Intelligence.</div>
+        </div>
+        <div class="shop-card-body">
+          <div class="shop-sizes">
+            <div class="shop-size-option" onclick="selectSize(this)">
+              <div class="shop-size-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="shop-size-info"><div class="shop-size-label">30 Capsules</div><div class="shop-size-per">1 Month Supply</div></div>
+              <div class="shop-size-price">&#8377;3,600</div>
+            </div>
+            <div class="shop-size-option" onclick="selectSize(this)">
+              <div class="shop-size-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="shop-size-info"><div class="shop-size-label">60 Capsules</div><div class="shop-size-per">2 Month Supply &middot; Save &#8377;480</div></div>
+              <div class="shop-size-price">&#8377;6,720</div>
+            </div>
+            <div class="shop-size-option" onclick="selectSize(this)">
+              <div class="shop-size-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="shop-size-info"><div class="shop-size-label">90 Capsules</div><div class="shop-size-per">3 Month Supply &middot; Save &#8377;1,200</div></div>
+              <div class="shop-size-price">&#8377;9,600</div>
+            </div>
+          </div>
+          <a href="#contact" class="btn-buy idle" id="orderBtn">Select a Size</a>
+          <div class="shop-note">Free shipping &middot; PAN India &middot; COD Available</div>
+        </div>
+      </div>
+      <div class="shop-right fade-up">
+        <div class="shop-lifestyle">
+          <img src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=700&q=80" alt="Morning wellness ritual" loading="lazy">
+          <div class="shop-lifestyle-caption"><span>Your Morning Ritual, Elevated</span></div>
+        </div>
+        <div class="shop-features">
+          <div class="shop-feature">
+            <svg class="shop-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <div><div class="shop-feature-title">Premium Grade Ingredients</div><div class="shop-feature-text">All actives sourced to pharmaceutical-grade specifications, with full traceability and third-party quality verification.</div></div>
+          </div>
+          <div class="shop-feature">
+            <svg class="shop-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <div><div class="shop-feature-title">Clinically Relevant Dosing</div><div class="shop-feature-text">Every compound dosed at concentrations used in landmark RCTs — not token amounts.</div></div>
+          </div>
+          <div class="shop-feature">
+            <svg class="shop-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9L12 2L21 9V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9Z" stroke="currentColor" stroke-width="1.5"/></svg>
+            <div><div class="shop-feature-title">Physician-Trusted Formula</div><div class="shop-feature-text">Recommended across 17 medical specialties including cardiology, oncology, and neurology.</div></div>
+          </div>
+        </div>
+        <div class="doctor-box">
+          <div class="doctor-box-title">Are you a physician or clinician?</div>
+          <div class="doctor-box-text">Download the complete Aeternyx&#8482; clinical reference dossier — RCT evidence, synergy combinations, drug interactions, and patient selection guidelines.</div>
+          <a href="#contact" class="doctor-box-link">Request Clinical Dossier <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG PREVIEW -->
+<section id="blog">
+  <div class="container">
+    <div class="section-label fade-up">The Arata Journal</div>
+    <h2 class="section-title fade-up">Longevity Intelligence</h2>
+    <p class="section-subtitle fade-up">Evidence-based insights on cellular ageing, longevity science, and the clinical research powering Aeternyx&#8482;.</p>
+    <div class="blog-grid fade-up">
+      <div class="blog-card">
+        <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600&q=80" alt="Astaxanthin science" loading="lazy"></div>
+        <div class="blog-card-body">
+          <div class="blog-card-cat">Research Insights</div>
+          <div class="blog-card-title">The Science Behind Astaxanthin: Why It Outperforms Every Known Antioxidant</div>
+          <div class="blog-card-excerpt">A deep dive into the carotenoid compound found in marine algae that crosses the blood-brain barrier — and what the clinical data actually shows.</div>
+          <div class="blog-card-meta">
+            <span class="blog-card-date">Dec 10, 2025</span>
+            <a href="blog.html" class="blog-card-link">Read &rarr;</a>
+          </div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=600&q=80" alt="Inflammaging research" loading="lazy"></div>
+        <div class="blog-card-body">
+          <div class="blog-card-cat">Longevity Science</div>
+          <div class="blog-card-title">Understanding Inflammaging: The Slow Fire That Ages You From the Inside</div>
+          <div class="blog-card-excerpt">Chronic low-grade inflammation — "inflammaging" — is now recognised as the primary driver of age-related disease. Here's what the science says about reversing it.</div>
+          <div class="blog-card-meta">
+            <span class="blog-card-date">Nov 28, 2025</span>
+            <a href="blog.html" class="blog-card-link">Read &rarr;</a>
+          </div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&q=80" alt="CoQ10 trial" loading="lazy"></div>
+        <div class="blog-card-body">
+          <div class="blog-card-cat">Clinical Evidence</div>
+          <div class="blog-card-title">CoQ10 and the Q-SYMBIO Trial: How One Molecule Rewrote Cardiology</div>
+          <div class="blog-card-excerpt">The landmark randomised controlled trial that showed a 43% reduction in major cardiovascular events — and why CoQ10 belongs in every longevity stack.</div>
+          <div class="blog-card-meta">
+            <span class="blog-card-date">Nov 14, 2025</span>
+            <a href="blog.html" class="blog-card-link">Read &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="blog-cta-wrap fade-up">
+      <a href="blog.html" class="btn-secondary">Visit the Journal &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  <div class="disclaimer-inner">
+    <div class="disclaimer-title">Important Disclaimer</div>
+    <p class="disclaimer-text">Aeternyx&#8482; is a nutritional supplement and is not intended to diagnose, treat, cure, or prevent any disease or medical condition. The statements made on this website have not been evaluated by the Food Safety and Standards Authority of India (FSSAI) or any other regulatory authority. Nutritional supplements are not a substitute for a balanced diet, a healthy lifestyle, or medical treatment. Always consult your physician, specialist, or qualified healthcare provider before starting any new supplement, especially if you have a pre-existing medical condition, are pregnant or breastfeeding, or are taking prescription medications. Individual results may vary. The clinical studies referenced on this website were conducted on individual ingredients independently and do not represent studies on Aeternyx&#8482; as a combined formulation.</p>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label fade-up">Get in Touch</div>
+    <h2 class="section-title fade-up">We&rsquo;d love to hear from you</h2>
+    <div class="contact-layout">
+      <div class="contact-info fade-up">
+        <div class="contact-block">
+          <div class="contact-block-label">Email</div>
+          <div class="contact-block-value"><a href="mailto:aratanutra@gmail.com" style="color:inherit;text-decoration:none;">aratanutra@gmail.com</a></div>
+        </div>
+        <div class="contact-block">
+          <div class="contact-block-label">India</div>
+          <div class="contact-block-value">PAN India Delivery</div>
+        </div>
+        <div class="contact-block">
+          <div class="contact-block-label">Response Time</div>
+          <div class="contact-block-value">Within 24 hours</div>
+        </div>
+      </div>
+      <div class="fade-up">
+        <iframe name="gform-contact" style="display:none" aria-hidden="true"></iframe>
+        <form class="contact-form" id="contactForm"
+              action="https://docs.google.com/forms/d/e/1FAIpQLSfaEMfCsM6RBg5O_rGwSWk4GMLsQO_7wO6LFqJti4ZpyGXO9w/formResponse"
+              method="POST" target="gform-contact">
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" placeholder="First name"></div>
+            <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" placeholder="Last name"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            <input type="email" class="form-input" name="entry.1686012661" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group"><label class="form-label">Phone Number</label><input type="tel" class="form-input" placeholder="+91 00000 00000"></div>
+          <div class="form-group">
+            <label class="form-label">I am a</label>
+            <select class="form-select">
+              <option value="">Select your profile</option>
+              <option>Consumer / Patient</option>
+              <option>Physician / Specialist</option>
+              <option>Pharmacist</option>
+              <option>Distributor / Retailer</option>
+              <option>Media / Press</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="How can we help you?"></textarea></div>
+          <button type="submit" class="form-submit" id="contactSubmit">Send Message</button>
+          <div class="form-success" id="formSuccess">Message received. We'll be in touch within 24 hours.</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo-main">ARATA</div>
+        <div class="footer-logo-sub">Nutraceuticals</div>
+        <div class="footer-desc">Precision longevity science for India's most demanding health seekers. Built on landmark clinical trials, delivered in one daily capsule.</div>
+      </div>
+      <div>
+        <div class="footer-col-title">Products</div>
+        <ul class="footer-links">
+          <li><a href="#product">Aeternyx&#8482;</a></li>
+          <li><a href="#science">Ingredients</a></li>
+          <li><a href="#shop">Shop</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#about">About Arata</a></li>
+          <li><a href="blog.html">Journal</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Healthcare Professionals</div>
+        <ul class="footer-links">
+          <li><a href="#contact">Clinical Dossier</a></li>
+          <li><a href="#science">RCT References</a></li>
+          <li><a href="#contact">Partner Programme</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">&copy; 2025 Arata Nutraceuticals. All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#" onclick="document.querySelector('.disclaimer').scrollIntoView({behavior:'smooth'});return false;">Disclaimer</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
 <script>
   document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('open'));
   function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); }
   window.addEventListener('scroll', () => { document.getElementById('navbar').style.boxShadow = window.scrollY > 50 ? '0 4px 24px rgba(0,0,0,0.06)' : 'none'; });
-  new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), 80); } }); }, { threshold: 0.1 }).observe = (function(orig) { return function(el) { orig.call(this, el); }; })(IntersectionObserver.prototype.observe);
-  document.querySelectorAll('.fade-up').forEach(el => new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), 80); } }); }, { threshold: 0.1 }).observe(el));
+  document.querySelectorAll('.fade-up').forEach(el => new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), 80); } });
+  }, { threshold: 0.1 }).observe(el));
+
   function selectSize(el) {
     const btn = document.getElementById('orderBtn');
     const wasActive = el.classList.contains('active');
@@ -292,9 +827,16 @@
       btn.className = 'btn-buy idle';
     }
   }
-  document.querySelector('.form-submit').addEventListener('click', function() {
-    this.textContent = 'Message Sent ✓'; this.style.background = '#2A6B2A'; this.style.borderColor = '#2A6B2A';
-    setTimeout(() => { this.textContent = 'Send Message'; this.style.background = ''; this.style.borderColor = ''; }, 3000);
+
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    const btn = document.getElementById('contactSubmit');
+    const success = document.getElementById('formSuccess');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.style.display = 'none';
+      success.style.display = 'block';
+    }, 800);
   });
 </script>
 </body>

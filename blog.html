@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Arata Journal — Longevity Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #FFFFFF; --off-white: #F9F8F6; --light-grey: #F2F1EF;
+    --mid-grey: #E0DED9; --text-grey: #888880; --black: #0D0D0B;
+    --dark: #1A1A18; --gold: #B8922A; --gold-light: #D4AA4A;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Josefin Sans', sans-serif; background: var(--white); color: var(--black); overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--mid-grey); padding: 0 48px; height: 70px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo-main { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500; letter-spacing: 0.15em; color: var(--black); line-height: 1; }
+  .nav-logo-sub { font-size: 8px; font-weight: 300; letter-spacing: 0.35em; color: var(--gold); text-transform: uppercase; }
+  .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+  .nav-links a { font-size: 11px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dark); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  .nav-cta { background: var(--black) !important; color: var(--white) !important; padding: 10px 22px !important; font-size: 10px !important; letter-spacing: 0.25em !important; }
+  .nav-cta:hover { background: var(--gold) !important; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+  .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--black); }
+  .mobile-nav { display: none; position: fixed; top: 70px; left: 0; right: 0; background: var(--white); border-bottom: 1px solid var(--mid-grey); padding: 24px; flex-direction: column; gap: 16px; z-index: 999; }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav a { font-size: 13px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dark); text-decoration: none; padding: 8px 0; border-bottom: 1px solid var(--light-grey); }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+
+  /* Blog Hero */
+  .blog-hero { background: var(--black); padding: 140px 0 80px; text-align: center; }
+  .blog-hero-eyebrow { font-size: 10px; font-weight: 400; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .blog-hero-eyebrow::before, .blog-hero-eyebrow::after { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+  .blog-hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(40px, 6vw, 80px); font-weight: 300; color: var(--white); letter-spacing: 0.05em; margin-bottom: 16px; }
+  .blog-hero-sub { font-family: 'EB Garamond', serif; font-size: 18px; color: rgba(255,255,255,0.5); line-height: 1.6; max-width: 520px; margin: 0 auto; }
+
+  /* Category filters */
+  .blog-filters { background: var(--off-white); border-bottom: 1px solid var(--mid-grey); padding: 0; position: sticky; top: 70px; z-index: 100; }
+  .blog-filters-inner { display: flex; gap: 0; overflow-x: auto; max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+  .filter-btn { background: none; border: none; border-bottom: 2px solid transparent; padding: 18px 20px; font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-grey); cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+  .filter-btn:hover { color: var(--black); }
+  .filter-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* Blog grid */
+  .blog-main { padding: 60px 0 100px; }
+  .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .blog-card { border: 1px solid var(--mid-grey); background: var(--white); transition: border-color 0.2s; overflow: hidden; cursor: pointer; }
+  .blog-card:hover { border-color: var(--gold); }
+  .blog-card-img { height: 200px; overflow: hidden; }
+  .blog-card-img img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.7); transition: transform 0.5s; }
+  .blog-card:hover .blog-card-img img { transform: scale(1.05); }
+  .blog-card-body { padding: 28px; }
+  .blog-card-cat { font-size: 9px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .blog-card-title { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 400; line-height: 1.3; color: var(--black); margin-bottom: 10px; }
+  .blog-card-excerpt { font-family: 'EB Garamond', serif; font-size: 15px; line-height: 1.6; color: var(--text-grey); margin-bottom: 20px; }
+  .blog-card-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--light-grey); padding-top: 16px; }
+  .blog-card-date { font-size: 9px; letter-spacing: 0.15em; color: var(--text-grey); text-transform: uppercase; }
+  .blog-card-read { font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+  .no-posts { text-align: center; padding: 80px 0; font-family: 'EB Garamond', serif; font-size: 18px; color: var(--text-grey); }
+
+  /* Single post view */
+  #postView { display: none; padding: 60px 0 100px; }
+  .post-back { font-size: 10px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 40px; cursor: pointer; background: none; border: none; }
+  .post-back:hover { color: var(--black); }
+  .post-header { max-width: 800px; margin-bottom: 40px; }
+  .post-cat { font-size: 9px; font-weight: 600; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .post-cat::before { content: ''; display: block; width: 24px; height: 1px; background: var(--gold); }
+  .post-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 4vw, 52px); font-weight: 300; line-height: 1.15; color: var(--black); margin-bottom: 16px; }
+  .post-date { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-grey); }
+  .post-hero-img { width: 100%; height: 420px; overflow: hidden; margin-bottom: 48px; border: 1px solid var(--mid-grey); }
+  .post-hero-img img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.8); }
+  .post-body { max-width: 720px; font-family: 'EB Garamond', serif; font-size: 19px; line-height: 1.85; color: #333330; }
+  .post-body p { margin-bottom: 24px; }
+
+  /* Footer */
+  footer { background: var(--black); padding: 48px 0 32px; }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-copy { font-size: 10px; font-weight: 300; letter-spacing: 0.15em; color: rgba(255,255,255,0.3); }
+  .footer-legal { display: flex; gap: 24px; }
+  .footer-legal a { font-size: 10px; color: rgba(255,255,255,0.3); text-decoration: none; letter-spacing: 0.15em; transition: color 0.2s; }
+  .footer-legal a:hover { color: rgba(255,255,255,0.6); }
+
+  @media (max-width: 1024px) { .blog-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 768px) {
+    nav { padding: 0 24px; } .nav-links { display: none; } .hamburger { display: flex; }
+    .container { padding: 0 24px; } .blog-grid { grid-template-columns: 1fr; }
+    .blog-filters-inner { padding: 0 24px; } .post-hero-img { height: 240px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg" width="28" height="34" aria-hidden="true">
+      <defs>
+        <linearGradient id="aLG2" x1="0" y1="0" x2="60" y2="72" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#CC77FF"/>
+          <stop offset="55%" stop-color="#8833EE"/>
+          <stop offset="100%" stop-color="#5500AA"/>
+        </linearGradient>
+      </defs>
+      <path d="M30 5 L52 55 Q55 63 49 66 Q43 69 40 60 L34 43 L26 43 L20 60 Q17 69 11 66 Q5 63 8 55 Z" fill="url(#aLG2)"/>
+      <path d="M30 20 L34 43 L26 43 Z" fill="white"/>
+      <path d="M49 63 Q57 74 49 78 Q41 82 37 70" stroke="url(#aLG2)" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <circle cx="9" cy="66" r="8" fill="url(#aLG2)"/>
+    </svg>
+    <div>
+      <div class="nav-logo-main">ARATA</div>
+      <div class="nav-logo-sub">Nutraceuticals</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#product">Aeternyx&#8482;</a></li>
+    <li><a href="index.html#science">Science</a></li>
+    <li><a href="index.html#shop">Shop</a></li>
+    <li><a href="blog.html" class="active">Journal</a></li>
+    <li><a href="index.html#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">Home</a>
+  <a href="index.html#product">Aeternyx&#8482;</a>
+  <a href="index.html#science">Science</a>
+  <a href="index.html#shop">Shop</a>
+  <a href="blog.html">Journal</a>
+  <a href="index.html#contact">Contact</a>
+</div>
+
+<div class="blog-hero">
+  <div class="container">
+    <div class="blog-hero-eyebrow">Longevity Intelligence</div>
+    <h1 class="blog-hero-title">The Arata Journal</h1>
+    <p class="blog-hero-sub">Evidence-based insights on cellular ageing, longevity science, and the clinical research powering Aeternyx&#8482;.</p>
+  </div>
+</div>
+
+<div class="blog-filters">
+  <div class="blog-filters-inner">
+    <button class="filter-btn active" onclick="filterPosts('all', this)">All</button>
+    <button class="filter-btn" onclick="filterPosts('Research Insights', this)">Research Insights</button>
+    <button class="filter-btn" onclick="filterPosts('Longevity Science', this)">Longevity Science</button>
+    <button class="filter-btn" onclick="filterPosts('Clinical Evidence', this)">Clinical Evidence</button>
+    <button class="filter-btn" onclick="filterPosts('Product Science', this)">Product Science</button>
+  </div>
+</div>
+
+<div class="blog-main">
+  <div class="container">
+    <!-- Grid view -->
+    <div id="blogGrid" class="blog-grid"></div>
+    <div id="noPosts" class="no-posts" style="display:none;">No posts in this category yet.</div>
+
+    <!-- Single post view -->
+    <div id="postView">
+      <button class="post-back" onclick="closePost()">&#8592; Back to Journal</button>
+      <div class="post-header">
+        <div class="post-cat" id="postCat"></div>
+        <h1 class="post-title" id="postTitle"></h1>
+        <div class="post-date" id="postDate"></div>
+      </div>
+      <div class="post-hero-img"><img id="postImg" src="" alt=""></div>
+      <div class="post-body" id="postBody"></div>
+      <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--mid-grey);">
+        <button class="post-back" onclick="closePost()">&#8592; Back to Journal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-bottom">
+      <div class="footer-copy">&copy; 2025 Arata Nutraceuticals. All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="index.html">Home</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const DEFAULT_POSTS = [
+    {
+      slug: 'science-behind-astaxanthin',
+      title: 'The Science Behind Astaxanthin: Why It Outperforms Every Known Antioxidant',
+      category: 'Research Insights',
+      date: '2025-12-10',
+      excerpt: 'A deep dive into the carotenoid compound found in marine algae that crosses the blood-brain barrier — and what the clinical data actually shows.',
+      imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=800&q=80',
+      content: 'Astaxanthin is a xanthophyll carotenoid produced primarily by the microalgae Haematococcus pluvialis. It is this compound that gives salmon, shrimp, and flamingos their characteristic pink-red colouration — and it may be the most powerful antioxidant compound ever studied.\n\nIn rigorous singlet oxygen quenching assays, astaxanthin demonstrates activity 6,000 times greater than Vitamin C, 800 times greater than CoQ10, and 550 times greater than Vitamin E. What makes this particularly significant is its molecular structure: astaxanthin spans the entire lipid bilayer of a cell membrane, providing antioxidant protection across both aqueous and lipid phases simultaneously — something neither Vitamin C nor Vitamin E can do alone.\n\nUnlike other carotenoids such as beta-carotene or lycopene, astaxanthin is not converted to Vitamin A in the body, which means it carries no risk of Vitamin A toxicity even at high doses. This unique property allows astaxanthin to accumulate in tissues where protection is most needed.\n\nPerhaps most remarkable is its ability to cross both the blood-brain barrier and the blood-retinal barrier — two of the most selective biological membranes in the human body. This positions astaxanthin as one of the very few orally available compounds capable of providing direct antioxidant protection to neural tissue and retinal cells.\n\nIn Aeternyx™, astaxanthin is dosed at a clinically relevant concentration informed by the Georgetown Phase II trial data, working in concert with Alpha Lipoic Acid and Vitamin C to form a layered, regenerative antioxidant cascade.'
+    },
+    {
+      slug: 'understanding-inflammaging',
+      title: 'Understanding Inflammaging: The Slow Fire That Ages You From the Inside',
+      category: 'Longevity Science',
+      date: '2025-11-28',
+      excerpt: 'Chronic low-grade inflammation — "inflammaging" — is now recognised as the primary driver of age-related disease. Here\'s what the science says about reversing it.',
+      imageUrl: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80',
+      content: 'In 2000, immunologist Claudio Franceschi introduced a concept that would reshape gerontology: "inflammaging." The term describes a state of chronic, sterile, low-grade inflammation that develops progressively with age — and which is now understood to underlie virtually every major age-related disease.\n\nUnlike acute inflammation, which is the body\'s protective response to injury or infection and resolves within days, inflammaging is a sustained, smouldering process with no clear trigger and no natural resolution. It operates below the threshold of clinical symptoms for decades, quietly damaging tissues, impairing cellular repair mechanisms, and accelerating biological ageing.\n\nThe hallmarks of inflammaging include elevated circulating levels of pro-inflammatory cytokines — particularly interleukin-6 (IL-6), tumour necrosis factor-alpha (TNF-α), and C-reactive protein (CRP). These markers are now well-established predictors of cardiovascular disease, neurodegeneration, metabolic syndrome, sarcopenia, and cancer risk.\n\nWhat drives inflammaging? The mechanisms are multiple and interconnected: accumulation of senescent cells that secrete pro-inflammatory signals; mitochondrial dysfunction generating reactive oxygen species; declining immune surveillance; increased gut permeability; and the progressive erosion of epigenetic regulation.\n\nAddressing inflammaging requires a multi-target approach — which is precisely the design logic behind Aeternyx™. Trans-Resveratrol activates the SIRT1 deacetylase pathway, which exerts broad anti-inflammatory and epigenetic effects. Tocotrienols suppress NF-κB, the master regulator of inflammatory gene expression. CoQ10 addresses mitochondrial dysfunction at its source. Together, these compounds work on complementary pathways to systematically reduce the inflammatory burden at the cellular level.'
+    },
+    {
+      slug: 'coq10-q-symbio-trial',
+      title: 'CoQ10 and the Q-SYMBIO Trial: How One Molecule Rewrote Cardiology',
+      category: 'Clinical Evidence',
+      date: '2025-11-14',
+      excerpt: 'The landmark randomised controlled trial that showed a 43% reduction in major cardiovascular events — and why CoQ10 belongs in every longevity stack.',
+      imageUrl: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80',
+      content: 'Published in the Journal of the American College of Cardiology in 2014, the Q-SYMBIO trial is one of the most consequential studies in modern cardiovascular nutrition science. Conducted across nine countries with 420 patients diagnosed with chronic heart failure, it remains the most rigorously designed randomised controlled trial of Coenzyme Q10 supplementation in cardiac populations.\n\nThe primary finding was unambiguous: patients receiving CoQ10 at 300mg daily experienced a 43% reduction in major adverse cardiovascular events (MACE) compared to placebo over a two-year period. Cardiovascular mortality was reduced by 43%. All-cause mortality was reduced by 42%. These are figures that rival many pharmaceutical interventions in comparable populations.\n\nWhy does CoQ10 produce such dramatic effects in cardiac tissue? The heart is the most metabolically active organ in the human body, generating and consuming more ATP per gram of tissue than any other organ. CoQ10 is an essential cofactor in the mitochondrial electron transport chain — specifically, it shuttles electrons between Complexes I/II and Complex III, a process that is fundamental to oxidative phosphorylation and ATP synthesis.\n\nCritically, endogenous CoQ10 levels decline measurably from the third decade of life, and this decline is accelerated by statin medications, which inhibit the mevalonate pathway — the same pathway responsible for CoQ10 synthesis. This is why CoQ10 is particularly relevant for the large population of patients on long-term statin therapy.\n\nIn Aeternyx™, CoQ10 is included at a dose informed directly by the Q-SYMBIO protocol, in a formulation designed to maximise bioavailability through synergistic delivery with fat-soluble compounds.'
+    }
+  ];
+
+  function getPosts() {
+    try {
+      const stored = localStorage.getItem('arata_blog_posts');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch(e) {}
+    return DEFAULT_POSTS;
+  }
+
+  function formatDate(dateStr) {
+    try {
+      return new Date(dateStr).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    } catch(e) { return dateStr; }
+  }
+
+  let currentFilter = 'all';
+
+  function renderGrid(filter) {
+    const posts = getPosts();
+    const grid = document.getElementById('blogGrid');
+    const noPosts = document.getElementById('noPosts');
+    const filtered = filter === 'all' ? posts : posts.filter(p => p.category === filter);
+    if (filtered.length === 0) {
+      grid.style.display = 'none';
+      noPosts.style.display = 'block';
+      return;
+    }
+    grid.style.display = 'grid';
+    noPosts.style.display = 'none';
+    grid.innerHTML = filtered.map(post => `
+      <div class="blog-card" onclick="openPost('${post.slug}')">
+        <div class="blog-card-img"><img src="${post.imageUrl}" alt="${post.title}" loading="lazy"></div>
+        <div class="blog-card-body">
+          <div class="blog-card-cat">${post.category}</div>
+          <div class="blog-card-title">${post.title}</div>
+          <div class="blog-card-excerpt">${post.excerpt}</div>
+          <div class="blog-card-meta">
+            <span class="blog-card-date">${formatDate(post.date)}</span>
+            <span class="blog-card-read">Read &rarr;</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function filterPosts(cat, btn) {
+    currentFilter = cat;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('blogGrid').style.display = 'grid';
+    document.getElementById('postView').style.display = 'none';
+    renderGrid(cat);
+  }
+
+  function openPost(slug) {
+    const posts = getPosts();
+    const post = posts.find(p => p.slug === slug);
+    if (!post) return;
+    document.getElementById('blogGrid').style.display = 'none';
+    document.getElementById('noPosts').style.display = 'none';
+    document.getElementById('postView').style.display = 'block';
+    document.getElementById('postCat').textContent = post.category;
+    document.getElementById('postTitle').textContent = post.title;
+    document.getElementById('postDate').textContent = formatDate(post.date);
+    document.getElementById('postImg').src = post.imageUrl;
+    document.getElementById('postImg').alt = post.title;
+    document.getElementById('postBody').innerHTML = post.content
+      .split('\n\n')
+      .map(p => `<p>${p}</p>`)
+      .join('');
+    window.scrollTo({ top: document.querySelector('.blog-main').offsetTop - 80, behavior: 'smooth' });
+
+    // Update URL without reload
+    const url = new URL(window.location);
+    url.searchParams.set('post', slug);
+    history.pushState({}, '', url);
+  }
+
+  function closePost() {
+    document.getElementById('postView').style.display = 'none';
+    document.getElementById('blogGrid').style.display = 'grid';
+    renderGrid(currentFilter);
+    const url = new URL(window.location);
+    url.searchParams.delete('post');
+    history.pushState({}, '', url);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Check for ?post= param on load
+  function init() {
+    const params = new URLSearchParams(window.location.search);
+    const postSlug = params.get('post');
+    if (postSlug) {
+      renderGrid('all');
+      openPost(postSlug);
+    } else {
+      renderGrid('all');
+    }
+  }
+
+  document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('open'));
+  init();
+</script>
+</body>
+</html>
