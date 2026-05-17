@@ -495,26 +495,66 @@
 </footer>
 
 <script>
-  // Load site config from admin
-  function loadSiteConfig() {
+  // Apply config to page
+  function applyConfig(cfg) {
+    if (!cfg || !Object.keys(cfg).length) return;
+    // Logo
+    if (cfg.logoUrl) {
+      document.getElementById('navLogoImg').src = cfg.logoUrl;
+      document.getElementById('navLogoImg').style.display = 'block';
+      document.getElementById('navLogoSvg').style.display = 'none';
+    }
+    // Hero text
+    if (cfg.heroTitle) document.querySelector('.hero-title').innerHTML = cfg.heroTitle;
+    if (cfg.heroSubtitle) document.querySelector('.hero-subtitle').textContent = cfg.heroSubtitle;
+    // Hero background image
+    if (cfg.heroBgImageUrl) {
+      const bg = document.querySelector('.hero-visual-backdrop img');
+      if (bg) bg.src = cfg.heroBgImageUrl;
+    }
+    // Product image (both hero ring and product card)
+    if (cfg.productImageUrl) {
+      document.querySelectorAll('.capsule-hero-img img, .product-img-wrap img').forEach(img => img.src = cfg.productImageUrl);
+    }
+    // Product tagline
+    if (cfg.productTagline) document.querySelector('.product-tagline-small').textContent = cfg.productTagline;
+    // Product description
+    if (cfg.productDesc) document.querySelector('.product-desc').textContent = cfg.productDesc;
+    // About quote
+    if (cfg.aboutQuote) document.querySelector('.about-quote').textContent = cfg.aboutQuote;
+    // FSSAI
+    if (cfg.fssaiNumber) document.getElementById('fssaiDisplay').textContent = cfg.fssaiNumber;
+    // Contact email
+    if (cfg.contactEmail) {
+      const el = document.getElementById('contactEmailDisplay');
+      el.textContent = cfg.contactEmail;
+      el.href = 'mailto:' + cfg.contactEmail;
+    }
+    // Contact location
+    if (cfg.contactLocation) {
+      const loc = document.querySelector('.contact-block-value.loc');
+      if (loc) loc.textContent = cfg.contactLocation;
+    }
+    // Footer desc
+    if (cfg.footerDesc) {
+      const fd = document.querySelector('.footer-desc');
+      if (fd) fd.textContent = cfg.footerDesc;
+    }
+    // Company tagline
+    if (cfg.companyTagline) {
+      document.querySelectorAll('.nav-logo-sub, .footer-logo-sub').forEach(el => el.textContent = cfg.companyTagline.toUpperCase());
+    }
+  }
+
+  // Load config: localStorage takes priority (admin preview), then site-config.json (published)
+  async function loadSiteConfig() {
+    // Check localStorage first (admin preview / admin's own browser)
+    const local = (() => { try { const s = localStorage.getItem('arata_site_config'); return s ? JSON.parse(s) : null; } catch(e) { return null; } })();
+    if (local && Object.keys(local).length) { applyConfig(local); return; }
+    // Fetch published config for regular visitors
     try {
-      const cfg = JSON.parse(localStorage.getItem('arata_site_config') || '{}');
-      // Logo
-      if (cfg.logoUrl) {
-        document.getElementById('navLogoImg').src = cfg.logoUrl;
-        document.getElementById('navLogoImg').style.display = 'block';
-        document.getElementById('navLogoSvg').style.display = 'none';
-      }
-      // FSSAI
-      if (cfg.fssaiNumber) {
-        document.getElementById('fssaiDisplay').textContent = cfg.fssaiNumber;
-      }
-      // Contact email
-      if (cfg.contactEmail) {
-        const el = document.getElementById('contactEmailDisplay');
-        el.textContent = cfg.contactEmail;
-        el.href = 'mailto:' + cfg.contactEmail;
-      }
+      const res = await fetch('site-config.json?v=' + Date.now(), { cache: 'no-store' });
+      if (res.ok) { const cfg = await res.json(); applyConfig(cfg); }
     } catch(e) {}
   }
 

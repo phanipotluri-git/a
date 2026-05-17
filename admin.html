@@ -3,488 +3,815 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arata — Admin Panel</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500&family=Josefin+Sans:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<title>Arata — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-  :root { --white:#fff; --off:#F9F8F6; --mid:#E0DED9; --text:#888880; --black:#0D0D0B; --dark:#1A1A18; --gold:#B8922A; --gold-l:#D4AA4A; }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:'Josefin Sans',sans-serif;background:#0A0A09;color:#fff;min-height:100vh;}
+:root{--gold:#B8922A;--gold-l:#D4AA4A;--black:#0D0D0B;--dark:#111110;--panel:#161614;--border:rgba(255,255,255,0.08);--text:rgba(255,255,255,0.85);--dim:rgba(255,255,255,0.35);--dimmer:rgba(255,255,255,0.15);--mid:#E0DED9;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;font-family:'Josefin Sans',sans-serif;background:var(--dark);color:var(--text);overflow:hidden;}
 
-  /* ── GATE ── */
-  #gate{position:fixed;inset:0;background:var(--black);display:flex;align-items:center;justify-content:center;z-index:9999;}
-  .gate-wrap{display:flex;flex-direction:column;align-items:center;gap:28px;width:320px;}
-  .gate-brand{text-align:center;}
-  .gate-brand-name{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;letter-spacing:0.18em;color:#fff;}
-  .gate-brand-name span{color:var(--gold);}
-  .gate-brand-sub{font-size:8px;letter-spacing:0.5em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:4px;}
-  .gate-field{width:100%;display:flex;flex-direction:column;gap:10px;}
-  .gate-label{font-size:9px;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);}
-  .gate-input{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);padding:14px 18px;font-family:'Josefin Sans',sans-serif;font-size:14px;font-weight:300;color:#fff;outline:none;width:100%;text-align:center;letter-spacing:0.1em;transition:border-color 0.2s;}
-  .gate-input:focus{border-color:var(--gold);}
-  .gate-btn{width:100%;background:var(--gold);color:var(--black);padding:14px;font-family:'Josefin Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;border:none;cursor:pointer;transition:background 0.2s;}
-  .gate-btn:hover{background:var(--gold-l);}
-  .gate-err{font-size:9px;letter-spacing:0.2em;color:#cc4444;text-transform:uppercase;height:14px;text-align:center;}
+/* ─── GATE ─── */
+#gate{position:fixed;inset:0;background:var(--black);display:flex;align-items:center;justify-content:center;z-index:999;}
+.gate-card{width:340px;display:flex;flex-direction:column;align-items:center;gap:28px;}
+.gate-logo{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;letter-spacing:0.15em;text-align:center;color:#fff;}
+.gate-logo em{color:var(--gold);font-style:normal;}
+.gate-sub{font-size:8px;letter-spacing:0.5em;text-transform:uppercase;color:var(--dimmer);margin-top:-20px;}
+.gate-label{font-size:9px;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.gate-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:14px 18px;font:300 14px/1 'Josefin Sans',sans-serif;color:#fff;outline:none;text-align:center;letter-spacing:0.12em;transition:border-color .2s;}
+.gate-input:focus{border-color:var(--gold);}
+.gate-btn{width:100%;background:var(--gold);color:var(--black);padding:14px;font:600 11px/1 'Josefin Sans',sans-serif;letter-spacing:.3em;text-transform:uppercase;border:none;cursor:pointer;transition:background .2s;}
+.gate-btn:hover{background:var(--gold-l);}
+.gate-err{font-size:9px;letter-spacing:.2em;color:#e05555;text-transform:uppercase;min-height:14px;}
 
-  /* ── ADMIN SHELL ── */
-  #admin{display:none;min-height:100vh;}
-  .admin-bar{background:var(--black);border-bottom:1px solid rgba(255,255,255,0.07);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;z-index:200;}
-  .admin-bar-brand{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;letter-spacing:0.2em;color:#fff;}
-  .admin-bar-brand span{color:var(--gold);}
-  .admin-bar-right{display:flex;gap:12px;align-items:center;}
-  .admin-pill{font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(184,146,42,0.35);padding:5px 12px;}
-  .btn-ghost{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);background:none;border:1px solid rgba(255,255,255,0.1);padding:6px 14px;cursor:pointer;transition:all 0.2s;}
-  .btn-ghost:hover{color:#fff;border-color:rgba(255,255,255,0.3);}
+/* ─── SHELL ─── */
+#shell{display:none;height:100vh;display:none;flex-direction:column;}
+.topbar{height:52px;background:var(--black);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px;flex-shrink:0;}
+.topbar-brand{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;letter-spacing:.18em;color:#fff;margin-right:auto;}
+.topbar-brand em{color:var(--gold);font-style:normal;}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#888;flex-shrink:0;}
+.status-dot.saved{background:#4CAF50;}
+.status-dot.dirty{background:var(--gold);}
+.status-dot.publishing{background:#64B5F6;animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.status-text{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);}
+.topbar-btn{font:600 9px/1 'Josefin Sans',sans-serif;letter-spacing:.25em;text-transform:uppercase;padding:8px 16px;border:none;cursor:pointer;transition:all .2s;}
+.btn-publish{background:var(--gold);color:var(--black);}
+.btn-publish:hover{background:var(--gold-l);}
+.btn-publish:disabled{opacity:.4;cursor:default;}
+.btn-outline{background:none;color:var(--dim);border:1px solid var(--border);}
+.btn-outline:hover{color:#fff;border-color:var(--dimmer);}
 
-  /* Tabs */
-  .admin-tabs{background:#111110;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;padding:0 32px;}
-  .tab-btn{background:none;border:none;border-bottom:2px solid transparent;padding:16px 20px;font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.35);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:8px;}
-  .tab-btn:hover{color:rgba(255,255,255,0.7);}
-  .tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
-  .tab-dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.6;}
+.workspace{display:flex;flex:1;overflow:hidden;}
 
-  /* Panels */
-  .panel{display:none;max-width:900px;margin:0 auto;padding:40px 32px;}
-  .panel.active{display:block;}
-  .panel-section{margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,0.06);}
-  .panel-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
-  .ps-title{font-size:10px;font-weight:600;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
-  .ps-title::before{content:'';display:block;width:16px;height:1px;background:var(--gold);}
+/* ─── SIDEBAR ─── */
+.sidebar{width:200px;flex-shrink:0;background:var(--black);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
+.sidebar-section{padding:20px 16px 8px;font-size:8px;letter-spacing:.4em;text-transform:uppercase;color:var(--dimmer);}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);cursor:pointer;transition:all .2s;border-left:2px solid transparent;}
+.nav-item:hover{color:#fff;background:rgba(255,255,255,.03);}
+.nav-item.active{color:var(--gold);border-left-color:var(--gold);background:rgba(184,146,42,.06);}
+.nav-item svg{flex-shrink:0;opacity:.6;}
+.nav-item.active svg{opacity:1;}
 
-  /* Form elements */
-  .admin-form{display:flex;flex-direction:column;gap:16px;}
-  .f-group{display:flex;flex-direction:column;gap:8px;}
-  .f-label{font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.45);}
-  .f-input,.f-select,.f-textarea{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);padding:12px 16px;font-family:'Josefin Sans',sans-serif;font-size:13px;font-weight:300;color:#fff;outline:none;width:100%;transition:border-color 0.2s;}
-  .f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--gold);}
-  .f-select option{background:var(--dark);}
-  .f-textarea{resize:vertical;min-height:120px;font-family:'EB Garamond',serif;font-size:16px;line-height:1.6;}
-  .f-hint{font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.08em;line-height:1.5;}
-  .f-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+/* ─── EDITOR ─── */
+.editor{flex:1;overflow-y:auto;background:var(--panel);}
+.editor-pane{display:none;padding:32px;max-width:560px;}
+.editor-pane.active{display:block;}
+.pane-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:#fff;margin-bottom:4px;}
+.pane-desc{font-size:10px;color:var(--dim);letter-spacing:.1em;line-height:1.6;margin-bottom:28px;}
+.field-group{margin-bottom:24px;}
+.field-label{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+.field-hint{font-size:9px;color:var(--dimmer);letter-spacing:.08em;margin-top:6px;line-height:1.5;}
+.f-input,.f-textarea,.f-select{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);padding:11px 14px;font:300 13px/1 'Josefin Sans',sans-serif;color:#fff;outline:none;transition:border-color .2s;resize:none;}
+.f-input:focus,.f-textarea:focus,.f-select:focus{border-color:var(--gold);}
+.f-textarea{resize:vertical;line-height:1.6;font-size:14px;}
+.f-select option{background:#1a1a18;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 
-  /* Buttons */
-  .btn-gold{background:var(--gold);color:var(--black);padding:12px 28px;font-family:'Josefin Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;border:none;cursor:pointer;transition:background 0.2s;}
-  .btn-gold:hover{background:var(--gold-l);}
-  .btn-outline{background:none;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.15);padding:10px 20px;font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
-  .btn-outline:hover{color:#fff;border-color:rgba(255,255,255,0.4);}
-  .btn-danger{background:none;color:rgba(204,68,68,0.7);border:1px solid rgba(204,68,68,0.25);padding:8px 16px;font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
-  .btn-danger:hover{color:#cc4444;border-color:#cc4444;}
-  .toast{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#4CAF50;height:14px;margin-top:4px;}
+/* Image upload widget */
+.img-upload{border:1px dashed var(--border);padding:0;position:relative;background:rgba(255,255,255,.02);transition:border-color .2s;cursor:pointer;}
+.img-upload:hover{border-color:rgba(184,146,42,.4);}
+.img-upload input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.img-upload-preview{width:100%;height:140px;object-fit:cover;display:block;}
+.img-upload-placeholder{height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
+.img-upload-placeholder svg{opacity:.3;}
+.img-upload-placeholder span{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--dimmer);}
+.img-upload-uploading{position:absolute;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);display:none;}
+.img-url-row{display:flex;gap:8px;margin-top:8px;}
+.img-url-row input{flex:1;}
+.img-url-row button{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--dim);padding:0 14px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:all .2s;}
+.img-url-row button:hover{color:#fff;border-color:var(--dimmer);}
 
-  /* Logo preview */
-  .logo-preview{width:120px;height:120px;border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;overflow:hidden;background:rgba(255,255,255,0.02);margin-bottom:16px;}
-  .logo-preview img{max-width:100%;max-height:100%;object-fit:contain;}
-  .logo-preview svg{width:48px;height:58px;}
-  .logo-options{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.save-row{display:flex;gap:12px;align-items:center;margin-top:8px;}
+.btn-save{background:var(--gold);color:var(--black);padding:10px 24px;font:600 9px/1 'Josefin Sans',sans-serif;letter-spacing:.3em;text-transform:uppercase;border:none;cursor:pointer;transition:background .2s;}
+.btn-save:hover{background:var(--gold-l);}
+.btn-clear{background:none;color:var(--dimmer);border:1px solid var(--border);padding:9px 16px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.btn-clear:hover{color:#fff;}
+.inline-toast{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#4CAF50;min-height:14px;}
 
-  /* Current config display */
-  .config-badge{display:inline-flex;align-items:center;gap:8px;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:8px 14px;border:1px solid rgba(255,255,255,0.08);margin-bottom:16px;}
-  .config-badge-dot{width:6px;height:6px;border-radius:50%;background:#4CAF50;}
+.section-divider{border:none;border-top:1px solid var(--border);margin:28px 0;}
 
-  /* Posts list */
-  .posts-list{display:flex;flex-direction:column;gap:0;}
-  .post-item{padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:14px;align-items:flex-start;}
-  .post-item-thumb{width:72px;height:52px;overflow:hidden;flex-shrink:0;border:1px solid rgba(255,255,255,0.07);}
-  .post-item-thumb img{width:100%;height:100%;object-fit:cover;filter:saturate(0.4);}
-  .post-item-info{flex:1;min-width:0;}
-  .post-item-cat{font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
-  .post-item-title{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:400;color:#fff;line-height:1.3;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .post-item-date{font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:0.15em;text-transform:uppercase;}
-  .post-item-actions{display:flex;gap:8px;flex-shrink:0;}
-  .posts-empty{font-family:'EB Garamond',serif;font-size:17px;color:rgba(255,255,255,0.2);padding:40px 0;text-align:center;}
-  .default-note{font-size:10px;letter-spacing:0.1em;color:rgba(255,255,255,0.2);padding:12px 16px;border:1px solid rgba(255,255,255,0.05);line-height:1.6;margin-bottom:20px;}
+/* Posts */
+.post-item{border:1px solid var(--border);padding:16px;margin-bottom:12px;display:flex;gap:14px;align-items:flex-start;background:rgba(255,255,255,.02);}
+.post-thumb{width:72px;height:52px;object-fit:cover;flex-shrink:0;filter:saturate(.4);}
+.post-info{flex:1;min-width:0;}
+.post-cat-tag{font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.post-title-text{font-family:'Cormorant Garamond',serif;font-size:15px;color:#fff;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.post-date-text{font-size:9px;color:var(--dimmer);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;}
+.post-actions{display:flex;gap:8px;flex-shrink:0;}
+.btn-sm{font-size:8px;letter-spacing:.2em;text-transform:uppercase;padding:6px 12px;border:none;cursor:pointer;transition:all .2s;}
+.btn-sm-view{background:none;border:1px solid rgba(184,146,42,.3);color:var(--gold);}
+.btn-sm-view:hover{border-color:var(--gold);}
+.btn-sm-del{background:none;border:1px solid rgba(204,68,68,.25);color:rgba(204,68,68,.6);}
+.btn-sm-del:hover{border-color:#cc4444;color:#cc4444;}
+.empty-posts{font-size:13px;color:var(--dimmer);padding:32px;text-align:center;font-family:'Cormorant Garamond',serif;}
 
-  @media(max-width:600px){
-    .admin-bar{padding:0 20px;} .admin-tabs{padding:0 20px;} .panel{padding:32px 20px;}
-    .f-row{grid-template-columns:1fr;}
-  }
+/* Settings token */
+.token-field{display:flex;gap:8px;}
+.token-field input{flex:1;}
+.token-status{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dimmer);}
+
+/* ─── PREVIEW ─── */
+.preview-panel{width:45%;flex-shrink:0;border-left:1px solid var(--border);display:flex;flex-direction:column;background:#fff;}
+.preview-bar{height:40px;background:var(--black);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:12px;flex-shrink:0;}
+.preview-dots{display:flex;gap:6px;}
+.preview-dot{width:10px;height:10px;border-radius:50%;}
+.preview-url{flex:1;background:rgba(255,255,255,.06);border-radius:2px;padding:5px 10px;font-size:10px;color:var(--dimmer);letter-spacing:.05em;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.preview-refresh{background:none;border:none;color:var(--dim);cursor:pointer;padding:4px;transition:color .2s;line-height:1;}
+.preview-refresh:hover{color:#fff;}
+.preview-iframe{flex:1;border:none;width:100%;background:#fff;}
+.preview-scale-wrap{flex:1;overflow:hidden;position:relative;}
+.preview-scale-wrap iframe{position:absolute;top:0;left:0;width:222%;height:222%;transform:scale(.45);transform-origin:top left;border:none;}
+
+@media(max-width:900px){
+  .preview-panel{display:none;}
+  .editor-pane{max-width:100%;}
+}
 </style>
 </head>
 <body>
 
-<!-- GATE -->
+<!-- ─── GATE ─── -->
 <div id="gate">
-  <div class="gate-wrap">
-    <div class="gate-brand">
-      <div class="gate-brand-name">ARATA <span>Admin</span></div>
-      <div class="gate-brand-sub">Site Management Console</div>
+  <div class="gate-card">
+    <div>
+      <div class="gate-logo">ARATA <em>Admin</em></div>
+      <div class="gate-sub">Site Management Console</div>
     </div>
-    <div class="gate-field">
+    <div style="width:100%">
       <div class="gate-label">Access Code</div>
-      <input type="password" class="gate-input" id="gateInput" placeholder="••••••••••" autocomplete="current-password">
+      <input id="gateInput" type="password" class="gate-input" placeholder="••••••••••" autocomplete="current-password">
     </div>
     <div class="gate-err" id="gateErr"></div>
-    <button class="gate-btn" onclick="checkPass()">Enter Admin Console</button>
+    <button class="gate-btn" onclick="checkPass()">Enter</button>
   </div>
 </div>
 
-<!-- ADMIN -->
-<div id="admin">
-  <div class="admin-bar">
-    <div class="admin-bar-brand">ARATA <span>Admin</span></div>
-    <div class="admin-bar-right">
-      <div class="admin-pill">Site Management</div>
-      <a href="index.html" target="_blank" class="btn-ghost">View Site ↗</a>
-      <button class="btn-ghost" onclick="logout()">Log Out</button>
-    </div>
+<!-- ─── SHELL ─── -->
+<div id="shell" style="display:none;height:100vh;flex-direction:column;">
+
+  <div class="topbar">
+    <div class="topbar-brand">ARATA <em>Admin</em></div>
+    <span class="status-dot" id="statusDot"></span>
+    <span class="status-text" id="statusText">Loading…</span>
+    <button class="topbar-btn btn-outline" onclick="refreshPreview()">↺ Preview</button>
+    <button class="topbar-btn btn-outline" onclick="window.open('index.html','_blank')">View Site ↗</button>
+    <button class="topbar-btn btn-publish" id="publishBtn" onclick="publishToGitHub()">Publish Live</button>
+    <button class="topbar-btn btn-outline" onclick="logout()">Log Out</button>
   </div>
 
-  <div class="admin-tabs">
-    <button class="tab-btn active" onclick="showTab('branding',this)"><span class="tab-dot"></span>Logo &amp; Branding</button>
-    <button class="tab-btn" onclick="showTab('siteinfo',this)"><span class="tab-dot"></span>Site Info</button>
-    <button class="tab-btn" onclick="showTab('journal',this)"><span class="tab-dot"></span>Journal Posts</button>
-  </div>
+  <div class="workspace">
 
-  <!-- ── TAB: LOGO & BRANDING ── -->
-  <div class="panel active" id="tab-branding">
-    <div class="panel-section">
-      <div class="ps-title">Company Logo</div>
-      <div class="logo-preview" id="logoPreview">
-        <svg viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg">
-          <defs><linearGradient id="aLGa" x1="0" y1="0" x2="60" y2="72" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#CC77FF"/><stop offset="55%" stop-color="#8833EE"/><stop offset="100%" stop-color="#5500AA"/>
-          </linearGradient></defs>
-          <path d="M30 5 L52 55 Q55 63 49 66 Q43 69 40 60 L34 43 L26 43 L20 60 Q17 69 11 66 Q5 63 8 55 Z" fill="url(#aLGa)"/>
-          <path d="M30 20 L34 43 L26 43 Z" fill="white"/>
-          <path d="M49 63 Q57 74 49 78 Q41 82 37 70" stroke="url(#aLGa)" stroke-width="9" fill="none" stroke-linecap="round"/>
-          <circle cx="9" cy="66" r="8" fill="url(#aLGa)"/>
-        </svg>
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+      <div class="sidebar-section">Branding</div>
+      <div class="nav-item active" onclick="showPane('branding',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Logo &amp; Identity
       </div>
-      <p style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:20px;line-height:1.6;">Upload your logo anywhere (Google Drive, Dropbox, Imgur) and paste the direct image URL below. The logo will appear in the navbar and replace the default purple "A".</p>
-      <div class="admin-form">
-        <div class="f-group">
-          <label class="f-label">Logo Image URL</label>
-          <input type="url" class="f-input" id="logoUrl" placeholder="https://example.com/your-logo.png">
-          <div class="f-hint">Use a direct link to a PNG or SVG. For Google Drive: File → Share → Anyone with link → change /view to /uc?export=view</div>
-        </div>
-        <div class="logo-options">
-          <button class="btn-gold" onclick="previewLogo()">Preview Logo</button>
-          <button class="btn-outline" onclick="saveLogo()">Save &amp; Apply</button>
-          <button class="btn-danger" onclick="resetLogo()">Reset to Default</button>
-        </div>
-        <div class="toast" id="logoToast"></div>
+      <div class="sidebar-section">Content</div>
+      <div class="nav-item" onclick="showPane('hero',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18"/></svg>Hero Section
       </div>
-    </div>
+      <div class="nav-item" onclick="showPane('product',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Product
+      </div>
+      <div class="nav-item" onclick="showPane('contact',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Contact &amp; Legal
+      </div>
+      <div class="sidebar-section">Journal</div>
+      <div class="nav-item" onclick="showPane('journal',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Write &amp; Manage
+      </div>
+      <div class="sidebar-section">System</div>
+      <div class="nav-item" onclick="showPane('settings',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings
+      </div>
+    </nav>
 
-    <div class="panel-section">
-      <div class="ps-title">Site Hero Image</div>
-      <p style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:20px;line-height:1.6;">The background image in the homepage hero section. Paste any Unsplash or hosted image URL.</p>
-      <div class="admin-form">
-        <div class="f-group">
-          <label class="f-label">Hero Background Image URL</label>
-          <input type="url" class="f-input" id="heroImageUrl" placeholder="https://images.unsplash.com/photo-...">
-        </div>
-        <div class="f-group">
-          <label class="f-label">Product / Capsule Image URL</label>
-          <input type="url" class="f-input" id="productImageUrl" placeholder="https://images.unsplash.com/photo-...">
-          <div class="f-hint">Shown in the homepage hero ring and in the product section.</div>
-        </div>
-        <div style="display:flex;gap:12px;">
-          <button class="btn-gold" onclick="saveImages()">Save Images</button>
-        </div>
-        <div class="toast" id="imagestoast"></div>
-      </div>
-    </div>
-  </div>
+    <!-- EDITOR -->
+    <div class="editor" id="editor">
 
-  <!-- ── TAB: SITE INFO ── -->
-  <div class="panel" id="tab-siteinfo">
-    <div class="panel-section">
-      <div class="ps-title">FSSAI Registration</div>
-      <div class="config-badge" id="fssaiBadge"><span class="config-badge-dot" style="background:#888;"></span><span>Not yet set</span></div>
-      <div class="admin-form">
-        <div class="f-group">
-          <label class="f-label">FSSAI Licence Number</label>
-          <input type="text" class="f-input" id="fssaiInput" placeholder="e.g. 10012345000123" maxlength="14">
-          <div class="f-hint">14-digit number issued by FSSAI. Appears in the disclaimer section of the website and footer.</div>
-        </div>
-        <button class="btn-gold" style="align-self:flex-start;" onclick="saveFssai()">Save FSSAI Number</button>
-        <div class="toast" id="fssaiToast"></div>
-      </div>
-    </div>
+      <!-- BRANDING -->
+      <div class="editor-pane active" id="pane-branding">
+        <div class="pane-title">Logo &amp; Identity</div>
+        <div class="pane-desc">Upload your company logo. It appears in the navigation bar across all pages. Upload a file (saves to GitHub) or paste any image URL.</div>
 
-    <div class="panel-section">
-      <div class="ps-title">Contact Information</div>
-      <div class="admin-form">
-        <div class="f-group">
-          <label class="f-label">Primary Email</label>
-          <input type="email" class="f-input" id="contactEmail" placeholder="aratanutra@gmail.com">
+        <div class="field-group">
+          <div class="field-label">Company Logo</div>
+          <div class="img-upload" id="logoUploadWrap">
+            <input type="file" accept="image/*" onchange="handleImageUpload(this,'logoUrl','logoPreviewImg','logoUploading')">
+            <div class="img-upload-uploading" id="logoUploading">Uploading to GitHub…</div>
+            <img id="logoPreviewImg" class="img-upload-preview" src="" alt="" style="display:none;">
+            <div class="img-upload-placeholder" id="logoPlaceholder">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="13" rx="1"/><path d="M3 13l4-4 4 4 3-3 5 5"/></svg>
+              <span>Click to upload logo</span>
+              <span style="color:rgba(255,255,255,.15);font-size:8px;letter-spacing:.1em;">PNG, SVG, JPG — transparent background recommended</span>
+            </div>
+          </div>
+          <div class="img-url-row">
+            <input class="f-input" id="logoUrl" placeholder="Or paste image URL here…" oninput="previewUrlImage('logoUrl','logoPreviewImg','logoPlaceholder')">
+            <button onclick="applyLogoUrl()">Use URL</button>
+          </div>
+          <div class="field-hint">The purple "A" logo is shown by default. Upload your own to replace it.</div>
         </div>
-        <div class="f-group">
-          <label class="f-label">Business Address / Location (optional)</label>
-          <input type="text" class="f-input" id="contactLocation" placeholder="e.g. Hyderabad, India">
+
+        <hr class="section-divider">
+
+        <div class="field-group">
+          <div class="field-label">Company Sub-label <span style="color:var(--dimmer)">(under ARATA in nav)</span></div>
+          <input class="f-input" id="companyTagline" placeholder="Nutraceuticals">
         </div>
-        <button class="btn-gold" style="align-self:flex-start;" onclick="saveContact()">Save Contact Info</button>
-        <div class="toast" id="contactToast"></div>
-      </div>
-    </div>
+        <div class="field-group">
+          <div class="field-label">Footer Description</div>
+          <textarea class="f-textarea" id="footerDesc" rows="3" placeholder="Tagline shown in the footer…"></textarea>
+        </div>
 
-    <div class="panel-section">
-      <div class="ps-title">Export / Backup Config</div>
-      <p style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:20px;line-height:1.6;">Download all your admin settings as a JSON file. Keep this as a backup — you can share with your developer to apply changes permanently to the live site.</p>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;">
-        <button class="btn-gold" onclick="exportConfig()">Download Config JSON</button>
-        <button class="btn-outline" onclick="clearAllConfig()">Clear All Settings</button>
+        <div class="save-row">
+          <button class="btn-save" onclick="saveSection('branding')">Save &amp; Preview</button>
+          <div class="inline-toast" id="branding-toast"></div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <!-- ── TAB: JOURNAL ── -->
-  <div class="panel" id="tab-journal">
-    <div class="panel-section">
-      <div class="ps-title">New Post</div>
-      <form class="admin-form" id="postForm" onsubmit="savePost(event)">
-        <div class="f-group"><label class="f-label">Headline</label><input type="text" class="f-input" id="pTitle" placeholder="Post headline" required></div>
-        <div class="f-row">
-          <div class="f-group"><label class="f-label">Category</label>
-            <select class="f-select" id="pCat" required>
-              <option value="">Select category</option>
+      <!-- HERO -->
+      <div class="editor-pane" id="pane-hero">
+        <div class="pane-title">Hero Section</div>
+        <div class="pane-desc">The first thing visitors see. Edit the headline, subtitle, and images.</div>
+
+        <div class="field-group">
+          <div class="field-label">Headline <span style="color:var(--dimmer)">— wrap a word in &lt;em&gt; for gold italic</span></div>
+          <textarea class="f-textarea" id="heroTitle" rows="3" placeholder="Science that &lt;em&gt;protects&lt;/em&gt; what time takes away."></textarea>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Subtitle</div>
+          <textarea class="f-textarea" id="heroSubtitle" rows="3" placeholder="Arata Nutraceuticals pioneers…"></textarea>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="field-group">
+          <div class="field-label">Hero Background Image</div>
+          <div class="img-upload">
+            <input type="file" accept="image/*" onchange="handleImageUpload(this,'heroBgImageUrl','heroBgPreview','heroBgUploading')">
+            <div class="img-upload-uploading" id="heroBgUploading">Uploading…</div>
+            <img id="heroBgPreview" class="img-upload-preview" src="" style="display:none;">
+            <div class="img-upload-placeholder" id="heroBgPlaceholder">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="13" rx="1"/><path d="M3 13l4-4 4 4 3-3 5 5"/></svg>
+              <span>Click to upload background</span>
+            </div>
+          </div>
+          <div class="img-url-row">
+            <input class="f-input" id="heroBgImageUrl" placeholder="Or paste image URL…" oninput="previewUrlImage('heroBgImageUrl','heroBgPreview','heroBgPlaceholder')">
+            <button onclick="applyFieldImage('heroBgImageUrl','heroBgPreview','heroBgPlaceholder')">Use URL</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-label">Product / Capsule Image</div>
+          <div class="img-upload">
+            <input type="file" accept="image/*" onchange="handleImageUpload(this,'productImageUrl','productImgPreview','productImgUploading')">
+            <div class="img-upload-uploading" id="productImgUploading">Uploading…</div>
+            <img id="productImgPreview" class="img-upload-preview" src="" style="display:none;">
+            <div class="img-upload-placeholder" id="productImgPlaceholder">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="13" rx="1"/><path d="M3 13l4-4 4 4 3-3 5 5"/></svg>
+              <span>Click to upload product photo</span>
+            </div>
+          </div>
+          <div class="img-url-row">
+            <input class="f-input" id="productImageUrl" placeholder="Or paste image URL…" oninput="previewUrlImage('productImageUrl','productImgPreview','productImgPlaceholder')">
+            <button onclick="applyFieldImage('productImageUrl','productImgPreview','productImgPlaceholder')">Use URL</button>
+          </div>
+        </div>
+
+        <div class="save-row">
+          <button class="btn-save" onclick="saveSection('hero')">Save &amp; Preview</button>
+          <div class="inline-toast" id="hero-toast"></div>
+        </div>
+      </div>
+
+      <!-- PRODUCT -->
+      <div class="editor-pane" id="pane-product">
+        <div class="pane-title">Product</div>
+        <div class="pane-desc">Edit the Aeternyx™ product section text and description.</div>
+
+        <div class="field-group">
+          <div class="field-label">Product Tagline <span style="color:var(--dimmer)">(shown under product name)</span></div>
+          <input class="f-input" id="productTagline" placeholder="Not a Supplement, Cellular Intelligence.">
+        </div>
+        <div class="field-group">
+          <div class="field-label">Product Description</div>
+          <textarea class="f-textarea" id="productDesc" rows="5" placeholder="Aeternyx™ is Arata's flagship longevity formulation…"></textarea>
+        </div>
+        <div class="field-group">
+          <div class="field-label">About Section Quote</div>
+          <textarea class="f-textarea" id="aboutQuote" rows="3" placeholder=""Oxidative stress and chronic inflammation…""></textarea>
+        </div>
+
+        <div class="save-row">
+          <button class="btn-save" onclick="saveSection('product')">Save &amp; Preview</button>
+          <div class="inline-toast" id="product-toast"></div>
+        </div>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="editor-pane" id="pane-contact">
+        <div class="pane-title">Contact &amp; Legal</div>
+        <div class="pane-desc">Update your contact details and FSSAI registration number.</div>
+
+        <div class="field-group">
+          <div class="field-label">Email Address</div>
+          <input class="f-input" id="contactEmail" type="email" placeholder="aratanutra@gmail.com">
+        </div>
+        <div class="field-group">
+          <div class="field-label">Location</div>
+          <input class="f-input" id="contactLocation" placeholder="PAN India">
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="field-group">
+          <div class="field-label">FSSAI Licence Number</div>
+          <input class="f-input" id="fssaiNumber" placeholder="14-digit FSSAI number" maxlength="14">
+          <div class="field-hint">Displayed in the disclaimer section as "FSSAI Lic. No.: XXXXXXXXXXXXXX". Leave blank to show "Registration Pending".</div>
+        </div>
+
+        <div class="save-row">
+          <button class="btn-save" onclick="saveSection('contact')">Save &amp; Preview</button>
+          <div class="inline-toast" id="contact-toast"></div>
+        </div>
+      </div>
+
+      <!-- JOURNAL -->
+      <div class="editor-pane" id="pane-journal">
+        <div class="pane-title">Journal Posts</div>
+        <div class="pane-desc">Write and publish issues of The Arata Journal. Posts appear on blog.html in reverse chronological order.</div>
+
+        <div class="field-group">
+          <div class="field-label">Headline</div>
+          <input class="f-input" id="pTitle" placeholder="Post headline" required>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label">Category</div>
+            <select class="f-select" id="pCat">
+              <option value="">Select…</option>
               <option>Research Insights</option><option>Longevity Science</option>
               <option>Clinical Evidence</option><option>Product Science</option>
             </select>
           </div>
-          <div class="f-group"><label class="f-label">Date</label><input type="date" class="f-input" id="pDate"></div>
+          <div class="field-group">
+            <div class="field-label">Date</div>
+            <input class="f-input" id="pDate" type="date">
+          </div>
         </div>
-        <div class="f-group"><label class="f-label">Summary (shown in listing)</label><textarea class="f-textarea" id="pExcerpt" style="min-height:70px;" placeholder="2-3 sentence summary of the article..." required></textarea></div>
-        <div class="f-group">
-          <label class="f-label">Cover Photo URL</label>
-          <input type="url" class="f-input" id="pImg" placeholder="https://images.unsplash.com/photo-...?w=800&q=80">
-          <div class="f-hint">Unsplash: find a photo → right-click image → Copy Image Address. Or paste any hosted image URL.</div>
+        <div class="field-group">
+          <div class="field-label">Summary <span style="color:var(--dimmer)">(shown in listing)</span></div>
+          <textarea class="f-textarea" id="pExcerpt" rows="2" placeholder="2-3 sentence summary…"></textarea>
         </div>
-        <div class="f-group">
-          <label class="f-label">Article Body</label>
-          <textarea class="f-textarea" id="pContent" style="min-height:220px;" placeholder="Write the full article here.
+        <div class="field-group">
+          <div class="field-label">Cover Photo</div>
+          <div class="img-upload">
+            <input type="file" accept="image/*" onchange="handleImageUpload(this,'pImg','pImgPreview','pImgUploading')">
+            <div class="img-upload-uploading" id="pImgUploading">Uploading…</div>
+            <img id="pImgPreview" class="img-upload-preview" src="" style="display:none;">
+            <div class="img-upload-placeholder" id="pImgPlaceholder">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="13" rx="1"/><path d="M3 13l4-4 4 4 3-3 5 5"/></svg>
+              <span>Upload cover photo</span>
+            </div>
+          </div>
+          <div class="img-url-row">
+            <input class="f-input" id="pImg" placeholder="Or paste image URL…" oninput="previewUrlImage('pImg','pImgPreview','pImgPlaceholder')">
+            <button onclick="applyFieldImage('pImg','pImgPreview','pImgPlaceholder')">Use URL</button>
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Article Body</div>
+          <textarea class="f-textarea" id="pContent" rows="10" placeholder="Write the full article here.
 
-Separate paragraphs with a blank line (press Enter twice).
+Separate paragraphs with a blank line.
 
-Each blank line = new paragraph on the published page." required></textarea>
+Each blank line becomes a new paragraph on the page."></textarea>
         </div>
-        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-          <button type="submit" class="btn-gold">Publish to Journal</button>
-          <button type="button" class="btn-outline" onclick="resetPostForm()">Clear Form</button>
+        <div class="save-row">
+          <button class="btn-save" onclick="publishPost()">Publish Post</button>
+          <button class="btn-clear" onclick="resetPostForm()">Clear</button>
+          <div class="inline-toast" id="journal-toast"></div>
         </div>
-        <div class="toast" id="postToast"></div>
-      </form>
+
+        <hr class="section-divider">
+        <div style="font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Published Posts</div>
+        <div id="postsList"></div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="editor-pane" id="pane-settings">
+        <div class="pane-title">Settings</div>
+        <div class="pane-desc">Connect your GitHub account to enable image uploads and publishing. Your token is stored only in this browser.</div>
+
+        <div class="field-group">
+          <div class="field-label">GitHub Personal Access Token</div>
+          <div class="token-field">
+            <input class="f-input" id="ghToken" type="password" placeholder="ghp_xxxxxxxxxxxxxxxx…">
+            <button class="btn-save" style="white-space:nowrap;" onclick="saveToken()">Save Token</button>
+          </div>
+          <div class="token-status" id="tokenStatus">
+            <span class="status-dot" id="tokenDot"></span><span id="tokenMsg">No token saved</span>
+          </div>
+          <div class="field-hint">Go to GitHub → Settings → Developer Settings → Personal access tokens → Tokens (classic) → Generate new token → tick <strong>repo</strong> scope → copy and paste here. This enables image uploads to your GitHub repo and publishing config changes.</div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="field-group">
+          <div class="field-label">GitHub Repository</div>
+          <input class="f-input" id="ghRepo" placeholder="phanipotluri-git/a" value="phanipotluri-git/a">
+          <div class="field-hint">Format: username/repository-name</div>
+        </div>
+
+        <div class="save-row">
+          <button class="btn-save" onclick="saveSettings()">Save Settings</button>
+          <div class="inline-toast" id="settings-toast"></div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div style="font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Data Management</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button class="btn-save" onclick="exportBackup()">Download Backup</button>
+          <button class="btn-clear" onclick="clearLocalData()">Clear Local Data</button>
+        </div>
+      </div>
     </div>
 
-    <div class="panel-section">
-      <div class="ps-title">Published Posts</div>
-      <div class="default-note" id="defaultNote" style="display:none;">Showing the 3 default posts. Once you publish your first post, your content will replace them on the live site.</div>
-      <div id="postCount" style="font-size:9px;letter-spacing:0.2em;color:rgba(255,255,255,0.25);text-transform:uppercase;margin-bottom:16px;"></div>
-      <div class="posts-list" id="postsList"></div>
+    <!-- PREVIEW -->
+    <div class="preview-panel">
+      <div class="preview-bar">
+        <div class="preview-dots">
+          <div class="preview-dot" style="background:#ff5f56;"></div>
+          <div class="preview-dot" style="background:#ffbd2e;"></div>
+          <div class="preview-dot" style="background:#27c93f;"></div>
+        </div>
+        <div class="preview-url" id="previewUrl">index.html</div>
+        <button class="preview-refresh" onclick="refreshPreview()" title="Refresh preview">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+        </button>
+        <button class="preview-refresh" onclick="window.open('index.html','_blank')" title="Open in new tab">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </button>
+      </div>
+      <div class="preview-scale-wrap">
+        <iframe id="previewFrame" src="index.html" title="Site preview"></iframe>
+      </div>
     </div>
-  </div>
-</div>
+
+  </div><!-- /workspace -->
+</div><!-- /shell -->
 
 <script>
-  const PASS = 'ArataN2025';
-  const CFG_KEY = 'arata_site_config';
-  const POSTS_KEY = 'arata_blog_posts';
+const PASS = 'ArataN2025';
+const CFG_KEY = 'arata_site_config';
+const POSTS_KEY = 'arata_blog_posts';
 
-  const DEFAULT_POSTS = [
-    { slug:'science-behind-astaxanthin', title:'The Science Behind Astaxanthin', category:'Research Insights', date:'2025-12-10', excerpt:'A deep dive into the carotenoid compound found in marine algae...', imageUrl:'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=800&q=80', content:'...' },
-    { slug:'understanding-inflammaging', title:'Understanding Inflammaging', category:'Longevity Science', date:'2025-11-28', excerpt:'Chronic low-grade inflammation — "inflammaging" — is the primary driver of age-related disease.', imageUrl:'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80', content:'...' },
-    { slug:'coq10-q-symbio-trial', title:'CoQ10 and the Q-SYMBIO Trial', category:'Clinical Evidence', date:'2025-11-14', excerpt:'The landmark randomised controlled trial that showed a 43% reduction in cardiovascular events.', imageUrl:'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80', content:'...' }
-  ];
+const DEFAULT_POSTS = [
+  { slug:'science-behind-astaxanthin', title:'The Science Behind Astaxanthin', category:'Research Insights', date:'2025-12-10', excerpt:'A deep dive into the carotenoid compound found in marine algae...', imageUrl:'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=800&q=80', content:'Astaxanthin content...' },
+  { slug:'understanding-inflammaging', title:'Understanding Inflammaging', category:'Longevity Science', date:'2025-11-28', excerpt:'Chronic low-grade inflammation — "inflammaging" — is the primary driver of age-related disease.', imageUrl:'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80', content:'Inflammaging content...' },
+  { slug:'coq10-q-symbio-trial', title:'CoQ10 and the Q-SYMBIO Trial', category:'Clinical Evidence', date:'2025-11-14', excerpt:'The landmark RCT that showed a 43% reduction in cardiovascular events.', imageUrl:'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80', content:'CoQ10 content...' }
+];
 
-  /* ── AUTH ── */
-  document.getElementById('gateInput').addEventListener('keydown', e => { if (e.key==='Enter') checkPass(); });
-  function checkPass() {
-    if (document.getElementById('gateInput').value === PASS) {
-      document.getElementById('gate').style.display = 'none';
-      document.getElementById('admin').style.display = 'block';
-      loadAll();
-    } else {
-      document.getElementById('gateErr').textContent = 'Incorrect code.';
-      document.getElementById('gateInput').value = '';
-      setTimeout(() => document.getElementById('gateErr').textContent = '', 2000);
-    }
+/* ─── AUTH ─── */
+document.getElementById('gateInput').addEventListener('keydown', e => { if(e.key==='Enter') checkPass(); });
+function checkPass() {
+  if (document.getElementById('gateInput').value === PASS) {
+    document.getElementById('gate').style.display = 'none';
+    const shell = document.getElementById('shell');
+    shell.style.display = 'flex';
+    init();
+  } else {
+    document.getElementById('gateErr').textContent = 'Incorrect code';
+    document.getElementById('gateInput').value = '';
+    setTimeout(() => document.getElementById('gateErr').textContent = '', 2000);
   }
-  function logout() { document.getElementById('admin').style.display='none'; document.getElementById('gate').style.display='flex'; document.getElementById('gateInput').value=''; }
+}
+function logout() {
+  document.getElementById('shell').style.display = 'none';
+  document.getElementById('gate').style.display = 'flex';
+  document.getElementById('gateInput').value = '';
+}
 
-  /* ── TABS ── */
-  function showTab(name, btn) {
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('tab-'+name).classList.add('active');
-    btn.classList.add('active');
+/* ─── TABS ─── */
+function showPane(name, navEl) {
+  document.querySelectorAll('.editor-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('pane-'+name).classList.add('active');
+  navEl.classList.add('active');
+  if (name === 'journal') loadPostsList();
+}
+
+/* ─── CONFIG ─── */
+function getCfg() { try { return JSON.parse(localStorage.getItem(CFG_KEY)||'{}'); } catch(e){ return {}; } }
+function setCfg(c) { localStorage.setItem(CFG_KEY, JSON.stringify(c)); setStatus('dirty'); }
+
+/* ─── INIT ─── */
+function init() {
+  const cfg = getCfg();
+  // Branding
+  if (cfg.logoUrl) { document.getElementById('logoUrl').value = cfg.logoUrl; showImgPreview('logoPreviewImg','logoPlaceholder',cfg.logoUrl); }
+  if (cfg.companyTagline) document.getElementById('companyTagline').value = cfg.companyTagline;
+  if (cfg.footerDesc) document.getElementById('footerDesc').value = cfg.footerDesc;
+  // Hero
+  if (cfg.heroTitle) document.getElementById('heroTitle').value = cfg.heroTitle;
+  if (cfg.heroSubtitle) document.getElementById('heroSubtitle').value = cfg.heroSubtitle;
+  if (cfg.heroBgImageUrl) { document.getElementById('heroBgImageUrl').value = cfg.heroBgImageUrl; showImgPreview('heroBgPreview','heroBgPlaceholder',cfg.heroBgImageUrl); }
+  if (cfg.productImageUrl) { document.getElementById('productImageUrl').value = cfg.productImageUrl; showImgPreview('productImgPreview','productImgPlaceholder',cfg.productImageUrl); }
+  // Product
+  if (cfg.productTagline) document.getElementById('productTagline').value = cfg.productTagline;
+  if (cfg.productDesc) document.getElementById('productDesc').value = cfg.productDesc;
+  if (cfg.aboutQuote) document.getElementById('aboutQuote').value = cfg.aboutQuote;
+  // Contact
+  if (cfg.contactEmail) document.getElementById('contactEmail').value = cfg.contactEmail;
+  if (cfg.contactLocation) document.getElementById('contactLocation').value = cfg.contactLocation;
+  if (cfg.fssaiNumber) document.getElementById('fssaiNumber').value = cfg.fssaiNumber;
+  // Settings
+  const tok = getGHToken();
+  document.getElementById('ghToken').value = tok ? '••••••••••••••••' : '';
+  if (cfg.ghRepo) document.getElementById('ghRepo').value = cfg.ghRepo;
+  updateTokenStatus(!!tok);
+  // Date default
+  document.getElementById('pDate').value = new Date().toISOString().split('T')[0];
+  setStatus(Object.keys(cfg).length ? 'saved' : 'none');
+}
+
+/* ─── STATUS ─── */
+function setStatus(state, msg) {
+  const dot = document.getElementById('statusDot');
+  const txt = document.getElementById('statusText');
+  const map = { none:['','No changes'], dirty:['dirty','Unsaved changes'], saved:['saved','Saved locally'], publishing:['publishing','Publishing…'], live:['saved','Published live'] };
+  const [cls, label] = map[state] || ['',''];
+  dot.className = 'status-dot' + (cls ? ' '+cls : '');
+  txt.textContent = msg || label;
+}
+
+/* ─── SAVE SECTIONS ─── */
+function saveSection(section) {
+  const cfg = getCfg();
+  if (section === 'branding') {
+    cfg.logoUrl = document.getElementById('logoUrl').value.trim();
+    cfg.companyTagline = document.getElementById('companyTagline').value.trim();
+    cfg.footerDesc = document.getElementById('footerDesc').value.trim();
+  } else if (section === 'hero') {
+    cfg.heroTitle = document.getElementById('heroTitle').value.trim();
+    cfg.heroSubtitle = document.getElementById('heroSubtitle').value.trim();
+    cfg.heroBgImageUrl = document.getElementById('heroBgImageUrl').value.trim();
+    cfg.productImageUrl = document.getElementById('productImageUrl').value.trim();
+  } else if (section === 'product') {
+    cfg.productTagline = document.getElementById('productTagline').value.trim();
+    cfg.productDesc = document.getElementById('productDesc').value.trim();
+    cfg.aboutQuote = document.getElementById('aboutQuote').value.trim();
+  } else if (section === 'contact') {
+    cfg.contactEmail = document.getElementById('contactEmail').value.trim();
+    cfg.contactLocation = document.getElementById('contactLocation').value.trim();
+    cfg.fssaiNumber = document.getElementById('fssaiNumber').value.trim();
   }
+  setCfg(cfg);
+  toast(section+'-toast', 'Saved — refreshing preview…');
+  setTimeout(refreshPreview, 400);
+}
 
-  /* ── CONFIG ── */
-  function getCfg() { try { return JSON.parse(localStorage.getItem(CFG_KEY)||'{}'); } catch(e){ return {}; } }
-  function setCfg(cfg) { localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
+/* ─── IMAGE UPLOAD ─── */
+function getGHToken() { return localStorage.getItem('arata_gh_token') || ''; }
+function getGHRepo() { return (getCfg().ghRepo || document.getElementById('ghRepo')?.value || 'phanipotluri-git/a').trim(); }
 
-  function loadAll() {
+async function handleImageUpload(input, urlFieldId, previewId, uploadingId) {
+  const file = input.files[0];
+  if (!file) return;
+  const tok = getGHToken();
+  if (!tok) {
+    alert('No GitHub token saved. Go to Settings tab and add your token to enable image uploads.');
+    input.value = '';
+    return;
+  }
+  const uploading = document.getElementById(uploadingId);
+  if (uploading) uploading.style.display = 'flex';
+  try {
+    const url = await uploadToGitHub(file, tok);
+    document.getElementById(urlFieldId).value = url;
+    showImgPreview(previewId, previewId.replace('Preview','Placeholder').replace('preview','Placeholder'), url);
+    toast(getCurrentToastId(), 'Image uploaded to GitHub ✓');
+  } catch(e) {
+    alert('Upload failed: ' + e.message + '\nCheck your GitHub token has repo access.');
+  } finally {
+    if (uploading) uploading.style.display = 'none';
+    input.value = '';
+  }
+}
+
+async function uploadToGitHub(file, token) {
+  const repo = getGHRepo();
+  const ext = file.name.split('.').pop().toLowerCase();
+  const fname = Date.now() + '-' + file.name.replace(/[^a-z0-9.]/gi,'_').toLowerCase();
+  const path = 'assets/uploads/' + fname;
+  const b64 = await fileToBase64(file);
+  // Check for existing SHA (needed if file exists)
+  let sha;
+  try {
+    const chk = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, { headers:{'Authorization':'token '+token} });
+    if (chk.ok) { const d = await chk.json(); sha = d.sha; }
+  } catch(e) {}
+  const body = { message:`Upload ${fname}`, content:b64, branch:'main' };
+  if (sha) body.sha = sha;
+  const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+    method:'PUT',
+    headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  if (!res.ok) { const err = await res.json(); throw new Error(err.message || res.statusText); }
+  return `https://raw.githubusercontent.com/${repo}/main/${path}`;
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve,reject) => {
+    const r = new FileReader();
+    r.onload = e => resolve(e.target.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+function showImgPreview(imgId, placeholderId, url) {
+  const img = document.getElementById(imgId);
+  const ph = document.getElementById(placeholderId);
+  if (!img) return;
+  if (url) { img.src = url; img.style.display = 'block'; if (ph) ph.style.display = 'none'; }
+  else { img.style.display = 'none'; if (ph) ph.style.display = 'flex'; }
+}
+function previewUrlImage(inputId, imgId, placeholderId) {
+  const url = document.getElementById(inputId)?.value?.trim();
+  if (url) showImgPreview(imgId, placeholderId, url);
+}
+function applyLogoUrl() { const u = document.getElementById('logoUrl').value.trim(); showImgPreview('logoPreviewImg','logoPlaceholder',u); }
+function applyFieldImage(inputId, imgId, placeholderId) { const u = document.getElementById(inputId)?.value?.trim(); if(u) showImgPreview(imgId,placeholderId,u); }
+
+function getCurrentToastId() {
+  const active = document.querySelector('.editor-pane.active');
+  if (!active) return 'branding-toast';
+  const id = active.id.replace('pane-','');
+  return id+'-toast';
+}
+
+/* ─── PUBLISH TO GITHUB ─── */
+async function publishToGitHub() {
+  const tok = getGHToken();
+  if (!tok) { alert('Add your GitHub token in Settings first.'); showPane('settings', document.querySelector('[onclick*="settings"]')); return; }
+  const repo = getGHRepo();
+  setStatus('publishing');
+  document.getElementById('publishBtn').disabled = true;
+  try {
     const cfg = getCfg();
-    // Logo
-    if (cfg.logoUrl) {
-      document.getElementById('logoUrl').value = cfg.logoUrl;
-      applyLogoPreview(cfg.logoUrl);
-    }
-    // Images
-    if (cfg.heroImageUrl) document.getElementById('heroImageUrl').value = cfg.heroImageUrl;
-    if (cfg.productImageUrl) document.getElementById('productImageUrl').value = cfg.productImageUrl;
-    // FSSAI
-    if (cfg.fssaiNumber) {
-      document.getElementById('fssaiInput').value = cfg.fssaiNumber;
-      document.getElementById('fssaiBadge').innerHTML = '<span class="config-badge-dot"></span><span>FSSAI: '+cfg.fssaiNumber+'</span>';
-    }
-    // Contact
-    if (cfg.contactEmail) document.getElementById('contactEmail').value = cfg.contactEmail;
-    if (cfg.contactLocation) document.getElementById('contactLocation').value = cfg.contactLocation;
-    // Default date
-    document.getElementById('pDate').value = new Date().toISOString().split('T')[0];
-    // Posts
+    // Also save posts
+    const posts = (() => { try { const s = localStorage.getItem(POSTS_KEY); if(s){ const p=JSON.parse(s); if(Array.isArray(p)&&p.length) return p; } } catch(e){} return null; })();
+    // Push site-config.json
+    await pushFileToGitHub(repo, tok, 'site-config.json', JSON.stringify(cfg, null, 2), 'Update site config from admin panel');
+    // Push posts.json if custom posts exist
+    if (posts) await pushFileToGitHub(repo, tok, 'posts.json', JSON.stringify(posts, null, 2), 'Update journal posts from admin panel');
+    setStatus('live', 'Published live ✓');
+    toast('settings-toast', 'Published to GitHub. Live in ~60 seconds.');
+    setTimeout(refreshPreview, 2000);
+  } catch(e) {
+    setStatus('dirty');
+    alert('Publish failed: ' + e.message);
+  } finally {
+    document.getElementById('publishBtn').disabled = false;
+  }
+}
+
+async function pushFileToGitHub(repo, token, path, content, message) {
+  let sha;
+  try {
+    const chk = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, { headers:{'Authorization':'token '+token} });
+    if (chk.ok) { const d = await chk.json(); sha = d.sha; }
+  } catch(e) {}
+  const b64 = btoa(unescape(encodeURIComponent(content)));
+  const body = { message, content:b64, branch:'main' };
+  if (sha) body.sha = sha;
+  const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+    method:'PUT',
+    headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  if (!res.ok) { const err = await res.json(); throw new Error(err.message || res.statusText); }
+}
+
+/* ─── PREVIEW ─── */
+function refreshPreview() {
+  const frame = document.getElementById('previewFrame');
+  frame.src = frame.src; // force reload
+}
+
+/* ─── SETTINGS ─── */
+function saveToken() {
+  const tok = document.getElementById('ghToken').value.trim();
+  if (tok && !tok.startsWith('•')) { localStorage.setItem('arata_gh_token', tok); document.getElementById('ghToken').value = '••••••••••••••••'; }
+  updateTokenStatus(!!getGHToken());
+  toast('settings-toast', 'Token saved.');
+}
+function updateTokenStatus(has) {
+  document.getElementById('tokenDot').className = 'status-dot' + (has?' saved':'');
+  document.getElementById('tokenMsg').textContent = has ? 'Token saved — image upload enabled' : 'No token — image upload disabled';
+}
+function saveSettings() {
+  const cfg = getCfg();
+  const repo = document.getElementById('ghRepo').value.trim();
+  if (repo) cfg.ghRepo = repo;
+  setCfg(cfg);
+  saveToken();
+  toast('settings-toast', 'Settings saved.');
+}
+function exportBackup() {
+  const data = { config:getCfg(), posts:(() => { try{ const s=localStorage.getItem(POSTS_KEY); return s?JSON.parse(s):null; }catch(e){return null;} })(), exported:new Date().toISOString() };
+  const a = document.createElement('a');
+  a.href = 'data:application/json,'+encodeURIComponent(JSON.stringify(data,null,2));
+  a.download = 'arata-backup-'+new Date().toISOString().split('T')[0]+'.json';
+  a.click();
+}
+function clearLocalData() {
+  if (!confirm('Clear all locally saved settings? This does not affect the live site.')) return;
+  localStorage.removeItem(CFG_KEY);
+  localStorage.removeItem(POSTS_KEY);
+  toast('settings-toast', 'Local data cleared.');
+  init();
+  refreshPreview();
+}
+
+/* ─── POSTS ─── */
+function getRawPosts() {
+  try { const s = localStorage.getItem(POSTS_KEY); if(s){ const p=JSON.parse(s); if(Array.isArray(p)&&p.length) return {posts:p,isDefault:false}; } } catch(e) {}
+  return {posts:DEFAULT_POSTS,isDefault:true};
+}
+function fmtD(d) { try{ return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); }catch(e){return d;} }
+function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,'-').substring(0,60)+'-'+Date.now(); }
+
+function loadPostsList() {
+  const {posts,isDefault} = getRawPosts();
+  const el = document.getElementById('postsList');
+  el.innerHTML = posts.length===0
+    ? '<div class="empty-posts">No posts yet.</div>'
+    : posts.map((p,i) => `
+      <div class="post-item">
+        ${p.imageUrl ? `<img class="post-thumb" src="${p.imageUrl}" alt="" loading="lazy">` : '<div class="post-thumb" style="background:rgba(255,255,255,.05);"></div>'}
+        <div class="post-info">
+          <div class="post-cat-tag">${p.category}</div>
+          <div class="post-title-text" title="${p.title}">${p.title}</div>
+          <div class="post-date-text">${fmtD(p.date)}</div>
+        </div>
+        <div class="post-actions">
+          <a href="blog.html?post=${p.slug}" target="_blank" class="btn-sm btn-sm-view">View</a>
+          ${!isDefault ? `<button class="btn-sm btn-sm-del" onclick="deletePost(${i})">Delete</button>` : ''}
+        </div>
+      </div>`).join('');
+}
+
+function publishPost() {
+  const title = document.getElementById('pTitle').value.trim();
+  const cat = document.getElementById('pCat').value;
+  const excerpt = document.getElementById('pExcerpt').value.trim();
+  const content = document.getElementById('pContent').value.trim();
+  if (!title || !cat || !excerpt || !content) { toast('journal-toast','Fill in all required fields.'); return; }
+  const {posts,isDefault} = getRawPosts();
+  const base = isDefault ? [] : posts;
+  base.unshift({
+    slug: slugify(title), title, category:cat,
+    date: document.getElementById('pDate').value || new Date().toISOString().split('T')[0],
+    excerpt, imageUrl: document.getElementById('pImg').value.trim(), content
+  });
+  localStorage.setItem(POSTS_KEY, JSON.stringify(base));
+  resetPostForm();
+  loadPostsList();
+  setCfg(getCfg()); // mark dirty
+  toast('journal-toast','Post published. Hit "Publish Live" to push to the site.');
+}
+
+function resetPostForm() {
+  ['pTitle','pExcerpt','pContent','pImg'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('pCat').value = '';
+  document.getElementById('pDate').value = new Date().toISOString().split('T')[0];
+  showImgPreview('pImgPreview','pImgPlaceholder','');
+}
+
+function deletePost(i) {
+  if (!confirm('Delete this post?')) return;
+  try {
+    const posts = JSON.parse(localStorage.getItem(POSTS_KEY)||'[]');
+    posts.splice(i,1);
+    if (posts.length===0) localStorage.removeItem(POSTS_KEY); else localStorage.setItem(POSTS_KEY,JSON.stringify(posts));
     loadPostsList();
-  }
+  } catch(e) {}
+}
 
-  /* ── LOGO ── */
-  function applyLogoPreview(url) {
-    const prev = document.getElementById('logoPreview');
-    prev.innerHTML = url ? `<img src="${url}" alt="Logo preview" onerror="this.style.display='none'">` :
-      `<svg viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg" width="48" height="58">
-        <defs><linearGradient id="aLGp" x1="0" y1="0" x2="60" y2="72" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#CC77FF"/><stop offset="55%" stop-color="#8833EE"/><stop offset="100%" stop-color="#5500AA"/>
-        </linearGradient></defs>
-        <path d="M30 5 L52 55 Q55 63 49 66 Q43 69 40 60 L34 43 L26 43 L20 60 Q17 69 11 66 Q5 63 8 55 Z" fill="url(#aLGp)"/>
-        <path d="M30 20 L34 43 L26 43 Z" fill="white"/>
-        <path d="M49 63 Q57 74 49 78 Q41 82 37 70" stroke="url(#aLGp)" stroke-width="9" fill="none" stroke-linecap="round"/>
-        <circle cx="9" cy="66" r="8" fill="url(#aLGp)"/>
-      </svg>`;
-  }
-  function previewLogo() { applyLogoPreview(document.getElementById('logoUrl').value.trim()); }
-  function saveLogo() {
-    const url = document.getElementById('logoUrl').value.trim();
-    const cfg = getCfg(); cfg.logoUrl = url; setCfg(cfg);
-    applyLogoPreview(url);
-    toast('logoToast', url ? 'Logo saved.' : 'Reverted to default logo.');
-  }
-  function resetLogo() {
-    document.getElementById('logoUrl').value = '';
-    const cfg = getCfg(); delete cfg.logoUrl; setCfg(cfg);
-    applyLogoPreview('');
-    toast('logoToast', 'Reset to default purple A logo.');
-  }
-
-  /* ── IMAGES ── */
-  function saveImages() {
-    const cfg = getCfg();
-    const hero = document.getElementById('heroImageUrl').value.trim();
-    const prod = document.getElementById('productImageUrl').value.trim();
-    if (hero) cfg.heroImageUrl = hero; else delete cfg.heroImageUrl;
-    if (prod) cfg.productImageUrl = prod; else delete cfg.productImageUrl;
-    setCfg(cfg);
-    toast('imagestoast', 'Images saved.');
-  }
-
-  /* ── FSSAI ── */
-  function saveFssai() {
-    const val = document.getElementById('fssaiInput').value.trim();
-    const cfg = getCfg();
-    if (val) { cfg.fssaiNumber = val; } else { delete cfg.fssaiNumber; }
-    setCfg(cfg);
-    document.getElementById('fssaiBadge').innerHTML = val
-      ? `<span class="config-badge-dot"></span><span>FSSAI: ${val}</span>`
-      : `<span class="config-badge-dot" style="background:#888;"></span><span>Not yet set</span>`;
-    toast('fssaiToast', val ? 'FSSAI number saved. Visible on website.' : 'FSSAI number cleared.');
-  }
-
-  /* ── CONTACT ── */
-  function saveContact() {
-    const cfg = getCfg();
-    const email = document.getElementById('contactEmail').value.trim();
-    const loc = document.getElementById('contactLocation').value.trim();
-    if (email) cfg.contactEmail = email; else delete cfg.contactEmail;
-    if (loc) cfg.contactLocation = loc; else delete cfg.contactLocation;
-    setCfg(cfg);
-    toast('contactToast', 'Contact info saved.');
-  }
-
-  /* ── EXPORT ── */
-  function exportConfig() {
-    const cfg = getCfg();
-    const posts = (() => { try { return JSON.parse(localStorage.getItem(POSTS_KEY)||'null'); } catch(e){ return null; } })();
-    const data = { config: cfg, posts: posts, exported: new Date().toISOString() };
-    const a = document.createElement('a');
-    a.href = 'data:application/json,' + encodeURIComponent(JSON.stringify(data, null, 2));
-    a.download = 'arata-admin-backup-' + new Date().toISOString().split('T')[0] + '.json';
-    a.click();
-  }
-  function clearAllConfig() {
-    if (!confirm('This will clear all admin settings (logo, FSSAI, contact). Journal posts are kept. Are you sure?')) return;
-    localStorage.removeItem(CFG_KEY);
-    loadAll();
-    toast('contactToast', 'All site config cleared.');
-  }
-
-  /* ── POSTS ── */
-  function getRawPosts() { try { const s = localStorage.getItem(POSTS_KEY); if (s) { const p = JSON.parse(s); if (Array.isArray(p)&&p.length) return { posts:p, isDefault:false }; } } catch(e){} return { posts:DEFAULT_POSTS, isDefault:true }; }
-  function fmtDate(d) { try { return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); } catch(e){return d;} }
-  function slug(s) { return s.toLowerCase().replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,'-').substring(0,70)+'-'+Date.now(); }
-
-  function loadPostsList() {
-    const { posts, isDefault } = getRawPosts();
-    document.getElementById('defaultNote').style.display = isDefault ? 'block' : 'none';
-    document.getElementById('postCount').textContent = posts.length + ' post' + (posts.length!==1?'s':'') + ' published';
-    document.getElementById('postsList').innerHTML = posts.length === 0
-      ? '<div class="posts-empty">No posts yet. Publish your first issue above.</div>'
-      : posts.map((p,i) => `
-        <div class="post-item">
-          <div class="post-item-thumb"><img src="${p.imageUrl||''}" alt="" loading="lazy" onerror="this.style.display='none'"></div>
-          <div class="post-item-info">
-            <div class="post-item-cat">${p.category}</div>
-            <div class="post-item-title" title="${p.title}">${p.title}</div>
-            <div class="post-item-date">${fmtDate(p.date)}</div>
-          </div>
-          <div class="post-item-actions">
-            <a href="blog.html?post=${p.slug}" target="_blank" class="btn-outline" style="text-decoration:none;font-size:9px;padding:6px 12px;">View ↗</a>
-            ${!isDefault ? `<button class="btn-danger" onclick="deletePost(${i})">Delete</button>` : ''}
-          </div>
-        </div>`).join('');
-  }
-
-  function savePost(e) {
-    e.preventDefault();
-    const { posts, isDefault } = getRawPosts();
-    const base = isDefault ? [] : posts;
-    base.unshift({
-      slug: slug(document.getElementById('pTitle').value),
-      title: document.getElementById('pTitle').value.trim(),
-      category: document.getElementById('pCat').value,
-      date: document.getElementById('pDate').value || new Date().toISOString().split('T')[0],
-      excerpt: document.getElementById('pExcerpt').value.trim(),
-      imageUrl: document.getElementById('pImg').value.trim(),
-      content: document.getElementById('pContent').value.trim()
-    });
-    localStorage.setItem(POSTS_KEY, JSON.stringify(base));
-    resetPostForm();
-    loadPostsList();
-    toast('postToast', 'Post published to The Arata Journal.');
-  }
-
-  function resetPostForm() {
-    document.getElementById('postForm').reset();
-    document.getElementById('pDate').value = new Date().toISOString().split('T')[0];
-  }
-
-  function deletePost(i) {
-    if (!confirm('Delete this post permanently?')) return;
-    const stored = localStorage.getItem(POSTS_KEY);
-    if (!stored) return;
-    try {
-      const posts = JSON.parse(stored);
-      posts.splice(i,1);
-      if (posts.length===0) localStorage.removeItem(POSTS_KEY); else localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
-      loadPostsList();
-    } catch(e){}
-  }
-
-  function toast(id, msg) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.textContent = msg;
-    setTimeout(() => el.textContent = '', 3000);
-  }
+/* ─── TOAST ─── */
+function toast(id, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  setTimeout(() => { if(el) el.textContent=''; }, 3500);
+}
 </script>
 </body>
 </html>
