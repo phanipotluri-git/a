@@ -110,6 +110,9 @@ html,body{height:100%;font-family:'Josefin Sans',sans-serif;background:var(--dar
 .token-field input{flex:1;}
 .token-status{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dimmer);}
 
+/* No-token notice */
+.no-token-notice{position:absolute;bottom:0;left:0;right:0;background:rgba(184,146,42,0.12);border-top:1px solid rgba(184,146,42,0.25);padding:6px 10px;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:6px;pointer-events:none;}
+
 /* ─── PREVIEW ─── */
 .preview-panel{width:45%;flex-shrink:0;border-left:1px solid var(--border);display:flex;flex-direction:column;background:#fff;}
 .preview-bar{height:40px;background:var(--black);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:12px;flex-shrink:0;}
@@ -206,6 +209,7 @@ html,body{height:100%;font-family:'Josefin Sans',sans-serif;background:var(--dar
               <span>Click to upload logo</span>
               <span style="color:rgba(255,255,255,.15);font-size:8px;letter-spacing:.1em;">PNG, SVG, JPG — transparent background recommended</span>
             </div>
+            <div class="no-token-notice">⚠ Add GitHub token in Settings to upload files</div>
           </div>
           <div class="img-url-row">
             <input class="f-input" id="logoUrl" placeholder="Or paste image URL here…" oninput="previewUrlImage('logoUrl','logoPreviewImg','logoPlaceholder')">
@@ -257,6 +261,7 @@ html,body{height:100%;font-family:'Josefin Sans',sans-serif;background:var(--dar
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="13" rx="1"/><path d="M3 13l4-4 4 4 3-3 5 5"/></svg>
               <span>Click to upload background</span>
             </div>
+            <div class="no-token-notice">⚠ Add GitHub token in Settings to upload files</div>
           </div>
           <div class="img-url-row">
             <input class="f-input" id="heroBgImageUrl" placeholder="Or paste image URL…" oninput="previewUrlImage('heroBgImageUrl','heroBgPreview','heroBgPlaceholder')">
@@ -274,6 +279,7 @@ html,body{height:100%;font-family:'Josefin Sans',sans-serif;background:var(--dar
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="13" rx="1"/><path d="M3 13l4-4 4 4 3-3 5 5"/></svg>
               <span>Click to upload product photo</span>
             </div>
+            <div class="no-token-notice">⚠ Add GitHub token in Settings to upload files</div>
           </div>
           <div class="img-url-row">
             <input class="f-input" id="productImageUrl" placeholder="Or paste image URL…" oninput="previewUrlImage('productImageUrl','productImgPreview','productImgPlaceholder')">
@@ -376,6 +382,7 @@ html,body{height:100%;font-family:'Josefin Sans',sans-serif;background:var(--dar
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="13" rx="1"/><path d="M3 13l4-4 4 4 3-3 5 5"/></svg>
               <span>Upload cover photo</span>
             </div>
+            <div class="no-token-notice">⚠ Add GitHub token in Settings to upload files</div>
           </div>
           <div class="img-url-row">
             <input class="f-input" id="pImg" placeholder="Or paste image URL…" oninput="previewUrlImage('pImg','pImgPreview','pImgPlaceholder')">
@@ -584,8 +591,16 @@ async function handleImageUpload(input, urlFieldId, previewId, uploadingId) {
   if (!file) return;
   const tok = getGHToken();
   if (!tok) {
-    alert('No GitHub token saved. Go to Settings tab and add your token to enable image uploads.');
     input.value = '';
+    // Navigate to settings and highlight the token field
+    const settingsNav = document.querySelector('[onclick*="settings"]');
+    showPane('settings', settingsNav);
+    const tokenField = document.getElementById('ghToken');
+    tokenField.focus();
+    tokenField.style.borderColor = 'var(--gold)';
+    tokenField.style.boxShadow = '0 0 0 2px rgba(184,146,42,0.25)';
+    setTimeout(() => { tokenField.style.borderColor = ''; tokenField.style.boxShadow = ''; }, 3000);
+    toast('settings-toast', 'Paste your GitHub token here to enable image uploads.');
     return;
   }
   const uploading = document.getElementById(uploadingId);
@@ -708,13 +723,17 @@ function refreshPreview() {
 /* ─── SETTINGS ─── */
 function saveToken() {
   const tok = document.getElementById('ghToken').value.trim();
-  if (tok && !tok.startsWith('•')) { localStorage.setItem('arata_gh_token', tok); document.getElementById('ghToken').value = '••••••••••••••••'; }
+  if (tok && !tok.startsWith('•')) {
+    localStorage.setItem('arata_gh_token', tok);
+    document.getElementById('ghToken').value = '••••••••••••••••';
+  }
   updateTokenStatus(!!getGHToken());
-  toast('settings-toast', 'Token saved.');
+  toast('settings-toast', getGHToken() ? 'Token saved — image uploads enabled.' : 'No token entered.');
 }
 function updateTokenStatus(has) {
   document.getElementById('tokenDot').className = 'status-dot' + (has?' saved':'');
-  document.getElementById('tokenMsg').textContent = has ? 'Token saved — image upload enabled' : 'No token — image upload disabled';
+  document.getElementById('tokenMsg').textContent = has ? 'Token saved — image upload enabled' : 'No token saved — image upload disabled';
+  document.querySelectorAll('.no-token-notice').forEach(el => el.style.display = has ? 'none' : 'flex');
 }
 function saveSettings() {
   const cfg = getCfg();
