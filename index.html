@@ -9,17 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --white: #FFFFFF;
-    --off-white: #F9F8F6;
-    --light-grey: #F2F1EF;
-    --mid-grey: #E0DED9;
-    --text-grey: #888880;
-    --black: #0D0D0B;
-    --dark: #1A1A18;
-    --gold: #B8922A;
-    --gold-light: #D4AA4A;
-    --gold-pale: #F5EDD8;
-    --clinical-blue: #2A4A6B;
+    --white: #FFFFFF; --off-white: #F9F8F6; --light-grey: #F2F1EF;
+    --mid-grey: #E0DED9; --text-grey: #888880; --black: #0D0D0B;
+    --dark: #1A1A18; --gold: #B8922A; --gold-light: #D4AA4A; --gold-pale: #F5EDD8;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -29,26 +21,28 @@
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
     background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--mid-grey); padding: 0 48px; height: 70px;
-    display: flex; align-items: center; justify-content: space-between; transition: all 0.3s ease;
+    display: flex; align-items: center; justify-content: space-between; transition: box-shadow 0.3s;
   }
   .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo-img { width: 28px; height: 34px; object-fit: contain; display: none; }
+  .nav-logo-svg { display: block; }
   .nav-logo-text { display: flex; flex-direction: column; gap: 1px; }
   .nav-logo-main { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500; letter-spacing: 0.15em; color: var(--black); line-height: 1; }
   .nav-logo-sub { font-size: 8px; font-weight: 300; letter-spacing: 0.35em; color: var(--gold); text-transform: uppercase; }
   .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
   .nav-links a { font-size: 11px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dark); text-decoration: none; transition: color 0.2s; }
   .nav-links a:hover { color: var(--gold); }
-  .nav-cta { background: var(--black) !important; color: var(--white) !important; padding: 10px 22px !important; font-size: 10px !important; letter-spacing: 0.25em !important; transition: background 0.2s !important; }
+  .nav-cta { background: var(--black) !important; color: var(--white) !important; padding: 10px 22px !important; }
   .nav-cta:hover { background: var(--gold) !important; }
   .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-  .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--black); transition: all 0.3s; }
+  .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--black); }
 
   #home { min-height: 100vh; background: var(--white); display: flex; align-items: center; padding-top: 70px; position: relative; overflow: hidden; }
   .hero-bg-lines { position: absolute; top: 0; right: 0; width: 50%; height: 100%; opacity: 0.03; background-image: repeating-linear-gradient(90deg, var(--black) 0px, var(--black) 1px, transparent 1px, transparent 80px); pointer-events: none; }
   .hero-inner { max-width: 1280px; margin: 0 auto; padding: 80px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; width: 100%; }
   .hero-label { font-size: 10px; font-weight: 400; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
   .hero-label::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
-  .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(42px, 5vw, 72px); font-weight: 300; line-height: 1.1; color: var(--black); margin-bottom: 24px; letter-spacing: -0.01em; }
+  .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(42px, 5vw, 72px); font-weight: 300; line-height: 1.1; color: var(--black); margin-bottom: 24px; }
   .hero-title em { font-style: italic; color: var(--gold); }
   .hero-subtitle { font-family: 'EB Garamond', serif; font-size: 18px; line-height: 1.7; color: #555550; margin-bottom: 40px; max-width: 480px; }
   .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
@@ -57,14 +51,14 @@
   .btn-secondary { background: transparent; color: var(--black); padding: 14px 32px; font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none; border: 1px solid var(--mid-grey); transition: all 0.25s; display: inline-block; }
   .btn-secondary:hover { border-color: var(--black); }
   .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; }
-  .hero-visual-backdrop { position: absolute; inset: -30px; overflow: hidden; border-radius: 2px; z-index: 0; }
+  .hero-visual-backdrop { position: absolute; inset: -30px; overflow: hidden; z-index: 0; }
   .hero-visual-backdrop img { width: 100%; height: 100%; object-fit: cover; opacity: 0.08; filter: grayscale(100%) sepia(30%); }
   .capsule-container { position: relative; width: 320px; height: 320px; display: flex; align-items: center; justify-content: center; z-index: 2; }
   .capsule-ring { position: absolute; border-radius: 50%; border: 1px solid var(--mid-grey); animation: rotate 20s linear infinite; }
   .capsule-ring-1 { width: 280px; height: 280px; border-style: dashed; animation-duration: 25s; }
   .capsule-ring-2 { width: 220px; height: 220px; border-color: var(--gold-light); opacity: 0.4; animation-direction: reverse; animation-duration: 18s; }
   @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  .capsule-hero-img { position: relative; z-index: 2; width: 180px; height: 180px; overflow: hidden; border-radius: 2px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.18)); }
+  .capsule-hero-img { position: relative; z-index: 2; width: 180px; height: 180px; overflow: hidden; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.18)); }
   .capsule-hero-img img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(10%) contrast(1.05); }
   .capsule-badge { position: absolute; bottom: 20px; right: 0; background: var(--black); color: var(--white); padding: 10px 16px; font-size: 9px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; z-index: 3; }
   .hero-stats { display: flex; gap: 40px; margin-top: 48px; padding-top: 40px; border-top: 1px solid var(--mid-grey); }
@@ -73,7 +67,7 @@
 
   .ticker { background: var(--black); padding: 14px 0; overflow: hidden; white-space: nowrap; }
   .ticker-track { display: inline-block; animation: ticker 30s linear infinite; }
-  .ticker-track span { font-size: 10px; font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin: 0 32px; }
+  .ticker-track span { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin: 0 32px; }
   .ticker-track span.gold { color: var(--gold-light); }
   @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
@@ -90,8 +84,8 @@
   .about-card::before { content: ''; position: absolute; top: 12px; left: 12px; right: -12px; bottom: -12px; border: 1px solid var(--gold); opacity: 0.3; z-index: -1; }
   .about-quote { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; font-style: italic; line-height: 1.6; color: var(--black); margin-bottom: 24px; }
   .about-quote-attr { font-size: 10px; font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); }
-  .about-img-wrap { margin-top: 24px; overflow: hidden; height: 220px; border: 1px solid var(--mid-grey); position: relative; }
-  .about-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.55) contrast(1.05); transition: transform 0.6s ease; }
+  .about-img-wrap { margin-top: 24px; overflow: hidden; height: 220px; border: 1px solid var(--mid-grey); }
+  .about-img-wrap img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.55) contrast(1.05); transition: transform 0.6s; }
   .about-img-wrap:hover img { transform: scale(1.04); }
   .about-pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
   .pillar { padding: 24px; border: 1px solid var(--mid-grey); background: var(--white); transition: border-color 0.2s; }
@@ -106,10 +100,9 @@
   .product-hero-card { background: var(--off-white); border: 1px solid var(--mid-grey); padding: 60px 40px; text-align: center; position: relative; overflow: hidden; }
   .product-name { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 300; letter-spacing: 0.1em; color: var(--black); margin-bottom: 4px; }
   .product-name span { color: var(--gold); }
-  .product-tagline-small { font-size: 9px; font-weight: 400; letter-spacing: 0.28em; text-transform: uppercase; color: var(--text-grey); margin-bottom: 40px; }
-  .product-price-card { background: var(--black); padding: 24px 32px; margin-top: 32px; }
-  .price-main { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 300; color: var(--white); line-height: 1; margin-bottom: 4px; }
-  .price-sub { font-size: 10px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .product-tagline-small { font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--text-grey); margin-bottom: 32px; }
+  .product-img-wrap { height: 180px; overflow: hidden; margin: 0 auto; }
+  .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(15%) contrast(1.05); }
   .product-headline { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; line-height: 1.3; color: var(--black); margin-bottom: 20px; }
   .product-desc { font-family: 'EB Garamond', serif; font-size: 17px; line-height: 1.8; color: #555550; margin-bottom: 40px; }
   .benefit-list { list-style: none; margin-bottom: 40px; }
@@ -118,7 +111,7 @@
   .benefit-title { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--black); margin-bottom: 4px; }
   .benefit-desc { font-family: 'EB Garamond', serif; font-size: 15px; line-height: 1.5; color: var(--text-grey); }
   .product-badges { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
-  .badge { padding: 8px 16px; border: 1px solid var(--mid-grey); font-size: 9px; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; color: var(--dark); }
+  .badge { padding: 8px 16px; border: 1px solid var(--mid-grey); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--dark); }
   .badge.gold-badge { border-color: var(--gold); color: var(--gold); }
 
   #science { background: var(--off-white); }
@@ -131,17 +124,17 @@
   .ingredient-card:hover .ing-role { color: var(--gold-light); }
   .ingredient-card:hover .ing-desc { color: rgba(255,255,255,0.65); }
   .ingredient-card:hover .ing-num { color: rgba(255,255,255,0.12); }
-  .ing-img-wrap { height: 160px; overflow: hidden; margin: -32px -28px 24px; position: relative; }
-  .ing-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease, filter 0.3s; filter: saturate(0.75); }
+  .ing-img-wrap { height: 160px; overflow: hidden; margin: -32px -28px 24px; }
+  .ing-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s, filter 0.3s; filter: saturate(0.75); }
   .ingredient-card:hover .ing-img-wrap img { transform: scale(1.08); filter: saturate(0.05) brightness(0.3); }
   .ing-num { position: absolute; top: 180px; right: 20px; font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; color: var(--light-grey); line-height: 1; transition: color 0.25s; }
   .ing-icon { width: 36px; height: 3px; background: var(--gold); margin-bottom: 20px; }
   .ing-name { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--black); margin-bottom: 6px; transition: color 0.25s; }
-  .ing-role { font-size: 9px; font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; transition: color 0.25s; }
+  .ing-role { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; transition: color 0.25s; }
   .ing-desc { font-family: 'EB Garamond', serif; font-size: 14px; line-height: 1.6; color: var(--text-grey); transition: color 0.25s; }
   .science-footer { margin-top: 48px; padding: 32px 40px; background: var(--black); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
   .science-footer-text { font-family: 'EB Garamond', serif; font-size: 16px; font-style: italic; color: rgba(255,255,255,0.7); }
-  .science-footer-badge { font-size: 10px; font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-light); border: 1px solid var(--gold); padding: 10px 20px; }
+  .science-footer-badge { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-light); border: 1px solid var(--gold); padding: 10px 20px; }
 
   .lifestyle-banner { position: relative; height: 520px; overflow: hidden; display: flex; align-items: center; }
   .lifestyle-banner-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
@@ -149,57 +142,15 @@
   .lifestyle-content { position: relative; z-index: 2; max-width: 1280px; margin: 0 auto; padding: 0 48px; }
   .lifestyle-quote { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 4vw, 52px); font-weight: 300; color: var(--white); line-height: 1.2; max-width: 640px; margin-bottom: 24px; }
   .lifestyle-quote em { font-style: italic; color: var(--gold); }
-  .lifestyle-sub { font-size: 10px; font-weight: 400; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 32px; }
+  .lifestyle-sub { font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 32px; }
   .lifestyle-stats { display: flex; gap: 48px; }
   .lifestyle-stat-num { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--white); line-height: 1; }
   .lifestyle-stat-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 4px; }
 
-  #shop { background: var(--white); }
-  .shop-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 60px; align-items: start; }
-  .shop-card { border: 1px solid var(--mid-grey); overflow: hidden; }
-  .shop-card-header { background: var(--black); padding: 40px; text-align: center; position: relative; overflow: hidden; }
-  .shop-card-name { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--white); letter-spacing: 0.08em; margin-bottom: 4px; position: relative; z-index: 1; }
-  .shop-card-sub { font-size: 9px; font-weight: 400; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-light); position: relative; z-index: 1; }
-  .shop-card-body { padding: 40px; background: var(--off-white); }
-  .shop-sizes { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
-  .shop-size-option { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: var(--white); border: 1px solid var(--mid-grey); cursor: pointer; transition: all 0.2s; user-select: none; }
-  .shop-size-option:hover { border-color: var(--gold); background: rgba(184,146,42,0.03); }
-  .shop-size-option.active { border-color: var(--gold); background: rgba(184,146,42,0.06); box-shadow: inset 3px 0 0 var(--gold); }
-  .shop-size-option.active .shop-size-label { color: var(--gold); }
-  .shop-size-option.active .shop-size-price { color: var(--gold); }
-  .shop-size-check { width: 18px; height: 18px; border: 1px solid var(--mid-grey); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
-  .shop-size-option.active .shop-size-check { background: var(--gold); border-color: var(--gold); }
-  .shop-size-check svg { opacity: 0; transition: opacity 0.15s; }
-  .shop-size-option.active .shop-size-check svg { opacity: 1; }
-  .shop-size-info { display: flex; flex-direction: column; gap: 2px; }
-  .shop-size-label { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--black); transition: color 0.2s; }
-  .shop-size-per { font-size: 10px; font-weight: 300; letter-spacing: 0.1em; color: var(--text-grey); }
-  .shop-size-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--black); transition: color 0.2s; }
-  .btn-buy { display: block; width: 100%; padding: 18px; font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; text-align: center; text-decoration: none; border: 1px solid var(--black); cursor: pointer; transition: all 0.25s; margin-bottom: 12px; }
-  .btn-buy.idle { background: var(--mid-grey); color: var(--text-grey); border-color: var(--mid-grey); cursor: default; }
-  .btn-buy.ready { background: var(--black); color: var(--white); border-color: var(--black); }
-  .btn-buy.ready:hover { background: var(--gold); border-color: var(--gold); }
-  .shop-note { font-size: 10px; font-weight: 300; letter-spacing: 0.15em; text-align: center; color: var(--text-grey); text-transform: uppercase; }
-  .shop-lifestyle { overflow: hidden; height: 260px; margin-bottom: 32px; border: 1px solid var(--mid-grey); position: relative; }
-  .shop-lifestyle img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.6); transition: transform 0.6s ease; }
-  .shop-lifestyle:hover img { transform: scale(1.04); }
-  .shop-lifestyle-caption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(13,13,11,0.7)); padding: 20px 20px 16px; }
-  .shop-lifestyle-caption span { font-size: 9px; font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-light); }
-  .shop-features { margin-bottom: 40px; }
-  .shop-feature { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--light-grey); align-items: flex-start; }
-  .shop-feature-icon { color: var(--gold); flex-shrink: 0; margin-top: 2px; }
-  .shop-feature-title { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--black); margin-bottom: 4px; }
-  .shop-feature-text { font-family: 'EB Garamond', serif; font-size: 15px; line-height: 1.5; color: var(--text-grey); }
-  .doctor-box { background: var(--off-white); border: 1px solid var(--mid-grey); border-left: 3px solid var(--gold); padding: 28px; }
-  .doctor-box-title { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--black); margin-bottom: 8px; }
-  .doctor-box-text { font-family: 'EB Garamond', serif; font-size: 15px; line-height: 1.6; color: var(--text-grey); margin-bottom: 16px; }
-  .doctor-box-link { font-size: 10px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); text-decoration: none; display: flex; align-items: center; gap: 8px; }
-  .doctor-box-link:hover { color: var(--black); }
-
-  /* Blog section */
-  #blog { background: var(--off-white); }
+  /* Blog preview */
+  #blog { background: var(--white); }
   .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 48px; }
-  .blog-card { border: 1px solid var(--mid-grey); background: var(--white); transition: border-color 0.2s; overflow: hidden; }
+  .blog-card { border: 1px solid var(--mid-grey); background: var(--off-white); transition: border-color 0.2s; overflow: hidden; }
   .blog-card:hover { border-color: var(--gold); }
   .blog-card-img { height: 180px; overflow: hidden; }
   .blog-card-img img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.7); transition: transform 0.5s; }
@@ -211,16 +162,18 @@
   .blog-card-meta { display: flex; justify-content: space-between; align-items: center; }
   .blog-card-date { font-size: 9px; letter-spacing: 0.15em; color: var(--text-grey); text-transform: uppercase; }
   .blog-card-link { font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); text-decoration: none; }
-  .blog-card-link:hover { color: var(--black); }
   .blog-cta-wrap { text-align: center; margin-top: 40px; }
 
   /* Disclaimer */
   .disclaimer { background: #111110; border-top: 2px solid var(--gold); padding: 48px 0; }
   .disclaimer-inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
   .disclaimer-title { font-size: 9px; font-weight: 600; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
-  .disclaimer-text { font-family: 'EB Garamond', serif; font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.4); max-width: 900px; }
+  .disclaimer-text { font-family: 'EB Garamond', serif; font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.4); max-width: 900px; margin-bottom: 16px; }
+  .fssai-line { font-size: 11px; letter-spacing: 0.15em; color: rgba(255,255,255,0.3); font-family: 'Josefin Sans', sans-serif; }
+  .fssai-line span { color: rgba(255,255,255,0.5); }
 
-  #contact { background: var(--white); }
+  /* Contact */
+  #contact { background: var(--off-white); }
   .contact-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; margin-top: 60px; }
   .contact-block { margin-bottom: 36px; }
   .contact-block-label { font-size: 9px; font-weight: 600; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
@@ -229,26 +182,26 @@
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .form-group { display: flex; flex-direction: column; gap: 8px; }
   .form-label { font-size: 9px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--dark); }
-  .form-input, .form-select, .form-textarea { background: var(--off-white); border: 1px solid var(--mid-grey); padding: 14px 16px; font-family: 'Josefin Sans', sans-serif; font-size: 13px; font-weight: 300; color: var(--black); outline: none; transition: border-color 0.2s; width: 100%; appearance: none; }
+  .form-input, .form-select, .form-textarea { background: var(--white); border: 1px solid var(--mid-grey); padding: 14px 16px; font-family: 'Josefin Sans', sans-serif; font-size: 13px; font-weight: 300; color: var(--black); outline: none; transition: border-color 0.2s; width: 100%; appearance: none; }
   .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--black); }
   .form-textarea { resize: vertical; min-height: 120px; }
   .form-submit { background: var(--black); color: var(--white); padding: 16px 40px; font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; border: 1px solid var(--black); cursor: pointer; transition: all 0.25s; align-self: flex-start; }
   .form-submit:hover { background: var(--gold); border-color: var(--gold); }
-  .form-success { display: none; padding: 16px 24px; background: rgba(42,107,42,0.08); border: 1px solid #2A6B2A; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: #2A6B2A; }
+  .form-success { display: none; padding: 14px 20px; background: rgba(42,107,42,0.08); border: 1px solid #2A6B2A; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #2A6B2A; }
 
   footer { background: var(--black); padding: 60px 0 32px; }
   .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,0.1); }
   .footer-logo-main { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; color: var(--white); letter-spacing: 0.12em; margin-bottom: 4px; }
-  .footer-logo-sub { font-size: 9px; font-weight: 300; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+  .footer-logo-sub { font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
   .footer-desc { font-family: 'EB Garamond', serif; font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.45); }
   .footer-col-title { font-size: 9px; font-weight: 600; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
   .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
   .footer-links a { font-family: 'EB Garamond', serif; font-size: 15px; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.2s; }
   .footer-links a:hover { color: var(--gold); }
   .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-  .footer-copy { font-size: 10px; font-weight: 300; letter-spacing: 0.15em; color: rgba(255,255,255,0.3); }
+  .footer-copy { font-size: 10px; letter-spacing: 0.15em; color: rgba(255,255,255,0.3); }
   .footer-legal { display: flex; gap: 24px; }
-  .footer-legal a { font-size: 10px; font-weight: 300; letter-spacing: 0.15em; color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.2s; }
+  .footer-legal a { font-size: 10px; color: rgba(255,255,255,0.3); text-decoration: none; letter-spacing: 0.15em; transition: color 0.2s; }
   .footer-legal a:hover { color: rgba(255,255,255,0.6); }
 
   .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
@@ -258,65 +211,54 @@
     .hero-inner { grid-template-columns: 1fr; gap: 60px; } .hero-visual { order: -1; }
     .about-grid { grid-template-columns: 1fr; gap: 48px; } .product-layout { grid-template-columns: 1fr; }
     .product-visual-wrap { position: static; } .science-header { grid-template-columns: 1fr; gap: 24px; }
-    .shop-layout { grid-template-columns: 1fr; } .contact-layout { grid-template-columns: 1fr; gap: 48px; }
-    .footer-top { grid-template-columns: 1fr 1fr; } .blog-grid { grid-template-columns: 1fr 1fr; }
+    .contact-layout { grid-template-columns: 1fr; gap: 48px; } .footer-top { grid-template-columns: 1fr 1fr; }
+    .blog-grid { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 768px) {
     nav { padding: 0 24px; } .nav-links { display: none; } .hamburger { display: flex; }
     .container { padding: 0 24px; } section { padding: 70px 0; } .hero-inner { padding: 60px 24px; }
     .about-pillars { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; }
-    .footer-top { grid-template-columns: 1fr; } .hero-stats { gap: 24px; }
+    .footer-top { grid-template-columns: 1fr; } .hero-stats { gap: 24px; flex-wrap: wrap; }
     .ingredients-grid { grid-template-columns: 1fr 1fr; } .lifestyle-banner { height: 400px; }
     .blog-grid { grid-template-columns: 1fr; } .disclaimer-inner { padding: 0 24px; }
   }
-  @media (max-width: 480px) {
-    .ingredients-grid { grid-template-columns: 1fr; } .hero-actions { flex-direction: column; align-items: flex-start; }
-  }
+  @media (max-width: 480px) { .ingredients-grid { grid-template-columns: 1fr; } }
   .mobile-nav { display: none; position: fixed; top: 70px; left: 0; right: 0; background: var(--white); border-bottom: 1px solid var(--mid-grey); padding: 24px; flex-direction: column; gap: 16px; z-index: 999; }
   .mobile-nav.open { display: flex; }
-  .mobile-nav a { font-size: 13px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dark); text-decoration: none; padding: 8px 0; border-bottom: 1px solid var(--light-grey); }
+  .mobile-nav a { font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dark); text-decoration: none; padding: 8px 0; border-bottom: 1px solid var(--light-grey); }
 </style>
 </head>
 <body>
 
 <nav id="navbar">
   <a class="nav-logo" href="#home">
-    <svg viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg" width="28" height="34" aria-hidden="true">
-      <defs>
-        <linearGradient id="aLG" x1="0" y1="0" x2="60" y2="72" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#CC77FF"/>
-          <stop offset="55%" stop-color="#8833EE"/>
-          <stop offset="100%" stop-color="#5500AA"/>
-        </linearGradient>
-      </defs>
+    <img class="nav-logo-img" id="navLogoImg" src="" alt="Arata logo">
+    <svg class="nav-logo-svg" id="navLogoSvg" viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg" width="28" height="34" aria-hidden="true">
+      <defs><linearGradient id="aLG" x1="0" y1="0" x2="60" y2="72" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#CC77FF"/><stop offset="55%" stop-color="#8833EE"/><stop offset="100%" stop-color="#5500AA"/>
+      </linearGradient></defs>
       <path d="M30 5 L52 55 Q55 63 49 66 Q43 69 40 60 L34 43 L26 43 L20 60 Q17 69 11 66 Q5 63 8 55 Z" fill="url(#aLG)"/>
       <path d="M30 20 L34 43 L26 43 Z" fill="white"/>
       <path d="M49 63 Q57 74 49 78 Q41 82 37 70" stroke="url(#aLG)" stroke-width="9" fill="none" stroke-linecap="round"/>
       <circle cx="9" cy="66" r="8" fill="url(#aLG)"/>
     </svg>
-    <div class="nav-logo-text">
-      <div class="nav-logo-main">ARATA</div>
-      <div class="nav-logo-sub">Nutraceuticals</div>
-    </div>
+    <div class="nav-logo-text"><div class="nav-logo-main">ARATA</div><div class="nav-logo-sub">Nutraceuticals</div></div>
   </a>
   <ul class="nav-links">
     <li><a href="#home">Home</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#product">Aeternyx&#8482;</a></li>
     <li><a href="#science">Science</a></li>
-    <li><a href="#shop">Shop</a></li>
     <li><a href="blog.html">Journal</a></li>
     <li><a href="#contact" class="nav-cta">Contact</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
-
 <div class="mobile-nav" id="mobileNav">
   <a href="#home" onclick="closeMobileNav()">Home</a>
   <a href="#about" onclick="closeMobileNav()">About</a>
   <a href="#product" onclick="closeMobileNav()">Aeternyx&#8482;</a>
   <a href="#science" onclick="closeMobileNav()">Science</a>
-  <a href="#shop" onclick="closeMobileNav()">Shop</a>
   <a href="blog.html">Journal</a>
   <a href="#contact" onclick="closeMobileNav()">Contact</a>
 </div>
@@ -341,29 +283,22 @@
       </div>
     </div>
     <div class="hero-visual fade-up">
-      <div class="hero-visual-backdrop">
-        <img src="https://images.unsplash.com/photo-1576671081837-49000212a370?w=900&q=60" alt="" aria-hidden="true" loading="lazy">
-      </div>
+      <div class="hero-visual-backdrop"><img src="https://images.unsplash.com/photo-1576671081837-49000212a370?w=900&q=60" alt="" aria-hidden="true" loading="lazy"></div>
       <div class="capsule-container">
         <div class="capsule-ring capsule-ring-1"></div>
         <div class="capsule-ring capsule-ring-2"></div>
-        <div class="capsule-hero-img">
-          <img src="https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=500&q=80" alt="Aeternyx capsules" loading="lazy">
-        </div>
+        <div class="capsule-hero-img"><img src="https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=500&q=80" alt="Aeternyx capsules" loading="lazy"></div>
         <div class="capsule-badge">Once Daily &middot; Aeternyx&#8482;</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TICKER -->
 <div class="ticker">
   <div class="ticker-track">
-    <span class="gold">Aeternyx&#8482;</span>
-    <span>CoQ10 &middot; Astaxanthin &middot; Resveratrol &middot; Lycopene &middot; Tocotrienol &middot; ALA &middot; Vitamin C &middot; D3 &middot; K2 MK-7 &middot; Selenium</span>
+    <span class="gold">Aeternyx&#8482;</span><span>CoQ10 &middot; Astaxanthin &middot; Resveratrol &middot; Lycopene &middot; Tocotrienol &middot; ALA &middot; Vitamin C &middot; D3 &middot; K2 MK-7 &middot; Selenium</span>
     <span class="gold">Precision Longevity &middot; 10 Actives &middot; Once Daily &middot; Clinically Anchored</span>
-    <span class="gold">Aeternyx&#8482;</span>
-    <span>CoQ10 &middot; Astaxanthin &middot; Resveratrol &middot; Lycopene &middot; Tocotrienol &middot; ALA &middot; Vitamin C &middot; D3 &middot; K2 MK-7 &middot; Selenium</span>
+    <span class="gold">Aeternyx&#8482;</span><span>CoQ10 &middot; Astaxanthin &middot; Resveratrol &middot; Lycopene &middot; Tocotrienol &middot; ALA &middot; Vitamin C &middot; D3 &middot; K2 MK-7 &middot; Selenium</span>
     <span class="gold">Precision Longevity &middot; 10 Actives &middot; Once Daily &middot; Clinically Anchored</span>
   </div>
 </div>
@@ -377,33 +312,14 @@
         <h2 class="section-title">Where precision science meets human longevity</h2>
         <p class="section-subtitle" style="margin-bottom:40px;">Arata Nutraceuticals was founded on a single conviction: that India's most discerning health seekers deserve supplements built on the same standards as clinical medicine — not wellness trends.</p>
         <div class="about-pillars">
-          <div class="pillar">
-            <svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><path d="M10 16l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <div class="pillar-title">Evidence-First</div>
-            <div class="pillar-text">Every compound anchored to landmark randomised controlled trials.</div>
-          </div>
-          <div class="pillar">
-            <svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><path d="M16 4L28 10V22L16 28L4 22V10L16 4Z" stroke="currentColor" stroke-width="1.5"/><circle cx="16" cy="16" r="4" stroke="currentColor" stroke-width="1.5"/></svg>
-            <div class="pillar-title">Precision Formulation</div>
-            <div class="pillar-text">Synergistic stacking — each ingredient potentiates the next.</div>
-          </div>
-          <div class="pillar">
-            <svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><path d="M8 24L16 8L24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 20h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <div class="pillar-title">Clinical Credibility</div>
-            <div class="pillar-text">Trusted by physicians across 17 medical specialties.</div>
-          </div>
-          <div class="pillar">
-            <svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><path d="M16 10v6l4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <div class="pillar-title">Longevity Focused</div>
-            <div class="pillar-text">Targeting the root causes of cellular ageing and chronic inflammation.</div>
-          </div>
+          <div class="pillar"><svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><path d="M10 16l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><div class="pillar-title">Evidence-First</div><div class="pillar-text">Every compound anchored to landmark randomised controlled trials.</div></div>
+          <div class="pillar"><svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><path d="M16 4L28 10V22L16 28L4 22V10L16 4Z" stroke="currentColor" stroke-width="1.5"/><circle cx="16" cy="16" r="4" stroke="currentColor" stroke-width="1.5"/></svg><div class="pillar-title">Precision Formulation</div><div class="pillar-text">Synergistic stacking — each ingredient potentiates the next.</div></div>
+          <div class="pillar"><svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><path d="M8 24L16 8L24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 20h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><div class="pillar-title">Clinical Credibility</div><div class="pillar-text">Trusted by physicians across 17 medical specialties.</div></div>
+          <div class="pillar"><svg class="pillar-icon" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><path d="M16 10v6l4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><div class="pillar-title">Longevity Focused</div><div class="pillar-text">Targeting the root causes of cellular ageing and chronic inflammation.</div></div>
         </div>
       </div>
       <div class="about-visual fade-up">
-        <div class="about-card">
-          <div class="about-quote">&ldquo;Oxidative stress and chronic inflammation are the silent architects of premature ageing. Aeternyx&#8482; was designed to interrupt that process at the cellular level.&rdquo;</div>
-          <div class="about-quote-attr">&mdash; Arata Nutraceuticals &middot; Scientific Foundation</div>
-        </div>
+        <div class="about-card"><div class="about-quote">&ldquo;Oxidative stress and chronic inflammation are the silent architects of premature ageing. Aeternyx&#8482; was designed to interrupt that process at the cellular level.&rdquo;</div><div class="about-quote-attr">&mdash; Arata Nutraceuticals &middot; Scientific Foundation</div></div>
         <div style="margin-top:24px;padding:24px;border:1px solid var(--mid-grey);background:var(--white);">
           <div style="font-size:10px;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-grey);margin-bottom:16px;">Clinical Reference Network</div>
           <div style="display:flex;flex-wrap:wrap;gap:8px;">
@@ -412,12 +328,9 @@
             <span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">NPC Trial &middot; JAMA</span>
             <span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">BMJ D3 Meta-Analysis</span>
             <span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">Finnish Cohort</span>
-            <span style="padding:6px 14px;border:1px solid var(--mid-grey);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">Georgetown Phase II</span>
           </div>
         </div>
-        <div class="about-img-wrap">
-          <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80" alt="Research laboratory" loading="lazy">
-        </div>
+        <div class="about-img-wrap"><img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80" alt="Research laboratory" loading="lazy"></div>
       </div>
     </div>
   </div>
@@ -432,20 +345,10 @@
         <div class="product-hero-card">
           <div class="product-name">Aeternyx<span>&#8482;</span></div>
           <div class="product-tagline-small">Not a Supplement, Cellular Intelligence.</div>
-          <div style="margin:24px auto 0;height:180px;overflow:hidden;border-radius:1px;">
-            <img src="https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=500&q=80"
-                 alt="Aeternyx capsules" loading="lazy"
-                 style="width:100%;height:100%;object-fit:cover;filter:grayscale(15%) contrast(1.05);">
-          </div>
-          <div class="product-price-card">
-            <div class="price-main">&#8377;120</div>
-            <div class="price-sub">per capsule &middot; once daily</div>
-          </div>
+          <div class="product-img-wrap"><img src="https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=500&q=80" alt="Aeternyx capsules" loading="lazy"></div>
         </div>
         <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
-          <div class="badge gold-badge">10 Actives</div>
-          <div class="badge">Once Daily</div>
-          <div class="badge gold-badge">RCT-Backed</div>
+          <div class="badge gold-badge">10 Actives</div><div class="badge">Once Daily</div><div class="badge gold-badge">RCT-Backed</div>
         </div>
       </div>
       <div class="product-details fade-up">
@@ -458,13 +361,8 @@
           <li class="benefit-item"><span class="benefit-num">04</span><div><div class="benefit-title">Cancer Risk Reduction</div><div class="benefit-desc">Lycopene and Selenium, as validated in the NPC Trial (JAMA), demonstrate significant reduction in prostate, colorectal, and lung cancer risk.</div></div></li>
           <li class="benefit-item"><span class="benefit-num">05</span><div><div class="benefit-title">Bone &amp; Immune Integrity</div><div class="benefit-desc">Vitamin D3 — validated across the BMJ meta-analysis — orchestrates immune modulation, calcium homeostasis, and musculoskeletal health.</div></div></li>
         </ul>
-        <div class="product-badges">
-          <div class="badge">Physician-Recommended</div>
-          <div class="badge">Non-GMO</div>
-          <div class="badge">Free from Artificial Additives</div>
-          <div class="badge gold-badge">Prescription-Friendly</div>
-        </div>
-        <a href="#shop" class="btn-primary">Order Aeternyx&#8482;</a>
+        <div class="product-badges"><div class="badge">Physician-Recommended</div><div class="badge">Non-GMO</div><div class="badge">Free from Artificial Additives</div><div class="badge gold-badge">Prescription-Friendly</div></div>
+        <a href="#contact" class="btn-primary">Get in Touch</a>
       </div>
     </div>
   </div>
@@ -474,93 +372,20 @@
 <section id="science">
   <div class="container">
     <div class="science-header fade-up">
-      <div>
-        <div class="section-label">The Formula</div>
-        <h2 class="section-title">10 compounds.<br>One synergistic system.</h2>
-      </div>
+      <div><div class="section-label">The Formula</div><h2 class="section-title">10 compounds.<br>One synergistic system.</h2></div>
       <p class="science-intro">Each active in Aeternyx&#8482; is selected not for trend, but for evidence. Every compound is dosed at clinically relevant concentrations, peer-reviewed, and positioned to work synergistically with the rest of the formula.</p>
     </div>
     <div class="ingredients-grid fade-up">
-      <!-- 01 Astaxanthin — salmon (appropriate source) -->
-      <div class="ingredient-card">
-        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&h=200&fit=crop&q=80" alt="Salmon — natural astaxanthin source" loading="lazy"></div>
-        <div class="ing-num">01</div><div class="ing-icon"></div>
-        <div class="ing-name">Astaxanthin</div>
-        <div class="ing-role">Master Antioxidant</div>
-        <div class="ing-desc">6,000&times; more potent than Vitamin C in singlet oxygen quenching. Crosses blood-brain and blood-retinal barriers.</div>
-      </div>
-      <!-- 02 Lycopene — tomatoes -->
-      <div class="ingredient-card">
-        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1546554137-f86b9593a222?w=400&h=200&fit=crop&q=80" alt="Tomatoes — lycopene source" loading="lazy"></div>
-        <div class="ing-num">02</div><div class="ing-icon"></div>
-        <div class="ing-name">Lycopene</div>
-        <div class="ing-role">Carotenoid &middot; Cancer Shield</div>
-        <div class="ing-desc">Finnish Cohort data demonstrates 55% reduction in prostate cancer risk.</div>
-      </div>
-      <!-- 03 Resveratrol — grapes -->
-      <div class="ingredient-card">
-        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&h=200&fit=crop&q=80" alt="Grapes — resveratrol source" loading="lazy"></div>
-        <div class="ing-num">03</div><div class="ing-icon"></div>
-        <div class="ing-name">Trans-Resveratrol</div>
-        <div class="ing-role">Sirtuin Activator &middot; Longevity</div>
-        <div class="ing-desc">Activates SIRT1 longevity pathway, modulates NF-&#954;B, and mimics caloric restriction effects.</div>
-      </div>
-      <!-- 04 Tocotrienol — rice bran -->
-      <div class="ingredient-card">
-        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=200&fit=crop&q=80" alt="Rice bran — tocotrienol source" loading="lazy"></div>
-        <div class="ing-num">04</div><div class="ing-icon"></div>
-        <div class="ing-name">Tocotrienol</div>
-        <div class="ing-role">Superior Vitamin E &middot; Neuro</div>
-        <div class="ing-desc">40-60&times; more potent than tocopherols. Neuroprotective and anti-inflammatory via NF-&#954;B suppression.</div>
-      </div>
-      <!-- 05 ALA — broccoli/greens (updated) -->
-      <div class="ingredient-card">
-        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=200&fit=crop&q=80" alt="Green vegetables — ALA source" loading="lazy"></div>
-        <div class="ing-num">05</div><div class="ing-icon"></div>
-        <div class="ing-name">Alpha Lipoic Acid</div>
-        <div class="ing-role">Universal Antioxidant</div>
-        <div class="ing-desc">Water and fat soluble — regenerates Vitamins C and E. Critical for mitochondrial bioenergetics.</div>
-      </div>
-      <!-- 06 CoQ10 — lab setting (updated) -->
-      <div class="ingredient-card">
-        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=200&fit=crop&q=80" alt="Laboratory science" loading="lazy"></div>
-        <div class="ing-num">06</div><div class="ing-icon"></div>
-        <div class="ing-name">CoQ10</div>
-        <div class="ing-role">Mitochondrial Energetics</div>
-        <div class="ing-desc">Q-SYMBIO RCT: 43% reduction in major cardiovascular events. Essential for ATP synthesis.</div>
-      </div>
-      <!-- 07 Vitamin C — citrus -->
-      <div class="ingredient-card">
-        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1582979512210-99b6a53386f9?w=400&h=200&fit=crop&q=80" alt="Citrus — Vitamin C source" loading="lazy"></div>
-        <div class="ing-num">07</div><div class="ing-icon"></div>
-        <div class="ing-name">Vitamin C</div>
-        <div class="ing-role">Immune Backbone &middot; Collagen</div>
-        <div class="ing-desc">Therapeutic dose. Regenerates Vitamin E and glutathione; essential for collagen synthesis.</div>
-      </div>
-      <!-- 08 Vitamin D3 — sunlight (updated) -->
-      <div class="ingredient-card">
-        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1503252947848-7338d3f92f31?w=400&h=200&fit=crop&q=80" alt="Sunlight — Vitamin D3" loading="lazy"></div>
-        <div class="ing-num">08</div><div class="ing-icon"></div>
-        <div class="ing-name">Vitamin D3</div>
-        <div class="ing-role">Immune Modulator &middot; Bone</div>
-        <div class="ing-desc">BMJ meta-analysis: 42% reduction in acute respiratory infections. Regulates 200+ genes.</div>
-      </div>
-      <!-- 09 Vitamin K2 — fermented foods -->
-      <div class="ingredient-card">
-        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400&h=200&fit=crop&q=80" alt="Fermented foods — K2 source" loading="lazy"></div>
-        <div class="ing-num">09</div><div class="ing-icon"></div>
-        <div class="ing-name">Vitamin K2 MK-7</div>
-        <div class="ing-role">Cardiovascular &middot; Bone Matrix</div>
-        <div class="ing-desc">Rotterdam Study: 57% reduction in cardiovascular mortality. Directs calcium away from arteries.</div>
-      </div>
-      <!-- 10 Selenium — Brazil nuts -->
-      <div class="ingredient-card">
-        <div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1567306301408-9b74779a11af?w=400&h=200&fit=crop&q=80" alt="Brazil nuts — selenium source" loading="lazy"></div>
-        <div class="ing-num">10</div><div class="ing-icon"></div>
-        <div class="ing-name">Selenium</div>
-        <div class="ing-role">Thyroid &middot; Oncology Shield</div>
-        <div class="ing-desc">NPC Trial (JAMA): 63% reduction in prostate, 58% colorectal, 46% lung cancer incidence.</div>
-      </div>
+      <div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&h=200&fit=crop&q=80" alt="Salmon" loading="lazy"></div><div class="ing-num">01</div><div class="ing-icon"></div><div class="ing-name">Astaxanthin</div><div class="ing-role">Master Antioxidant</div><div class="ing-desc">6,000&times; more potent than Vitamin C in singlet oxygen quenching. Crosses blood-brain and blood-retinal barriers.</div></div>
+      <div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1546554137-f86b9593a222?w=400&h=200&fit=crop&q=80" alt="Tomatoes" loading="lazy"></div><div class="ing-num">02</div><div class="ing-icon"></div><div class="ing-name">Lycopene</div><div class="ing-role">Carotenoid &middot; Cancer Shield</div><div class="ing-desc">Finnish Cohort data demonstrates 55% reduction in prostate cancer risk.</div></div>
+      <div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&h=200&fit=crop&q=80" alt="Grapes" loading="lazy"></div><div class="ing-num">03</div><div class="ing-icon"></div><div class="ing-name">Trans-Resveratrol</div><div class="ing-role">Sirtuin Activator &middot; Longevity</div><div class="ing-desc">Activates SIRT1 longevity pathway, modulates NF-&#954;B, and mimics caloric restriction effects.</div></div>
+      <div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=200&fit=crop&q=80" alt="Rice bran" loading="lazy"></div><div class="ing-num">04</div><div class="ing-icon"></div><div class="ing-name">Tocotrienol</div><div class="ing-role">Superior Vitamin E &middot; Neuro</div><div class="ing-desc">40-60&times; more potent than tocopherols. Neuroprotective and anti-inflammatory via NF-&#954;B suppression.</div></div>
+      <div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=200&fit=crop&q=80" alt="Greens" loading="lazy"></div><div class="ing-num">05</div><div class="ing-icon"></div><div class="ing-name">Alpha Lipoic Acid</div><div class="ing-role">Universal Antioxidant</div><div class="ing-desc">Water and fat soluble — regenerates Vitamins C and E. Critical for mitochondrial bioenergetics.</div></div>
+      <div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=200&fit=crop&q=80" alt="Lab science" loading="lazy"></div><div class="ing-num">06</div><div class="ing-icon"></div><div class="ing-name">CoQ10</div><div class="ing-role">Mitochondrial Energetics</div><div class="ing-desc">Q-SYMBIO RCT: 43% reduction in major cardiovascular events. Essential for ATP synthesis.</div></div>
+      <div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1582979512210-99b6a53386f9?w=400&h=200&fit=crop&q=80" alt="Citrus" loading="lazy"></div><div class="ing-num">07</div><div class="ing-icon"></div><div class="ing-name">Vitamin C</div><div class="ing-role">Immune Backbone &middot; Collagen</div><div class="ing-desc">Therapeutic dose. Regenerates Vitamin E and glutathione; essential for collagen synthesis.</div></div>
+      <div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1503252947848-7338d3f92f31?w=400&h=200&fit=crop&q=80" alt="Sunlight" loading="lazy"></div><div class="ing-num">08</div><div class="ing-icon"></div><div class="ing-name">Vitamin D3</div><div class="ing-role">Immune Modulator &middot; Bone</div><div class="ing-desc">BMJ meta-analysis: 42% reduction in acute respiratory infections. Regulates 200+ genes.</div></div>
+      <div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400&h=200&fit=crop&q=80" alt="Fermented foods" loading="lazy"></div><div class="ing-num">09</div><div class="ing-icon"></div><div class="ing-name">Vitamin K2 MK-7</div><div class="ing-role">Cardiovascular &middot; Bone Matrix</div><div class="ing-desc">Rotterdam Study: 57% reduction in cardiovascular mortality. Directs calcium away from arteries.</div></div>
+      <div class="ingredient-card"><div class="ing-img-wrap"><img src="https://images.unsplash.com/photo-1567306301408-9b74779a11af?w=400&h=200&fit=crop&q=80" alt="Brazil nuts" loading="lazy"></div><div class="ing-num">10</div><div class="ing-icon"></div><div class="ing-name">Selenium</div><div class="ing-role">Thyroid &middot; Oncology Shield</div><div class="ing-desc">NPC Trial (JAMA): 63% reduction in prostate, 58% colorectal, 46% lung cancer incidence.</div></div>
     </div>
     <div class="science-footer fade-up">
       <div class="science-footer-text">&ldquo;All 10 actives are backed by peer-reviewed landmark randomised controlled trials.&rdquo;</div>
@@ -569,7 +394,6 @@
   </div>
 </section>
 
-<!-- LIFESTYLE BANNER -->
 <div class="lifestyle-banner">
   <img class="lifestyle-banner-img" src="https://images.unsplash.com/photo-1571019613914-85f342c6a11e?w=1400&q=80" alt="Active longevity" loading="lazy">
   <div class="lifestyle-overlay"></div>
@@ -585,117 +409,15 @@
   </div>
 </div>
 
-<!-- SHOP -->
-<section id="shop">
-  <div class="container">
-    <div class="section-label fade-up">Order Aeternyx&#8482;</div>
-    <h2 class="section-title fade-up">Invest in your longevity</h2>
-    <div class="shop-layout">
-      <div class="shop-card fade-up">
-        <div class="shop-card-header">
-          <img src="https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=600&q=80"
-               aria-hidden="true" loading="lazy"
-               style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.22;filter:grayscale(30%);">
-          <div class="shop-card-name">Aeternyx&#8482;</div>
-          <div class="shop-card-sub">Not a Supplement, Cellular Intelligence.</div>
-        </div>
-        <div class="shop-card-body">
-          <div class="shop-sizes">
-            <div class="shop-size-option" onclick="selectSize(this)">
-              <div class="shop-size-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-              <div class="shop-size-info"><div class="shop-size-label">30 Capsules</div><div class="shop-size-per">1 Month Supply</div></div>
-              <div class="shop-size-price">&#8377;3,600</div>
-            </div>
-            <div class="shop-size-option" onclick="selectSize(this)">
-              <div class="shop-size-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-              <div class="shop-size-info"><div class="shop-size-label">60 Capsules</div><div class="shop-size-per">2 Month Supply &middot; Save &#8377;480</div></div>
-              <div class="shop-size-price">&#8377;6,720</div>
-            </div>
-            <div class="shop-size-option" onclick="selectSize(this)">
-              <div class="shop-size-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-              <div class="shop-size-info"><div class="shop-size-label">90 Capsules</div><div class="shop-size-per">3 Month Supply &middot; Save &#8377;1,200</div></div>
-              <div class="shop-size-price">&#8377;9,600</div>
-            </div>
-          </div>
-          <a href="#contact" class="btn-buy idle" id="orderBtn">Select a Size</a>
-          <div class="shop-note">Free shipping &middot; PAN India &middot; COD Available</div>
-        </div>
-      </div>
-      <div class="shop-right fade-up">
-        <div class="shop-lifestyle">
-          <img src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=700&q=80" alt="Morning wellness ritual" loading="lazy">
-          <div class="shop-lifestyle-caption"><span>Your Morning Ritual, Elevated</span></div>
-        </div>
-        <div class="shop-features">
-          <div class="shop-feature">
-            <svg class="shop-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <div><div class="shop-feature-title">Premium Grade Ingredients</div><div class="shop-feature-text">All actives sourced to pharmaceutical-grade specifications, with full traceability and third-party quality verification.</div></div>
-          </div>
-          <div class="shop-feature">
-            <svg class="shop-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <div><div class="shop-feature-title">Clinically Relevant Dosing</div><div class="shop-feature-text">Every compound dosed at concentrations used in landmark RCTs — not token amounts.</div></div>
-          </div>
-          <div class="shop-feature">
-            <svg class="shop-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9L12 2L21 9V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9Z" stroke="currentColor" stroke-width="1.5"/></svg>
-            <div><div class="shop-feature-title">Physician-Trusted Formula</div><div class="shop-feature-text">Recommended across 17 medical specialties including cardiology, oncology, and neurology.</div></div>
-          </div>
-        </div>
-        <div class="doctor-box">
-          <div class="doctor-box-title">Are you a physician or clinician?</div>
-          <div class="doctor-box-text">Download the complete Aeternyx&#8482; clinical reference dossier — RCT evidence, synergy combinations, drug interactions, and patient selection guidelines.</div>
-          <a href="#contact" class="doctor-box-link">Request Clinical Dossier <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- BLOG PREVIEW -->
+<!-- JOURNAL PREVIEW -->
 <section id="blog">
   <div class="container">
     <div class="section-label fade-up">The Arata Journal</div>
     <h2 class="section-title fade-up">Longevity Intelligence</h2>
     <p class="section-subtitle fade-up">Evidence-based insights on cellular ageing, longevity science, and the clinical research powering Aeternyx&#8482;.</p>
-    <div class="blog-grid fade-up">
-      <div class="blog-card">
-        <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600&q=80" alt="Astaxanthin science" loading="lazy"></div>
-        <div class="blog-card-body">
-          <div class="blog-card-cat">Research Insights</div>
-          <div class="blog-card-title">The Science Behind Astaxanthin: Why It Outperforms Every Known Antioxidant</div>
-          <div class="blog-card-excerpt">A deep dive into the carotenoid compound found in marine algae that crosses the blood-brain barrier — and what the clinical data actually shows.</div>
-          <div class="blog-card-meta">
-            <span class="blog-card-date">Dec 10, 2025</span>
-            <a href="blog.html" class="blog-card-link">Read &rarr;</a>
-          </div>
-        </div>
-      </div>
-      <div class="blog-card">
-        <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=600&q=80" alt="Inflammaging research" loading="lazy"></div>
-        <div class="blog-card-body">
-          <div class="blog-card-cat">Longevity Science</div>
-          <div class="blog-card-title">Understanding Inflammaging: The Slow Fire That Ages You From the Inside</div>
-          <div class="blog-card-excerpt">Chronic low-grade inflammation — "inflammaging" — is now recognised as the primary driver of age-related disease. Here's what the science says about reversing it.</div>
-          <div class="blog-card-meta">
-            <span class="blog-card-date">Nov 28, 2025</span>
-            <a href="blog.html" class="blog-card-link">Read &rarr;</a>
-          </div>
-        </div>
-      </div>
-      <div class="blog-card">
-        <div class="blog-card-img"><img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&q=80" alt="CoQ10 trial" loading="lazy"></div>
-        <div class="blog-card-body">
-          <div class="blog-card-cat">Clinical Evidence</div>
-          <div class="blog-card-title">CoQ10 and the Q-SYMBIO Trial: How One Molecule Rewrote Cardiology</div>
-          <div class="blog-card-excerpt">The landmark randomised controlled trial that showed a 43% reduction in major cardiovascular events — and why CoQ10 belongs in every longevity stack.</div>
-          <div class="blog-card-meta">
-            <span class="blog-card-date">Nov 14, 2025</span>
-            <a href="blog.html" class="blog-card-link">Read &rarr;</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="blog-cta-wrap fade-up">
-      <a href="blog.html" class="btn-secondary">Visit the Journal &rarr;</a>
+    <div class="blog-grid fade-up" id="blogPreview"></div>
+    <div class="blog-cta-wrap fade-up" style="margin-top:40px;text-align:center;">
+      <a href="blog.html" class="btn-secondary">Read the Journal &rarr;</a>
     </div>
   </div>
 </section>
@@ -705,6 +427,7 @@
   <div class="disclaimer-inner">
     <div class="disclaimer-title">Important Disclaimer</div>
     <p class="disclaimer-text">Aeternyx&#8482; is a nutritional supplement and is not intended to diagnose, treat, cure, or prevent any disease or medical condition. The statements made on this website have not been evaluated by the Food Safety and Standards Authority of India (FSSAI) or any other regulatory authority. Nutritional supplements are not a substitute for a balanced diet, a healthy lifestyle, or medical treatment. Always consult your physician, specialist, or qualified healthcare provider before starting any new supplement, especially if you have a pre-existing medical condition, are pregnant or breastfeeding, or are taking prescription medications. Individual results may vary. The clinical studies referenced on this website were conducted on individual ingredients independently and do not represent studies on Aeternyx&#8482; as a combined formulation.</p>
+    <div class="fssai-line">FSSAI Lic. No.: <span id="fssaiDisplay">Registration Pending</span></div>
   </div>
 </div>
 
@@ -717,16 +440,10 @@
       <div class="contact-info fade-up">
         <div class="contact-block">
           <div class="contact-block-label">Email</div>
-          <div class="contact-block-value"><a href="mailto:aratanutra@gmail.com" style="color:inherit;text-decoration:none;">aratanutra@gmail.com</a></div>
+          <div class="contact-block-value"><a id="contactEmailDisplay" href="mailto:aratanutra@gmail.com" style="color:inherit;text-decoration:none;">aratanutra@gmail.com</a></div>
         </div>
-        <div class="contact-block">
-          <div class="contact-block-label">India</div>
-          <div class="contact-block-value">PAN India Delivery</div>
-        </div>
-        <div class="contact-block">
-          <div class="contact-block-label">Response Time</div>
-          <div class="contact-block-value">Within 24 hours</div>
-        </div>
+        <div class="contact-block"><div class="contact-block-label">India</div><div class="contact-block-value">PAN India</div></div>
+        <div class="contact-block"><div class="contact-block-label">Response Time</div><div class="contact-block-value">Within 24 hours</div></div>
       </div>
       <div class="fade-up">
         <iframe name="gform-contact" style="display:none" aria-hidden="true"></iframe>
@@ -737,22 +454,9 @@
             <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" placeholder="First name"></div>
             <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" placeholder="Last name"></div>
           </div>
-          <div class="form-group">
-            <label class="form-label">Email Address *</label>
-            <input type="email" class="form-input" name="entry.1686012661" placeholder="your@email.com" required>
-          </div>
+          <div class="form-group"><label class="form-label">Email Address *</label><input type="email" class="form-input" name="entry.1686012661" placeholder="your@email.com" required></div>
           <div class="form-group"><label class="form-label">Phone Number</label><input type="tel" class="form-input" placeholder="+91 00000 00000"></div>
-          <div class="form-group">
-            <label class="form-label">I am a</label>
-            <select class="form-select">
-              <option value="">Select your profile</option>
-              <option>Consumer / Patient</option>
-              <option>Physician / Specialist</option>
-              <option>Pharmacist</option>
-              <option>Distributor / Retailer</option>
-              <option>Media / Press</option>
-            </select>
-          </div>
+          <div class="form-group"><label class="form-label">I am a</label><select class="form-select"><option value="">Select your profile</option><option>Consumer / Patient</option><option>Physician / Specialist</option><option>Pharmacist</option><option>Media / Press</option></select></div>
           <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="How can we help you?"></textarea></div>
           <button type="submit" class="form-submit" id="contactSubmit">Send Message</button>
           <div class="form-success" id="formSuccess">Message received. We'll be in touch within 24 hours.</div>
@@ -772,72 +476,93 @@
       </div>
       <div>
         <div class="footer-col-title">Products</div>
-        <ul class="footer-links">
-          <li><a href="#product">Aeternyx&#8482;</a></li>
-          <li><a href="#science">Ingredients</a></li>
-          <li><a href="#shop">Shop</a></li>
-        </ul>
+        <ul class="footer-links"><li><a href="#product">Aeternyx&#8482;</a></li><li><a href="#science">Ingredients</a></li></ul>
       </div>
       <div>
         <div class="footer-col-title">Company</div>
-        <ul class="footer-links">
-          <li><a href="#about">About Arata</a></li>
-          <li><a href="blog.html">Journal</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
+        <ul class="footer-links"><li><a href="#about">About Arata</a></li><li><a href="blog.html">Journal</a></li><li><a href="#contact">Contact</a></li></ul>
       </div>
       <div>
         <div class="footer-col-title">Healthcare Professionals</div>
-        <ul class="footer-links">
-          <li><a href="#contact">Clinical Dossier</a></li>
-          <li><a href="#science">RCT References</a></li>
-          <li><a href="#contact">Partner Programme</a></li>
-        </ul>
+        <ul class="footer-links"><li><a href="#contact">Clinical Dossier</a></li><li><a href="#science">RCT References</a></li><li><a href="#contact">Partner Programme</a></li></ul>
       </div>
     </div>
     <div class="footer-bottom">
       <div class="footer-copy">&copy; 2025 Arata Nutraceuticals. All rights reserved.</div>
-      <div class="footer-legal">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Use</a>
-        <a href="#" onclick="document.querySelector('.disclaimer').scrollIntoView({behavior:'smooth'});return false;">Disclaimer</a>
-      </div>
+      <div class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#" onclick="document.querySelector('.disclaimer').scrollIntoView({behavior:'smooth'});return false;">Disclaimer</a></div>
     </div>
   </div>
 </footer>
 
 <script>
+  // Load site config from admin
+  function loadSiteConfig() {
+    try {
+      const cfg = JSON.parse(localStorage.getItem('arata_site_config') || '{}');
+      // Logo
+      if (cfg.logoUrl) {
+        document.getElementById('navLogoImg').src = cfg.logoUrl;
+        document.getElementById('navLogoImg').style.display = 'block';
+        document.getElementById('navLogoSvg').style.display = 'none';
+      }
+      // FSSAI
+      if (cfg.fssaiNumber) {
+        document.getElementById('fssaiDisplay').textContent = cfg.fssaiNumber;
+      }
+      // Contact email
+      if (cfg.contactEmail) {
+        const el = document.getElementById('contactEmailDisplay');
+        el.textContent = cfg.contactEmail;
+        el.href = 'mailto:' + cfg.contactEmail;
+      }
+    } catch(e) {}
+  }
+
+  // Blog preview
+  const DEFAULT_POSTS = [
+    { slug: 'science-behind-astaxanthin', title: 'The Science Behind Astaxanthin: Why It Outperforms Every Known Antioxidant', category: 'Research Insights', date: '2025-12-10', excerpt: 'A deep dive into the carotenoid compound found in marine algae that crosses the blood-brain barrier — and what the clinical data actually shows.', imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600&q=80' },
+    { slug: 'understanding-inflammaging', title: 'Understanding Inflammaging: The Slow Fire That Ages You From the Inside', category: 'Longevity Science', date: '2025-11-28', excerpt: 'Chronic low-grade inflammation — "inflammaging" — is now recognised as the primary driver of age-related disease.', imageUrl: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=600&q=80' },
+    { slug: 'coq10-q-symbio-trial', title: 'CoQ10 and the Q-SYMBIO Trial: How One Molecule Rewrote Cardiology', category: 'Clinical Evidence', date: '2025-11-14', excerpt: 'The landmark randomised controlled trial that showed a 43% reduction in major cardiovascular events.', imageUrl: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&q=80' }
+  ];
+
+  function getPosts() {
+    try {
+      const s = localStorage.getItem('arata_blog_posts');
+      if (s) { const p = JSON.parse(s); if (Array.isArray(p) && p.length) return p; }
+    } catch(e) {}
+    return DEFAULT_POSTS;
+  }
+
+  function formatDate(d) {
+    try { return new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }); } catch(e) { return d; }
+  }
+
+  function renderBlogPreview() {
+    const posts = getPosts().slice(0, 3);
+    document.getElementById('blogPreview').innerHTML = posts.map(p => `
+      <div class="blog-card">
+        <div class="blog-card-img"><img src="${p.imageUrl}" alt="${p.title}" loading="lazy"></div>
+        <div class="blog-card-body">
+          <div class="blog-card-cat">${p.category}</div>
+          <div class="blog-card-title">${p.title}</div>
+          <div class="blog-card-excerpt">${p.excerpt}</div>
+          <div class="blog-card-meta"><span class="blog-card-date">${formatDate(p.date)}</span><a href="blog.html?post=${p.slug}" class="blog-card-link">Read &rarr;</a></div>
+        </div>
+      </div>`).join('');
+  }
+
   document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileNav').classList.toggle('open'));
   function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); }
   window.addEventListener('scroll', () => { document.getElementById('navbar').style.boxShadow = window.scrollY > 50 ? '0 4px 24px rgba(0,0,0,0.06)' : 'none'; });
-  document.querySelectorAll('.fade-up').forEach(el => new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), 80); } });
-  }, { threshold: 0.1 }).observe(el));
-
-  function selectSize(el) {
-    const btn = document.getElementById('orderBtn');
-    const wasActive = el.classList.contains('active');
-    document.querySelectorAll('.shop-size-option').forEach(o => o.classList.remove('active'));
-    if (!wasActive) {
-      el.classList.add('active');
-      btn.textContent = 'Order ' + el.querySelector('.shop-size-label').textContent + ' — ' + el.querySelector('.shop-size-price').textContent;
-      btn.className = 'btn-buy ready';
-    } else {
-      btn.textContent = 'Select a Size';
-      btn.className = 'btn-buy idle';
-    }
-  }
-
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
+  document.querySelectorAll('.fade-up').forEach(el => new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), 80); }); }, { threshold: 0.1 }).observe(el));
+  document.getElementById('contactForm').addEventListener('submit', function() {
     const btn = document.getElementById('contactSubmit');
-    const success = document.getElementById('formSuccess');
-    btn.textContent = 'Sending…';
-    btn.disabled = true;
-    setTimeout(() => {
-      btn.style.display = 'none';
-      success.style.display = 'block';
-    }, 800);
+    btn.textContent = 'Sending…'; btn.disabled = true;
+    setTimeout(() => { btn.style.display = 'none'; document.getElementById('formSuccess').style.display = 'block'; }, 800);
   });
+
+  loadSiteConfig();
+  renderBlogPreview();
 </script>
 </body>
 </html>

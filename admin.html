@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arata — Admin Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500&family=Josefin+Sans:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --white:#fff; --off:#F9F8F6; --mid:#E0DED9; --text:#888880; --black:#0D0D0B; --dark:#1A1A18; --gold:#B8922A; --gold-l:#D4AA4A; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Josefin Sans',sans-serif;background:#0A0A09;color:#fff;min-height:100vh;}
+
+  /* ── GATE ── */
+  #gate{position:fixed;inset:0;background:var(--black);display:flex;align-items:center;justify-content:center;z-index:9999;}
+  .gate-wrap{display:flex;flex-direction:column;align-items:center;gap:28px;width:320px;}
+  .gate-brand{text-align:center;}
+  .gate-brand-name{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;letter-spacing:0.18em;color:#fff;}
+  .gate-brand-name span{color:var(--gold);}
+  .gate-brand-sub{font-size:8px;letter-spacing:0.5em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:4px;}
+  .gate-field{width:100%;display:flex;flex-direction:column;gap:10px;}
+  .gate-label{font-size:9px;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);}
+  .gate-input{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);padding:14px 18px;font-family:'Josefin Sans',sans-serif;font-size:14px;font-weight:300;color:#fff;outline:none;width:100%;text-align:center;letter-spacing:0.1em;transition:border-color 0.2s;}
+  .gate-input:focus{border-color:var(--gold);}
+  .gate-btn{width:100%;background:var(--gold);color:var(--black);padding:14px;font-family:'Josefin Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;border:none;cursor:pointer;transition:background 0.2s;}
+  .gate-btn:hover{background:var(--gold-l);}
+  .gate-err{font-size:9px;letter-spacing:0.2em;color:#cc4444;text-transform:uppercase;height:14px;text-align:center;}
+
+  /* ── ADMIN SHELL ── */
+  #admin{display:none;min-height:100vh;}
+  .admin-bar{background:var(--black);border-bottom:1px solid rgba(255,255,255,0.07);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;z-index:200;}
+  .admin-bar-brand{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;letter-spacing:0.2em;color:#fff;}
+  .admin-bar-brand span{color:var(--gold);}
+  .admin-bar-right{display:flex;gap:12px;align-items:center;}
+  .admin-pill{font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(184,146,42,0.35);padding:5px 12px;}
+  .btn-ghost{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);background:none;border:1px solid rgba(255,255,255,0.1);padding:6px 14px;cursor:pointer;transition:all 0.2s;}
+  .btn-ghost:hover{color:#fff;border-color:rgba(255,255,255,0.3);}
+
+  /* Tabs */
+  .admin-tabs{background:#111110;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;padding:0 32px;}
+  .tab-btn{background:none;border:none;border-bottom:2px solid transparent;padding:16px 20px;font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.35);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:8px;}
+  .tab-btn:hover{color:rgba(255,255,255,0.7);}
+  .tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+  .tab-dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.6;}
+
+  /* Panels */
+  .panel{display:none;max-width:900px;margin:0 auto;padding:40px 32px;}
+  .panel.active{display:block;}
+  .panel-section{margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,0.06);}
+  .panel-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .ps-title{font-size:10px;font-weight:600;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+  .ps-title::before{content:'';display:block;width:16px;height:1px;background:var(--gold);}
+
+  /* Form elements */
+  .admin-form{display:flex;flex-direction:column;gap:16px;}
+  .f-group{display:flex;flex-direction:column;gap:8px;}
+  .f-label{font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.45);}
+  .f-input,.f-select,.f-textarea{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);padding:12px 16px;font-family:'Josefin Sans',sans-serif;font-size:13px;font-weight:300;color:#fff;outline:none;width:100%;transition:border-color 0.2s;}
+  .f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--gold);}
+  .f-select option{background:var(--dark);}
+  .f-textarea{resize:vertical;min-height:120px;font-family:'EB Garamond',serif;font-size:16px;line-height:1.6;}
+  .f-hint{font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.08em;line-height:1.5;}
+  .f-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+  /* Buttons */
+  .btn-gold{background:var(--gold);color:var(--black);padding:12px 28px;font-family:'Josefin Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;border:none;cursor:pointer;transition:background 0.2s;}
+  .btn-gold:hover{background:var(--gold-l);}
+  .btn-outline{background:none;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.15);padding:10px 20px;font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+  .btn-outline:hover{color:#fff;border-color:rgba(255,255,255,0.4);}
+  .btn-danger{background:none;color:rgba(204,68,68,0.7);border:1px solid rgba(204,68,68,0.25);padding:8px 16px;font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+  .btn-danger:hover{color:#cc4444;border-color:#cc4444;}
+  .toast{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#4CAF50;height:14px;margin-top:4px;}
+
+  /* Logo preview */
+  .logo-preview{width:120px;height:120px;border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;overflow:hidden;background:rgba(255,255,255,0.02);margin-bottom:16px;}
+  .logo-preview img{max-width:100%;max-height:100%;object-fit:contain;}
+  .logo-preview svg{width:48px;height:58px;}
+  .logo-options{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+
+  /* Current config display */
+  .config-badge{display:inline-flex;align-items:center;gap:8px;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:8px 14px;border:1px solid rgba(255,255,255,0.08);margin-bottom:16px;}
+  .config-badge-dot{width:6px;height:6px;border-radius:50%;background:#4CAF50;}
+
+  /* Posts list */
+  .posts-list{display:flex;flex-direction:column;gap:0;}
+  .post-item{padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:14px;align-items:flex-start;}
+  .post-item-thumb{width:72px;height:52px;overflow:hidden;flex-shrink:0;border:1px solid rgba(255,255,255,0.07);}
+  .post-item-thumb img{width:100%;height:100%;object-fit:cover;filter:saturate(0.4);}
+  .post-item-info{flex:1;min-width:0;}
+  .post-item-cat{font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+  .post-item-title{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:400;color:#fff;line-height:1.3;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .post-item-date{font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:0.15em;text-transform:uppercase;}
+  .post-item-actions{display:flex;gap:8px;flex-shrink:0;}
+  .posts-empty{font-family:'EB Garamond',serif;font-size:17px;color:rgba(255,255,255,0.2);padding:40px 0;text-align:center;}
+  .default-note{font-size:10px;letter-spacing:0.1em;color:rgba(255,255,255,0.2);padding:12px 16px;border:1px solid rgba(255,255,255,0.05);line-height:1.6;margin-bottom:20px;}
+
+  @media(max-width:600px){
+    .admin-bar{padding:0 20px;} .admin-tabs{padding:0 20px;} .panel{padding:32px 20px;}
+    .f-row{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- GATE -->
+<div id="gate">
+  <div class="gate-wrap">
+    <div class="gate-brand">
+      <div class="gate-brand-name">ARATA <span>Admin</span></div>
+      <div class="gate-brand-sub">Site Management Console</div>
+    </div>
+    <div class="gate-field">
+      <div class="gate-label">Access Code</div>
+      <input type="password" class="gate-input" id="gateInput" placeholder="••••••••••" autocomplete="current-password">
+    </div>
+    <div class="gate-err" id="gateErr"></div>
+    <button class="gate-btn" onclick="checkPass()">Enter Admin Console</button>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin">
+  <div class="admin-bar">
+    <div class="admin-bar-brand">ARATA <span>Admin</span></div>
+    <div class="admin-bar-right">
+      <div class="admin-pill">Site Management</div>
+      <a href="index.html" target="_blank" class="btn-ghost">View Site ↗</a>
+      <button class="btn-ghost" onclick="logout()">Log Out</button>
+    </div>
+  </div>
+
+  <div class="admin-tabs">
+    <button class="tab-btn active" onclick="showTab('branding',this)"><span class="tab-dot"></span>Logo &amp; Branding</button>
+    <button class="tab-btn" onclick="showTab('siteinfo',this)"><span class="tab-dot"></span>Site Info</button>
+    <button class="tab-btn" onclick="showTab('journal',this)"><span class="tab-dot"></span>Journal Posts</button>
+  </div>
+
+  <!-- ── TAB: LOGO & BRANDING ── -->
+  <div class="panel active" id="tab-branding">
+    <div class="panel-section">
+      <div class="ps-title">Company Logo</div>
+      <div class="logo-preview" id="logoPreview">
+        <svg viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="aLGa" x1="0" y1="0" x2="60" y2="72" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#CC77FF"/><stop offset="55%" stop-color="#8833EE"/><stop offset="100%" stop-color="#5500AA"/>
+          </linearGradient></defs>
+          <path d="M30 5 L52 55 Q55 63 49 66 Q43 69 40 60 L34 43 L26 43 L20 60 Q17 69 11 66 Q5 63 8 55 Z" fill="url(#aLGa)"/>
+          <path d="M30 20 L34 43 L26 43 Z" fill="white"/>
+          <path d="M49 63 Q57 74 49 78 Q41 82 37 70" stroke="url(#aLGa)" stroke-width="9" fill="none" stroke-linecap="round"/>
+          <circle cx="9" cy="66" r="8" fill="url(#aLGa)"/>
+        </svg>
+      </div>
+      <p style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:20px;line-height:1.6;">Upload your logo anywhere (Google Drive, Dropbox, Imgur) and paste the direct image URL below. The logo will appear in the navbar and replace the default purple "A".</p>
+      <div class="admin-form">
+        <div class="f-group">
+          <label class="f-label">Logo Image URL</label>
+          <input type="url" class="f-input" id="logoUrl" placeholder="https://example.com/your-logo.png">
+          <div class="f-hint">Use a direct link to a PNG or SVG. For Google Drive: File → Share → Anyone with link → change /view to /uc?export=view</div>
+        </div>
+        <div class="logo-options">
+          <button class="btn-gold" onclick="previewLogo()">Preview Logo</button>
+          <button class="btn-outline" onclick="saveLogo()">Save &amp; Apply</button>
+          <button class="btn-danger" onclick="resetLogo()">Reset to Default</button>
+        </div>
+        <div class="toast" id="logoToast"></div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="ps-title">Site Hero Image</div>
+      <p style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:20px;line-height:1.6;">The background image in the homepage hero section. Paste any Unsplash or hosted image URL.</p>
+      <div class="admin-form">
+        <div class="f-group">
+          <label class="f-label">Hero Background Image URL</label>
+          <input type="url" class="f-input" id="heroImageUrl" placeholder="https://images.unsplash.com/photo-...">
+        </div>
+        <div class="f-group">
+          <label class="f-label">Product / Capsule Image URL</label>
+          <input type="url" class="f-input" id="productImageUrl" placeholder="https://images.unsplash.com/photo-...">
+          <div class="f-hint">Shown in the homepage hero ring and in the product section.</div>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <button class="btn-gold" onclick="saveImages()">Save Images</button>
+        </div>
+        <div class="toast" id="imagestoast"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: SITE INFO ── -->
+  <div class="panel" id="tab-siteinfo">
+    <div class="panel-section">
+      <div class="ps-title">FSSAI Registration</div>
+      <div class="config-badge" id="fssaiBadge"><span class="config-badge-dot" style="background:#888;"></span><span>Not yet set</span></div>
+      <div class="admin-form">
+        <div class="f-group">
+          <label class="f-label">FSSAI Licence Number</label>
+          <input type="text" class="f-input" id="fssaiInput" placeholder="e.g. 10012345000123" maxlength="14">
+          <div class="f-hint">14-digit number issued by FSSAI. Appears in the disclaimer section of the website and footer.</div>
+        </div>
+        <button class="btn-gold" style="align-self:flex-start;" onclick="saveFssai()">Save FSSAI Number</button>
+        <div class="toast" id="fssaiToast"></div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="ps-title">Contact Information</div>
+      <div class="admin-form">
+        <div class="f-group">
+          <label class="f-label">Primary Email</label>
+          <input type="email" class="f-input" id="contactEmail" placeholder="aratanutra@gmail.com">
+        </div>
+        <div class="f-group">
+          <label class="f-label">Business Address / Location (optional)</label>
+          <input type="text" class="f-input" id="contactLocation" placeholder="e.g. Hyderabad, India">
+        </div>
+        <button class="btn-gold" style="align-self:flex-start;" onclick="saveContact()">Save Contact Info</button>
+        <div class="toast" id="contactToast"></div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="ps-title">Export / Backup Config</div>
+      <p style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:20px;line-height:1.6;">Download all your admin settings as a JSON file. Keep this as a backup — you can share with your developer to apply changes permanently to the live site.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button class="btn-gold" onclick="exportConfig()">Download Config JSON</button>
+        <button class="btn-outline" onclick="clearAllConfig()">Clear All Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: JOURNAL ── -->
+  <div class="panel" id="tab-journal">
+    <div class="panel-section">
+      <div class="ps-title">New Post</div>
+      <form class="admin-form" id="postForm" onsubmit="savePost(event)">
+        <div class="f-group"><label class="f-label">Headline</label><input type="text" class="f-input" id="pTitle" placeholder="Post headline" required></div>
+        <div class="f-row">
+          <div class="f-group"><label class="f-label">Category</label>
+            <select class="f-select" id="pCat" required>
+              <option value="">Select category</option>
+              <option>Research Insights</option><option>Longevity Science</option>
+              <option>Clinical Evidence</option><option>Product Science</option>
+            </select>
+          </div>
+          <div class="f-group"><label class="f-label">Date</label><input type="date" class="f-input" id="pDate"></div>
+        </div>
+        <div class="f-group"><label class="f-label">Summary (shown in listing)</label><textarea class="f-textarea" id="pExcerpt" style="min-height:70px;" placeholder="2-3 sentence summary of the article..." required></textarea></div>
+        <div class="f-group">
+          <label class="f-label">Cover Photo URL</label>
+          <input type="url" class="f-input" id="pImg" placeholder="https://images.unsplash.com/photo-...?w=800&q=80">
+          <div class="f-hint">Unsplash: find a photo → right-click image → Copy Image Address. Or paste any hosted image URL.</div>
+        </div>
+        <div class="f-group">
+          <label class="f-label">Article Body</label>
+          <textarea class="f-textarea" id="pContent" style="min-height:220px;" placeholder="Write the full article here.
+
+Separate paragraphs with a blank line (press Enter twice).
+
+Each blank line = new paragraph on the published page." required></textarea>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+          <button type="submit" class="btn-gold">Publish to Journal</button>
+          <button type="button" class="btn-outline" onclick="resetPostForm()">Clear Form</button>
+        </div>
+        <div class="toast" id="postToast"></div>
+      </form>
+    </div>
+
+    <div class="panel-section">
+      <div class="ps-title">Published Posts</div>
+      <div class="default-note" id="defaultNote" style="display:none;">Showing the 3 default posts. Once you publish your first post, your content will replace them on the live site.</div>
+      <div id="postCount" style="font-size:9px;letter-spacing:0.2em;color:rgba(255,255,255,0.25);text-transform:uppercase;margin-bottom:16px;"></div>
+      <div class="posts-list" id="postsList"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const PASS = 'ArataN2025';
+  const CFG_KEY = 'arata_site_config';
+  const POSTS_KEY = 'arata_blog_posts';
+
+  const DEFAULT_POSTS = [
+    { slug:'science-behind-astaxanthin', title:'The Science Behind Astaxanthin', category:'Research Insights', date:'2025-12-10', excerpt:'A deep dive into the carotenoid compound found in marine algae...', imageUrl:'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=800&q=80', content:'...' },
+    { slug:'understanding-inflammaging', title:'Understanding Inflammaging', category:'Longevity Science', date:'2025-11-28', excerpt:'Chronic low-grade inflammation — "inflammaging" — is the primary driver of age-related disease.', imageUrl:'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80', content:'...' },
+    { slug:'coq10-q-symbio-trial', title:'CoQ10 and the Q-SYMBIO Trial', category:'Clinical Evidence', date:'2025-11-14', excerpt:'The landmark randomised controlled trial that showed a 43% reduction in cardiovascular events.', imageUrl:'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80', content:'...' }
+  ];
+
+  /* ── AUTH ── */
+  document.getElementById('gateInput').addEventListener('keydown', e => { if (e.key==='Enter') checkPass(); });
+  function checkPass() {
+    if (document.getElementById('gateInput').value === PASS) {
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('admin').style.display = 'block';
+      loadAll();
+    } else {
+      document.getElementById('gateErr').textContent = 'Incorrect code.';
+      document.getElementById('gateInput').value = '';
+      setTimeout(() => document.getElementById('gateErr').textContent = '', 2000);
+    }
+  }
+  function logout() { document.getElementById('admin').style.display='none'; document.getElementById('gate').style.display='flex'; document.getElementById('gateInput').value=''; }
+
+  /* ── TABS ── */
+  function showTab(name, btn) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-'+name).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  /* ── CONFIG ── */
+  function getCfg() { try { return JSON.parse(localStorage.getItem(CFG_KEY)||'{}'); } catch(e){ return {}; } }
+  function setCfg(cfg) { localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
+
+  function loadAll() {
+    const cfg = getCfg();
+    // Logo
+    if (cfg.logoUrl) {
+      document.getElementById('logoUrl').value = cfg.logoUrl;
+      applyLogoPreview(cfg.logoUrl);
+    }
+    // Images
+    if (cfg.heroImageUrl) document.getElementById('heroImageUrl').value = cfg.heroImageUrl;
+    if (cfg.productImageUrl) document.getElementById('productImageUrl').value = cfg.productImageUrl;
+    // FSSAI
+    if (cfg.fssaiNumber) {
+      document.getElementById('fssaiInput').value = cfg.fssaiNumber;
+      document.getElementById('fssaiBadge').innerHTML = '<span class="config-badge-dot"></span><span>FSSAI: '+cfg.fssaiNumber+'</span>';
+    }
+    // Contact
+    if (cfg.contactEmail) document.getElementById('contactEmail').value = cfg.contactEmail;
+    if (cfg.contactLocation) document.getElementById('contactLocation').value = cfg.contactLocation;
+    // Default date
+    document.getElementById('pDate').value = new Date().toISOString().split('T')[0];
+    // Posts
+    loadPostsList();
+  }
+
+  /* ── LOGO ── */
+  function applyLogoPreview(url) {
+    const prev = document.getElementById('logoPreview');
+    prev.innerHTML = url ? `<img src="${url}" alt="Logo preview" onerror="this.style.display='none'">` :
+      `<svg viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg" width="48" height="58">
+        <defs><linearGradient id="aLGp" x1="0" y1="0" x2="60" y2="72" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#CC77FF"/><stop offset="55%" stop-color="#8833EE"/><stop offset="100%" stop-color="#5500AA"/>
+        </linearGradient></defs>
+        <path d="M30 5 L52 55 Q55 63 49 66 Q43 69 40 60 L34 43 L26 43 L20 60 Q17 69 11 66 Q5 63 8 55 Z" fill="url(#aLGp)"/>
+        <path d="M30 20 L34 43 L26 43 Z" fill="white"/>
+        <path d="M49 63 Q57 74 49 78 Q41 82 37 70" stroke="url(#aLGp)" stroke-width="9" fill="none" stroke-linecap="round"/>
+        <circle cx="9" cy="66" r="8" fill="url(#aLGp)"/>
+      </svg>`;
+  }
+  function previewLogo() { applyLogoPreview(document.getElementById('logoUrl').value.trim()); }
+  function saveLogo() {
+    const url = document.getElementById('logoUrl').value.trim();
+    const cfg = getCfg(); cfg.logoUrl = url; setCfg(cfg);
+    applyLogoPreview(url);
+    toast('logoToast', url ? 'Logo saved.' : 'Reverted to default logo.');
+  }
+  function resetLogo() {
+    document.getElementById('logoUrl').value = '';
+    const cfg = getCfg(); delete cfg.logoUrl; setCfg(cfg);
+    applyLogoPreview('');
+    toast('logoToast', 'Reset to default purple A logo.');
+  }
+
+  /* ── IMAGES ── */
+  function saveImages() {
+    const cfg = getCfg();
+    const hero = document.getElementById('heroImageUrl').value.trim();
+    const prod = document.getElementById('productImageUrl').value.trim();
+    if (hero) cfg.heroImageUrl = hero; else delete cfg.heroImageUrl;
+    if (prod) cfg.productImageUrl = prod; else delete cfg.productImageUrl;
+    setCfg(cfg);
+    toast('imagestoast', 'Images saved.');
+  }
+
+  /* ── FSSAI ── */
+  function saveFssai() {
+    const val = document.getElementById('fssaiInput').value.trim();
+    const cfg = getCfg();
+    if (val) { cfg.fssaiNumber = val; } else { delete cfg.fssaiNumber; }
+    setCfg(cfg);
+    document.getElementById('fssaiBadge').innerHTML = val
+      ? `<span class="config-badge-dot"></span><span>FSSAI: ${val}</span>`
+      : `<span class="config-badge-dot" style="background:#888;"></span><span>Not yet set</span>`;
+    toast('fssaiToast', val ? 'FSSAI number saved. Visible on website.' : 'FSSAI number cleared.');
+  }
+
+  /* ── CONTACT ── */
+  function saveContact() {
+    const cfg = getCfg();
+    const email = document.getElementById('contactEmail').value.trim();
+    const loc = document.getElementById('contactLocation').value.trim();
+    if (email) cfg.contactEmail = email; else delete cfg.contactEmail;
+    if (loc) cfg.contactLocation = loc; else delete cfg.contactLocation;
+    setCfg(cfg);
+    toast('contactToast', 'Contact info saved.');
+  }
+
+  /* ── EXPORT ── */
+  function exportConfig() {
+    const cfg = getCfg();
+    const posts = (() => { try { return JSON.parse(localStorage.getItem(POSTS_KEY)||'null'); } catch(e){ return null; } })();
+    const data = { config: cfg, posts: posts, exported: new Date().toISOString() };
+    const a = document.createElement('a');
+    a.href = 'data:application/json,' + encodeURIComponent(JSON.stringify(data, null, 2));
+    a.download = 'arata-admin-backup-' + new Date().toISOString().split('T')[0] + '.json';
+    a.click();
+  }
+  function clearAllConfig() {
+    if (!confirm('This will clear all admin settings (logo, FSSAI, contact). Journal posts are kept. Are you sure?')) return;
+    localStorage.removeItem(CFG_KEY);
+    loadAll();
+    toast('contactToast', 'All site config cleared.');
+  }
+
+  /* ── POSTS ── */
+  function getRawPosts() { try { const s = localStorage.getItem(POSTS_KEY); if (s) { const p = JSON.parse(s); if (Array.isArray(p)&&p.length) return { posts:p, isDefault:false }; } } catch(e){} return { posts:DEFAULT_POSTS, isDefault:true }; }
+  function fmtDate(d) { try { return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); } catch(e){return d;} }
+  function slug(s) { return s.toLowerCase().replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,'-').substring(0,70)+'-'+Date.now(); }
+
+  function loadPostsList() {
+    const { posts, isDefault } = getRawPosts();
+    document.getElementById('defaultNote').style.display = isDefault ? 'block' : 'none';
+    document.getElementById('postCount').textContent = posts.length + ' post' + (posts.length!==1?'s':'') + ' published';
+    document.getElementById('postsList').innerHTML = posts.length === 0
+      ? '<div class="posts-empty">No posts yet. Publish your first issue above.</div>'
+      : posts.map((p,i) => `
+        <div class="post-item">
+          <div class="post-item-thumb"><img src="${p.imageUrl||''}" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="post-item-info">
+            <div class="post-item-cat">${p.category}</div>
+            <div class="post-item-title" title="${p.title}">${p.title}</div>
+            <div class="post-item-date">${fmtDate(p.date)}</div>
+          </div>
+          <div class="post-item-actions">
+            <a href="blog.html?post=${p.slug}" target="_blank" class="btn-outline" style="text-decoration:none;font-size:9px;padding:6px 12px;">View ↗</a>
+            ${!isDefault ? `<button class="btn-danger" onclick="deletePost(${i})">Delete</button>` : ''}
+          </div>
+        </div>`).join('');
+  }
+
+  function savePost(e) {
+    e.preventDefault();
+    const { posts, isDefault } = getRawPosts();
+    const base = isDefault ? [] : posts;
+    base.unshift({
+      slug: slug(document.getElementById('pTitle').value),
+      title: document.getElementById('pTitle').value.trim(),
+      category: document.getElementById('pCat').value,
+      date: document.getElementById('pDate').value || new Date().toISOString().split('T')[0],
+      excerpt: document.getElementById('pExcerpt').value.trim(),
+      imageUrl: document.getElementById('pImg').value.trim(),
+      content: document.getElementById('pContent').value.trim()
+    });
+    localStorage.setItem(POSTS_KEY, JSON.stringify(base));
+    resetPostForm();
+    loadPostsList();
+    toast('postToast', 'Post published to The Arata Journal.');
+  }
+
+  function resetPostForm() {
+    document.getElementById('postForm').reset();
+    document.getElementById('pDate').value = new Date().toISOString().split('T')[0];
+  }
+
+  function deletePost(i) {
+    if (!confirm('Delete this post permanently?')) return;
+    const stored = localStorage.getItem(POSTS_KEY);
+    if (!stored) return;
+    try {
+      const posts = JSON.parse(stored);
+      posts.splice(i,1);
+      if (posts.length===0) localStorage.removeItem(POSTS_KEY); else localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
+      loadPostsList();
+    } catch(e){}
+  }
+
+  function toast(id, msg) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = msg;
+    setTimeout(() => el.textContent = '', 3000);
+  }
+</script>
+</body>
+</html>
