@@ -187,7 +187,11 @@
   .form-textarea { resize: vertical; min-height: 120px; }
   .form-submit { background: var(--black); color: var(--white); padding: 16px 40px; font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; border: 1px solid var(--black); cursor: pointer; transition: all 0.25s; align-self: flex-start; }
   .form-submit:hover { background: var(--gold); border-color: var(--gold); }
-  .form-success { display: none; padding: 14px 20px; background: rgba(42,107,42,0.08); border: 1px solid #2A6B2A; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #2A6B2A; }
+  .form-success { display: none; padding: 40px 32px; background: rgba(42,107,42,0.05); border: 1px solid #2A6B2A; text-align: center; }
+  .form-success-icon { font-size: 28px; margin-bottom: 16px; }
+  .form-success-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; color: var(--black); margin-bottom: 10px; }
+  .form-success-sub { font-family: 'EB Garamond', serif; font-size: 16px; color: #555550; margin-bottom: 24px; line-height: 1.6; }
+  .form-success-reset { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #2A6B2A; background: none; border: none; cursor: pointer; text-decoration: underline; }
 
   footer { background: var(--black); padding: 60px 0 32px; }
   .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -459,8 +463,13 @@
           <div class="form-group"><label class="form-label">I am a</label><select class="form-select"><option value="">Select your profile</option><option>Consumer / Patient</option><option>Physician / Specialist</option><option>Pharmacist</option><option>Media / Press</option></select></div>
           <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="How can we help you?"></textarea></div>
           <button type="submit" class="form-submit" id="contactSubmit">Send Message</button>
-          <div class="form-success" id="formSuccess">Message received. We'll be in touch within 24 hours.</div>
         </form>
+        <div class="form-success" id="formSuccess">
+          <div class="form-success-icon">✓</div>
+          <div class="form-success-title">Message Received</div>
+          <div class="form-success-sub">Thank you for reaching out. We'll be in touch within 24 hours.</div>
+          <button class="form-success-reset" onclick="resetContactForm()">Send another message</button>
+        </div>
       </div>
     </div>
   </div>
@@ -512,9 +521,15 @@
       const bg = document.querySelector('.hero-visual-backdrop img');
       if (bg) bg.src = cfg.heroBgImageUrl;
     }
-    // Product image (both hero ring and product card)
+    // Hero capsule image
     if (cfg.productImageUrl) {
-      document.querySelectorAll('.capsule-hero-img img, .product-img-wrap img').forEach(img => img.src = cfg.productImageUrl);
+      document.querySelectorAll('.capsule-hero-img img').forEach(img => img.src = cfg.productImageUrl);
+    }
+    // Flagship formula card image (independent from hero)
+    if (cfg.flagshipImageUrl) {
+      document.querySelectorAll('.product-img-wrap img').forEach(img => img.src = cfg.flagshipImageUrl);
+    } else if (cfg.productImageUrl) {
+      document.querySelectorAll('.product-img-wrap img').forEach(img => img.src = cfg.productImageUrl);
     }
     // Product tagline
     if (cfg.productTagline) document.querySelector('.product-tagline-small').textContent = cfg.productTagline;
@@ -598,8 +613,18 @@
   document.getElementById('contactForm').addEventListener('submit', function() {
     const btn = document.getElementById('contactSubmit');
     btn.textContent = 'Sending…'; btn.disabled = true;
-    setTimeout(() => { btn.style.display = 'none'; document.getElementById('formSuccess').style.display = 'block'; }, 800);
+    setTimeout(() => {
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    }, 900);
   });
+  function resetContactForm() {
+    document.getElementById('contactForm').reset();
+    document.getElementById('contactForm').style.display = 'flex';
+    document.getElementById('formSuccess').style.display = 'none';
+    const btn = document.getElementById('contactSubmit');
+    btn.textContent = 'Send Message'; btn.disabled = false;
+  }
 
   loadSiteConfig();
   renderBlogPreview();
